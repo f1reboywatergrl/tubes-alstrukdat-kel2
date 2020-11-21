@@ -21,9 +21,24 @@ int main(){
 
     CreateEmpty(&S2);    
     CreateEmpty(&S1);
-    Push(&S1,9);
-    Push(&S1,8);
-    Push(&S1,7);
+    if (CekUrutan(S1,1)){
+        Push(&S1,1);
+    }
+    else{
+        printf("salah komponen yang ditambahkan\n");
+    }
+    if (CekUrutan(S1,2)){
+        Push(&S1,2);
+    }
+    else{
+        printf("salah komponen yang ditambahkan\n");
+    }
+    if (CekUrutan(S1,3)){
+        Push(&S1,3);
+    }
+    else{
+        printf("salah komponen yang ditambahkan\n");
+    }
     printf("-----------Stack 1-----------\n");
     PrintStack(S1);  
     CopyStack(S1, &S2);

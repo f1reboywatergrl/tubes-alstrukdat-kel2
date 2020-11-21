@@ -86,3 +86,12 @@ Stack MergeStack (Stack S, Stack S1){
     return Temp;
 }
 
+boolean CekUrutan (Stack S, int urutan){
+    if (IsEmpty(S)){
+        return (urutan == 1);
+    }
+    else{
+        return (urutan - InfoTop(S) == 1);
+    }
+}
+/* saat user add component, komponen direpresentasikan sebagai angka urutan kategori komponen tersebut*/
