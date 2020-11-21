@@ -8,7 +8,10 @@
 #include "boolean.h"
 
 #define Nil -1
-#define MaxEl 10
+#define MaxEl 8
+
+/* Setiap indeks didefine sebagai komponen rakitan*/
+
 /* Nil adalah stack dengan elemen kosong . */
 
 typedef int infotype;

@@ -10,6 +10,11 @@
 #define Nil -1
 /* Konstanta untuk mendefinisikan address tak terdefinisi */
 
+/*
+Infotype dipecah sesuai maunya tubes
+*/
+
+
 /* Definisi elemen dan address */
 typedef int infotype;
 typedef int address;   /* indeks tabel */

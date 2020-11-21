@@ -3,7 +3,16 @@
 #include "boolean.h"
 
 #define InitialSize 10
+//BUAT SHOP & INVENTORY PEMAIN
+/*ElType dibikin tipe bentukan lagi,
+isinya name & count.
+Nanti pas mo nambah, lakuin skema search,
+abis itu klo udh ada, tambain countnya aj
 
+Ada ElTypeShop => nama, harga
+ElTypeInventory => nama, jumlah
+*/
+    
 typedef int IdxType;
 typedef int ElType;
 typedef struct {

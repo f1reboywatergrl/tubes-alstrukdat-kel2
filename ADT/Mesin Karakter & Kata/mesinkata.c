@@ -29,8 +29,8 @@ CC karakter pertama sesudah karakter terakhir kata */
 		EndKata = true;
 	}
 	else /* CC != MARK */ {
-	EndKata = false;
-	SalinKata();
+		EndKata = false;
+		SalinKata();
 	}
 }
 
@@ -47,7 +47,7 @@ Proses: Akuisisi kata menggunakan procedure SalinKata */
 		EndKata = true;
 	} 
 	else /* CC != MARK */ {
-	SalinKata();
+		SalinKata();
 	}
 }
 
