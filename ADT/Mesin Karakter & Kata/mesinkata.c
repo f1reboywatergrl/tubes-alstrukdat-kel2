@@ -23,7 +23,7 @@ diakuisisi,
 CC karakter pertama sesudah karakter terakhir kata */
 /* Kamus Lokal */
 /* Algoritma*/
-	START();
+	START("tes.txt");
 	IgnoreBlank();
 	if (CC == MARK) {
 		EndKata = true;

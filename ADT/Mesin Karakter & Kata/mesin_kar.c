@@ -4,6 +4,8 @@
 
 static FILE *pita;
 static int retval;
+char CC;
+boolean EOP;
 
 void START (char *filename){
 	pita = fopen(filename,"r"); /* file pitakar.txt hanya diread*/
