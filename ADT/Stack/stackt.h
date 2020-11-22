@@ -64,4 +64,6 @@ void InverseStack (Stack *S);
 
 Stack MergeStack (Stack S, Stack S1);
 /*S2 diletakkan dibawah S1*/
+boolean CekUrutan (Stack S, int urutan);
+/* saat user add component, komponen direpresentasikan sebagai angka urutan kategori komponen tersebut*/
 #endif

@@ -4,19 +4,24 @@
 #define MATRIKS_H
 
 #include "boolean.h"
-
+#include "../Point/point.c"
 /* Ukuran minimum dan maksimum baris dan kolom */
 #define BrsMin 0
 #define BrsMax 12
 #define KolMin 0
 #define KolMax 17
 
+/* Definisi Point berisi Shop atau Base */
+#define ShopPoint -1
+#define BasePoint -2
 typedef int indeks; /* indeks baris, kolom */
 typedef int ElType; 
 typedef struct { 
 	ElType Mem[BrsMax+1][KolMax+1];
    int NBrsEff; /* banyaknya/ukuran baris yg terdefinisi */
 	int NKolEff; /* banyaknya/ukuran kolom yg terdefinisi */
+   int currentAbsis;
+   int currentOrdinat;
 } MATRIKS;
 /* NBrsEff >= 1 dan NKolEff >= 1 */
 /* Indeks matriks yang digunakan: [BrsMin..BrsMax][KolMin..KolMax] */
@@ -33,6 +38,8 @@ void MakeMATRIKS (int NB, int NK, MATRIKS * M);
 #define NBrsEff(M) (M).NBrsEff
 #define NKolEff(M) (M).NKolEff
 #define Elmt(M,i,j) (M).Mem[(i)][(j)]
+#define CurrentAbsis(M) (M).currentAbsis
+#define CurrentOrdinat(M) (M).currentOrdinat
 
 /* *** Selektor "DUNIA MATRIKS" *** */
 boolean IsIdxValid (int i, int j);
@@ -153,4 +160,15 @@ int CountXBrs (MATRIKS M, indeks i, ElType X);
 int CountXKol (MATRIKS M, indeks j, ElType X);
 /* Menghasilkan banyaknya kemunculan X pada kolom j dari M */
 
+
+//Kemungkinan Primitif Tambahan
+void ZeroMatrix (MATRIKS *M);
+/* Mengisi semua nilai matriks dengan 0 */
+void IsiPoint (MATRIKS *M, indeks i, indeks j, char *Type, int *CustFileOrder);
+/* Mengisi Point baru letak customer */
+void PrintMap (MATRIKS M);
+/* Mencetak Peta yang sudah diisi koordinatnya */
+
+/* void Move (MATRIKS M, indeks i, indeks j); */
+/* Memindahkan user ke point yang dituju */
 #endif

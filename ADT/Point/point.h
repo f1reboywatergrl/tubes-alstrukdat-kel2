@@ -5,16 +5,19 @@
 #ifndef POINT_H
 #define POINT_H
 
+
 #include "boolean.h"
 
 typedef struct { 
 	float X; /* absis   */
 	float Y; /* ordinat */
+   int custFileOrder;
 } POINT;
 
 /* *** Notasi Akses: Selektor POINT *** */
 #define Absis(P) (P).X
 #define Ordinat(P) (P).Y
+#define CustFileOrder(P) (P).custFileOrder
         
 /* *** DEFINISI PROTOTIPE PRIMITIF *** */
 /* *** Konstruktor membentuk POINT *** */
@@ -38,9 +41,9 @@ void TulisPOINT (POINT P);
 /* F.S. P tertulis di layar dengan format "(X,Y)" */                
 
 /* *** Kelompok operasi relasional terhadap POINT *** */
-boolean EQ (POINT P1, POINT P2);
+boolean PEQ (POINT P1, POINT P2);
 /* Mengirimkan true jika P1 = P2 : absis dan ordinatnya sama */
-boolean NEQ (POINT P1, POINT P2);
+boolean PNEQ (POINT P1, POINT P2);
 /* Mengirimkan true jika P1 tidak sama dengan P2 */
 
 /* *** Kelompok menentukan di mana P berada *** */
@@ -66,5 +69,5 @@ float Jarak0 (POINT P);
 float Panjang (POINT P1, POINT P2);
 /* Menghitung panjang garis yang dibentuk P1 dan P2. */
 
-
+void CurrentPoint (POINT *P, float X, float Y);
 #endif

@@ -51,23 +51,23 @@ void TulisPOINT (POINT P)
           
 
 /* *** Kelompok operasi relasional terhadap POINT *** */
-boolean EQ (POINT P1, POINT P2)
+boolean PEQ (POINT P1, POINT P2)
 /* Mengirimkan true jika P1 = P2 : absis dan ordinatnya sama */
 {
     return (Absis(P1) == Absis(P2) && Ordinat(P1) == Ordinat(P2));
 }
 
-boolean NEQ (POINT P1, POINT P2)
+boolean PNEQ (POINT P1, POINT P2)
 /* Mengirimkan true jika P1 tidak sama dengan P2 */
 {
-    return !EQ(P1,P2);
+    return !PEQ(P1,P2);
 }
 
 /* *** Kelompok menentukan di mana P berada *** */
 boolean IsOrigin (POINT P)
 /* Menghasilkan true jika P adalah titik origin */
 {
-    return EQ(P,MakePOINT(0,0));
+    return PEQ(P,MakePOINT(0,0));
 }
 
 boolean IsOnSbX (POINT P)
@@ -127,4 +127,11 @@ float Panjang (POINT P1, POINT P2)
 /* Menghitung panjang garis yang dibentuk P1 dan P2. */
 {
     return sqrt(pow(Absis(P1) - Absis(P2), 2) + pow(Ordinat(P1) - Ordinat(P2), 2));
+}
+
+void CurrentPoint (POINT *P, float X, float Y)
+/* Menentukan posisi pemain sekarang */
+{
+    Absis(*P)=X;
+    Ordinat(*P)=Y;
 }
