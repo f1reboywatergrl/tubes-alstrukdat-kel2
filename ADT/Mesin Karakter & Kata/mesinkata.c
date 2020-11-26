@@ -15,7 +15,7 @@ F.S.: CC != BLANK */
 	} /* CC != BLANK */
 }
 
-void STARTKATA() {
+void STARTKATA(char *filename) {
 /* I.S.: CC sembarang
 F.S.: EndKata = true, dan CC = Mark;
 atau EndKata = false, CKata adalah kata yang sudah
@@ -23,7 +23,7 @@ diakuisisi,
 CC karakter pertama sesudah karakter terakhir kata */
 /* Kamus Lokal */
 /* Algoritma*/
-	START("tes.txt");
+	START(filename);
 	IgnoreBlank();
 	if (CC == MARK) {
 		EndKata = true;
