@@ -162,9 +162,9 @@ int CountXKol (MATRIKS M, indeks j, ElType X);
 
 
 //Kemungkinan Primitif Tambahan
-void ZeroMatrix (MATRIKS *M);
-/* Mengisi semua nilai matriks dengan 0 */
-void IsiPoint (MATRIKS *M, indeks i, indeks j, char *Type, int *CustFileOrder);
+void EmptyMatrix (MATRIKS *M);
+/* Mengosongkan Matriks peta */
+void IsiPoint (MATRIKS *M, POINT PointInput);
 /* Mengisi Point baru letak customer */
 void PrintMap (MATRIKS M);
 /* Mencetak Peta yang sudah diisi koordinatnya */

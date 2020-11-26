@@ -463,38 +463,41 @@ int CountXKol (MATRIKS M, indeks j, ElType X)
 
 //Kemungkinan Primitif Tambahan Kepentingan Tubes
 
-void ZeroMatrix (MATRIKS *M)
-/* Mengisi semua nilai matriks dengan 0 */
+void EmptyMatrix (MATRIKS *M)
+/* Mengosongkan Matriks peta, semua titik diisi dengan -3 */
 {
     indeks i,j;
-    for(i=BrsMin;i<BrsMax;i++){
-        for(j=KolMin;j<KolMax;j++){
-            Elmt(*M,i,j) = 0;
+    for(i=BrsMin;i<NBrsEff(*M);i++){
+        for(j=KolMin;j<NKolEff(*M);j++){
+            Elmt(*M,i,j) = -3;
         }
     }
 }
 
-void IsiPoint (MATRIKS *M, indeks i, indeks j, char *Type, int *CustFileOrder)
+void IsiPoint (MATRIKS *M, POINT PointInput)
 /* Mengisi Point baru letak customer */
 {
-    if (Type=="S"){
+    indeks i=Absis(PointInput);
+    indeks j=Ordinat(PointInput);
+    int custFileOrder = CustFileOrder(PointInput);
+    char type = Type(PointInput);
+    if (type=='S'){
+        Elmt(*M,i,j) = 0;
+    }
+    else if (type == 'B'){
         Elmt(*M,i,j) = -1;
     }
-    else if (Type == "B"){
-        Elmt(*M,i,j) = -2;
-    }
-    else if (Type == "C"){
-        Elmt(*M,i,j) = *CustFileOrder;
-        *CustFileOrder = *CustFileOrder+1;
+    else if (type == 'C'){
+        Elmt(*M,i,j) = custFileOrder;
     }
 }
 void PrintMap (MATRIKS M)
 /* Mencetak Peta berikut koordinatnya yang sudah diisi */
 {
     indeks i,j;
-    for(i=BrsMin;i<BrsMax;i++){
-        for(j=KolMin;j<KolMax;j++){
-            if(i==BrsMin || i==BrsMax-1 || j==KolMin || j==KolMax-1){
+    for(i=BrsMin;i<NBrsEff(M);i++){
+        for(j=KolMin;j<NKolEff(M);j++){
+            if(i==BrsMin || i==NBrsEff(M)-1 || j==KolMin || j==NKolEff(M)-1){
                 printf("*");
             }
             else if (i==CurrentAbsis(M) && j==CurrentOrdinat(M)){
@@ -503,10 +506,10 @@ void PrintMap (MATRIKS M)
             else if(Elmt(M,i,j)>0){
                 printf("%d",Elmt(M,i,j));
             }
-            else if(Elmt(M,i,j)==-1){
+            else if(Elmt(M,i,j)==0){
                 printf("S");
             }
-            else if(Elmt(M,i,j)==-2){
+            else if(Elmt(M,i,j)==-1){
                 printf("B");
             }
             else{
