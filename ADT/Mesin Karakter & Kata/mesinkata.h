@@ -5,7 +5,7 @@
 
 /* Mesin Kata versi 1 --> Pakai EndKata untuk menandakan akhir dari suatu kata*/
 
-#define NMax 50
+#define NMax 1000
 #define BLANK ' '
 
 typedef struct {

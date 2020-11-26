@@ -33,7 +33,7 @@ void BacaPOINT (POINT * P)
 /* F.S. P terdefinisi */
 {
     int x,y;
-    scanf("%f %f",&x,&y);
+    scanf("%d %d",&x,&y);
     Absis(*P) = x;
     Ordinat(*P) = y;
 }

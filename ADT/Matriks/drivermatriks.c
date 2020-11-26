@@ -1,4 +1,6 @@
 #include "matriks.c"
+#include "C:\Users\Kevin Kencana\Documents\GitHub\tubes-alstrukdat-kel2\ADT\Mesin Karakter & Kata\mesinkata.c"
+#include "C:\Users\Kevin Kencana\Documents\GitHub\tubes-alstrukdat-kel2\ADT\Mesin Karakter & Kata\mesin_kar.c"
 
 int main(){
     //BrsMax -> 12, KolMax -> 17 (base-0)
@@ -40,49 +42,58 @@ int main(){
     //Tes 2 - Simulasi baca pita karakter
     printf("Test case 2 - Simulasi rancang map dengan pitakar\n\n");
     MATRIKS M2;
+    STARTKATA("map.txt");
+    //2 karena tambah ruang untuk border
+    int BrsPita = 2;
+    int KolPita = 2;
     //BAG 1. AKUISISI - Misal akuisisi 10 & 15 dari pita
-    int BrsPita=10;
-    int KolPita=15;
-    //+=2 karena tambah ruang untuk border
-    BrsPita+=2;
-    KolPita+=2;
+    for (int a=0;a<CKata.Length;a++){
+    	char temp = CKata.TabKata[a]; // berisi nilai akuisisi
+    	int convert = temp - '0'; // mengubah dari char ke int
+    	BrsPita += pow(10,CKata.Length-a-1)*convert;
+	}
+	ADVKATA();
+	for (int b = 0;b<CKata.Length;b++){
+		char temp = CKata.TabKata[b]; // berisi nilai akuisisi
+		int convert = temp - '0'; // mengubah dari char ke int
+		KolPita += pow(10,CKata.Length-b-1)*convert;
+	}
     MakeMATRIKS(BrsPita,KolPita,&M2);
     EmptyMatrix(&M2);
-
     //BAG 2. TOTAL TITIK - Misal total titik di peta ada 9
-    int TitikTotal=9;
+    ADVKATA();
+    int TitikTotal=0;
+    for (int c=1;c<CKata.Length;c++){ /* mulai dari c=1 karena Lengthnya tambah akibat ada blank*/
+    	char temp = CKata.TabKata[c]; // berisi nilai akuisisi
+    	int convert = temp - '0'; // mengubah dari char ke int
+    	TitikTotal += pow(10,CKata.Length-c-1)*convert;
+    }
     TitikTotal-=2; //karena kita mulai dari -1
-
     //BAG 3. PEMETAAN - Start pasang-pasang titik ke peta,
     for(int I=-1;I<=TitikTotal;I++) {
         POINT CTemp;
-        switch(I){
-            case -1:
-                SimpanPoint(&CTemp,10,3,'B',I);break;
-            case 0:
-                SimpanPoint(&CTemp,6,3,'S',I);break;
-            case 1:
-                SimpanPoint(&CTemp,1,1,'C',I);break;
-            case 2:
-                SimpanPoint(&CTemp,8,2,'C',I);break;
-            case 3:
-                SimpanPoint(&CTemp,4,6,'C',I);break;
-            case 4:
-                SimpanPoint(&CTemp,1,9,'C',I);break;
-            case 5:
-                SimpanPoint(&CTemp,9,10,'C',I);break;
-            case 6:
-                SimpanPoint(&CTemp,3,12,'C',I);break;
-            case 7:
-                SimpanPoint(&CTemp,7,7,'C',I);break;
-            //Nanti ini ga pake switch case, switch case ini simulasi pembacaan aja.
-            //nanti, parameter SimpanPoint lgsg hasil akuisisi pita kar.
-            //Contoh -> SimpanPoint (&CTemp,XAkuisisi,YAkuisisi,TypeAkuisisi,I);
+        ADVKATA();
+        char Type = CKata.TabKata[1]; /* Bukan 0 karena indeks 0 isinya blank*/
+        ADVKATA();
+        int Absis=0;
+        for (int d=0;d<CKata.Length;d++){
+        	char temp = CKata.TabKata[d]; // berisi nilai akuisisi
+    	    int convert = temp - '0'; // mengubah dari char ke int
+    	    Absis += pow(10,CKata.Length-d-1)*convert;
         }
+        ADVKATA();
+        int Ordinat=0;
+        for (int e=0;e<CKata.Length;e++){
+        	char temp = CKata.TabKata[e]; // berisi nilai akuisisi
+    	    int convert = temp - '0'; // mengubah dari char ke int
+    	    Ordinat += pow(10,CKata.Length-e-1)*convert;
+        }
+        SimpanPoint(&CTemp,Absis,Ordinat,Type,I);
         IsiPoint(&M2,CTemp);
     }
+    ADVKATA();
     PrintMap(M2);
-    //SUKSES, kekurangannya, point tersimpan dgn baik di matriks, tp ga disimpan di POINT scr permanent.
+    //SUKSES, kekurangannya, point tersimpan dgn baik di matriks, tp ga disimpan di POINT scr permanent.//
 
 
     return 0;
