@@ -13,6 +13,31 @@ void PrintStack(Stack S)
     }
 }
 
+/*
+void STARTBUILD(Stack *S, boolean *lagiBuild, int pesanan, int pelanggan){
+    CreateEmpty(*S);
+    if (*lagiBuild){
+        printf("Sedang merakit komputer lain, tidak bisa merakit pesanan yang lainnya.");
+    }
+    else{
+        *lagiBuild = true;
+        printf("kamu telah memulai pesanan %d untuk pelanggan %d.\n",pesanan,pelanggan);
+    }
+}
+
+void FINISHBUILD(Stack S, boolean lagiBuild, int pesanan, int pelanggan){
+    if (CekPesanan(S)){
+        *lagiBuild = false;
+        printf("Pesanan %d telah selesai. Silahkan antar ke pelanggan %d!\n",pesanan,pelanggan);
+
+    }
+    else{
+        printf("Komponen yang dipasangkan belum sesuai dengan pesanan, build belum dapat diselesaikan.\n");
+    }
+}
+
+lagiBuild adalah variabel yang menandakan apakah user sedang mengerjakan suatu pesanan (status)
+*/
 int main(){
     Stack CKata;
     Stack S1,S;

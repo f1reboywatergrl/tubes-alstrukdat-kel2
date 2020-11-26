@@ -94,4 +94,4 @@ boolean CekUrutan (Stack S, int urutan){
         return (urutan - InfoTop(S) == 1);
     }
 }
-/* saat user add component, komponen direpresentasikan sebagai angka urutan kategori komponen tersebut*/
+/* saat user add component, kategori komponen direpresentasikan sebagai angka urutan kategori komponen tersebut*/
