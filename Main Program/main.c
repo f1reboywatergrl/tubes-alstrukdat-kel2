@@ -1,23 +1,26 @@
-#include "ADT/Matriks/matriks.c"
-#include "ADT/Mesin Karakter & Kata/mesin_kar.c"
-#include "ADT/Mesin Karakter & Kata/mesinkata.c"
+#include "../ADT/Matriks/matriks.c" 
+#include "../ADT/Mesin Karakter & Kata/mesin_kar.c"
+#include "../ADT/Mesin Karakter & Kata/mesinkata.c"
+
 #include "string.h"
+#include "user-interface.c"
+#include "stdlib.h"
 
 int main(){
+    system("cls");
     char InputCommand[100];
     printf("Selamat datang! Silahkan pilih input Anda:\n");
-    printf("\033[0;32m"); //set color Green
-    printf("MAP ");
-    printf("\033[0;31m"); //set color Red
-    printf("EXIT");
+    ShowUI();
     
-    printf("\033[0;36m\n"); //set color Cyan
+    Cyan; //set color Cyan
     scanf("%s",InputCommand);
     while(strcmp(InputCommand,"EXIT")!=0){
-        printf("\033[0;37m"); //set color White
+        White; //set color White
+        system("cls");
+        
         if (strcmp(InputCommand,"MAP")==0){
             MATRIKS M2;
-            STARTKATA("ADT/Matriks/map.txt");
+            STARTKATA("../ADT/Matriks/map.txt");
             //2 karena tambah ruang untuk border
             int BrsPita = 2;
             int KolPita = 2;
@@ -78,16 +81,13 @@ int main(){
         else{
             printf("Input Anda salah!\n");
         }
-        printf("Selamat datang! Silahkan pilih input Anda:\n");
-        printf("\033[0;32m");
-        printf("MAP ");
-        printf("\033[0;31m"); 
-        printf("EXIT");
-        
-        printf("\033[0;36m\n");
+        printf("Silahkan pilih input Anda selanjutnya: \n");
+        ShowUI();
+        Cyan;
         scanf("%s",InputCommand);       
     }
-
-    printf("\033[0;37m\n");
+    
+    White;
+    printf("Thank you for playing!\n");
     return 0;
 }
