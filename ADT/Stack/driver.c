@@ -1,5 +1,5 @@
 #include "stackt.c"
-#include <stdio.h>
+
 void PrintStack(Stack S)
 {
     int i;
@@ -76,10 +76,13 @@ int main(){
     S=MergeStack(S1,S2);
     PrintStack(S);    
 
-    char string1[100] = 'abcd';
-    char string2[100] = 'abcd';
+    char string1[100] = "abcd";
+    char string2[100] = "abcdefg";
     if(IsStringEqual(string1,string2)){
         printf("String sama sob!\n");
+    }
+    else{
+        printf("String beda sob\n");
     }
     return 0;
 }

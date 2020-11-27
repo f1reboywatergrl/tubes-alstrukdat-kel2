@@ -100,7 +100,7 @@ boolean CekUrutan (Stack S, int urutan){
 /* saat user add component, kategori komponen direpresentasikan 
 sebagai angka urutan kategori komponen tersebut*/
 
-boolean IsEqual(Stack S1, Stack S2){
+boolean IsStackEqual(Stack S1, Stack S2){
     if(!IsFull(S1) || !IsFull(S2)){
         return false;
     }
@@ -128,8 +128,8 @@ boolean IsStringEqual(char A[100], char B[100]){
           (i<99)){
         i++;
     }
-    if (i==98 && A[i]==B[i]]){
-        return(A[i+1]==B[i+1])
+    if (i==98 && A[i]==B[i]){
+        return(A[i+1]==B[i+1]);
     }
     else{
         return(A[i]==B[i]);
