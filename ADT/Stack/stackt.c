@@ -86,6 +86,7 @@ Stack MergeStack (Stack S, Stack S1){
     return Temp;
 }
 
+/*
 boolean CekUrutan (Stack S, int urutan){
     if (IsEmpty(S)){
         return (urutan == 1);
@@ -94,4 +95,43 @@ boolean CekUrutan (Stack S, int urutan){
         return (urutan - InfoTop(S) == 1);
     }
 }
-/* saat user add component, kategori komponen direpresentasikan sebagai angka urutan kategori komponen tersebut*/
+*/
+
+/* saat user add component, kategori komponen direpresentasikan 
+sebagai angka urutan kategori komponen tersebut*/
+
+boolean IsEqual(Stack S1, Stack S2){
+    if(!IsFull(S1) || !IsFull(S2)){
+        return false;
+    }
+    else{
+        infotype X1;
+        infotype X2;
+        int i = 0;
+        boolean sama = true;
+        while(i<8 && sama){
+            Push(&S1, X1);
+            Push(&S2,X2);
+            if(!IsStringEqual(X1.name, X2.name)){
+                sama = false;
+            }
+            i++;
+        }
+        return sama;
+    }
+}
+
+boolean IsStringEqual(char A[100], char B[100]){
+    int i = 0;
+    while ((A[i] == B[i]) &&
+          (A[i] != '\0' && B[i] != '\0') &&
+          (i<99)){
+        i++;
+    }
+    if (i==98 && A[i]==B[i]]){
+        return(A[i+1]==B[i+1])
+    }
+    else{
+        return(A[i]==B[i]);
+    }
+}

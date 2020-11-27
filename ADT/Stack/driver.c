@@ -14,21 +14,21 @@ void PrintStack(Stack S)
 }
 
 /*
-void STARTBUILD(Stack *S, boolean *lagiBuild, int pesanan, int pelanggan){
+void STARTBUILD(Stack *S, boolean *lagiBuild, int NoPesanan, int NoPelanggan){
     CreateEmpty(*S);
     if (*lagiBuild){
         printf("Sedang merakit komputer lain, tidak bisa merakit pesanan yang lainnya.");
     }
     else{
         *lagiBuild = true;
-        printf("kamu telah memulai pesanan %d untuk pelanggan %d.\n",pesanan,pelanggan);
+        printf("kamu telah memulai pesanan %d untuk pelanggan %d.\n",NoPesanan,NoPelanggan);
     }
 }
 
-void FINISHBUILD(Stack S, boolean lagiBuild, int pesanan, int pelanggan){
-    if (CekPesanan(S)){
+void FINISHBUILD(Stack Pesanan, Stack Rakitan, boolean lagiBuild, int NoPesanan, int NoPelanggan){
+    if (IsStackEqual(Pesanan, Rakitan)){
         *lagiBuild = false;
-        printf("Pesanan %d telah selesai. Silahkan antar ke pelanggan %d!\n",pesanan,pelanggan);
+        printf("Pesanan %d telah selesai. Silahkan antar ke pelanggan %d!\n",NoPesanan,NoPelanggan);
 
     }
     else{
@@ -46,6 +46,7 @@ int main(){
 
     CreateEmpty(&S2);    
     CreateEmpty(&S1);
+/*
     if (CekUrutan(S1,1)){
         Push(&S1,1);
     }
@@ -64,6 +65,7 @@ int main(){
     else{
         printf("salah komponen yang ditambahkan\n");
     }
+    */
     printf("-----------Stack 1-----------\n");
     PrintStack(S1);  
     CopyStack(S1, &S2);
@@ -73,5 +75,11 @@ int main(){
     printf("\n\n");
     S=MergeStack(S1,S2);
     PrintStack(S);    
+
+    char string1[100] = 'abcd';
+    char string2[100] = 'abcd';
+    if(IsStringEqual(string1,string2)){
+        printf("String sama sob!\n");
+    }
     return 0;
 }
