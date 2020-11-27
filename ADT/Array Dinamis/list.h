@@ -14,7 +14,12 @@ ElTypeInventory => nama, jumlah
 */
     
 typedef int IdxType;
-typedef int ElType;
+typedef struct 
+{
+    char name[100]; // Bentuk String, menjelaskan nama
+    int count; //Untuk menjelaskan harga dan jumlah
+}ElType;
+
 typedef struct {
     ElType *A;
     int Capacity;

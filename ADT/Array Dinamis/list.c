@@ -1,5 +1,5 @@
 #include "list.h"
-
+#include <stdlib.h>
 
 /**
  * Konstruktor
@@ -42,10 +42,10 @@ ElType Get(List list, IdxType i) {
     return list.A[i];
 }
 
-/**
- * Fungsi untuk mendapatkan kapasitas yang tersedia.
- * Prekondisi: list terdefinisi
- */
+// /**
+//  * Fungsi untuk mendapatkan kapasitas yang tersedia.
+//  * Prekondisi: list terdefinisi
+//  */
 int GetCapacity(List list) {
     return list.Capacity;
 }
@@ -54,6 +54,22 @@ int GetCapacity(List list) {
  * Fungsi untuk menambahkan elemen baru di index ke-i
  * Prekondisi: list terdefinisi, i di antara 0..Length(list).
  */
+
+ElType InputElType(){
+    ElType el;
+    printf("Masukkan string:");
+    scanf("%s",((el.name)));
+    printf("Masukkan angka:");
+    scanf("%d",(&el.count));
+    return el;
+}
+/*
+Contoh buat kalo setiap fungsi minta masuk ElType, dibikin jadi variabel dulu,
+ElType el;
+el = InputElType(); 
+baru bisa dimasukin, karena skrg ElType nya isinya >1 elemen
+*/
+
 void InsertAt(List *list, ElType el, IdxType i) {
     int length = Length(*list);
     int capacity = GetCapacity(*list);
@@ -82,8 +98,10 @@ void InsertAt(List *list, ElType el, IdxType i) {
  * Fungsi untuk menambahkan elemen baru di akhir list.
  * Prekondisi: list terdefinisi
  */
-void InsertLast(List *list, ElType el) {
+void InsertLast(List *list, ElType el) 
+{
     int insertAt = Length(*list);
+    printf("%d",Length(*list));
     InsertAt(list, el, insertAt);
 }
 
