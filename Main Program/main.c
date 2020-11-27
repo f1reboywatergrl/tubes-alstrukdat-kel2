@@ -8,6 +8,8 @@
 
 int main(){
     system("cls");
+    static FILE * fsave;
+    fsave = fopen("save.txt","a");
     char InputCommand[100];
     printf("Selamat datang! Silahkan pilih input Anda:\n");
     ShowUI();
@@ -19,6 +21,7 @@ int main(){
         system("cls");
         
         if (strcmp(InputCommand,"MAP")==0){
+            fputs("MAP ",fsave); // Menyimpan command dalam file save
             MATRIKS M2;
             STARTKATA("../ADT/Matriks/map.txt");
             //2 karena tambah ruang untuk border
@@ -78,6 +81,12 @@ int main(){
             PrintMap(M2); //AMAN
         
         }
+        else if (strcmp(InputCommand,"SAVE")==0){
+            fputs(". ",fsave); // akhir dari program yang disave ditandai mark
+            printf("Lokasi save file:");
+            printf("C:\User\Documents\GitHub\tubes-alstrukdat-kel2\ADT\Mesin Karakter & Kata\save.txt\n");
+            printf("Game berhasil di save!\n");
+        }
         else{
             printf("Input Anda salah!\n");
         }
@@ -88,6 +97,7 @@ int main(){
     }
     
     White;
+    fclose(fsave);
     printf("Thank you for playing!\n");
     return 0;
 }

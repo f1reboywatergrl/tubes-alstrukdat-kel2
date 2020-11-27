@@ -8,7 +8,7 @@ char CC;
 boolean EOP;
 
 void START (char *filename){
-	pita = fopen(filename,"r"); /* file pitakar.txt hanya diread*/
+	pita = fopen(filename,"r"); /* file hanya diread*/
 	ADV();
 }
 void ADV (){
