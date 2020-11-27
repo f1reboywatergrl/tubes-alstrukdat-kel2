@@ -1,13 +1,13 @@
 #include "matriks.c"
-#include "C:\Users\Kevin Kencana\Documents\GitHub\tubes-alstrukdat-kel2\ADT\Mesin Karakter & Kata\mesinkata.c"
-#include "C:\Users\Kevin Kencana\Documents\GitHub\tubes-alstrukdat-kel2\ADT\Mesin Karakter & Kata\mesin_kar.c"
+#include "../Mesin Karakter & Kata/mesinkata.c"
+#include "../Mesin Karakter & Kata/mesin_kar.c"
 
 int main(){
     //BrsMax -> 12, KolMax -> 17 (base-0)
     //Tes 1 - Simulasi Statik
     printf("\nTest case 1 - Simulasi rancang map dengan variable static\n");
     MATRIKS M;
-    MakeMATRIKS(BrsMax,KolMax,&M);
+    MakeMATRIKS(12,17,&M);
     EmptyMatrix(&M);
     //CurrentAbsis(M)=9;
     //CurrentOrdinat(M)=10;
@@ -60,6 +60,9 @@ int main(){
 	}
     MakeMATRIKS(BrsPita,KolPita,&M2);
     EmptyMatrix(&M2);
+    
+    // sampe sini baca pita AMAN
+
     //BAG 2. TOTAL TITIK - Misal total titik di peta ada 9
     ADVKATA();
     int TitikTotal=0;
@@ -69,6 +72,8 @@ int main(){
     	TitikTotal += pow(10,CKata.Length-c-1)*convert;
     }
     TitikTotal-=2; //karena kita mulai dari -1
+    // baca titik total AMAN
+
     //BAG 3. PEMETAAN - Start pasang-pasang titik ke peta,
     for(int I=-1;I<=TitikTotal;I++) {
         POINT CTemp;
@@ -89,12 +94,36 @@ int main(){
     	    Ordinat += pow(10,CKata.Length-e-1)*convert;
         }
         SimpanPoint(&CTemp,Absis,Ordinat,Type,I);
+        printf("%d\n",Ordinat(CTemp));
         IsiPoint(&M2,CTemp);
     }
     ADVKATA();
-    PrintMap(M2);
+    printf("x = %d y = %d\n", BrsPita,KolPita); //Brspita, Kolpita aman
+    printf("Total Titik = %d\n",TitikTotal); //Expected -> titik di file konfigurasi - 2 , aman
+    printf("Shop = %d Base = %d\n",Elmt(M2,10,3), Elmt(M2,6,3));
+    printf("Tes Titik = %d\n",Elmt(M2,3,12));
+    printf("Tes Titik Last = %d\n",Elmt(M2,6,4));
+    PrintMap(M2); //AMAN
     //SUKSES, kekurangannya, point tersimpan dgn baik di matriks, tp ga disimpan di POINT scr permanent.//
 
 
     return 0;
+
+    
 }
+
+/*
+13 17 
+10 
+B 10 3 
+S 6 3 
+C 1 1 
+C 8 2 
+C 4 6 
+C 1 9 
+C 9 10 
+C 3 12 
+C 7 7 
+C 6 4
+
+*/

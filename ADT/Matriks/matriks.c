@@ -469,7 +469,7 @@ void EmptyMatrix (MATRIKS *M)
     indeks i,j;
     for(i=BrsMin;i<NBrsEff(*M);i++){
         for(j=KolMin;j<NKolEff(*M);j++){
-            Elmt(*M,i,j) = -3;
+            Elmt((*M),i,j) = -3;
         }
     }
 }

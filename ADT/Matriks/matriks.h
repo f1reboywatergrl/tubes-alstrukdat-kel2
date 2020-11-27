@@ -7,9 +7,9 @@
 #include "../Point/point.c"
 /* Ukuran minimum dan maksimum baris dan kolom */
 #define BrsMin 0
-#define BrsMax 12
+#define BrsMax 21
 #define KolMin 0
-#define KolMax 17
+#define KolMax 31
 
 /* Definisi Point berisi Shop atau Base */
 #define ShopPoint -1
