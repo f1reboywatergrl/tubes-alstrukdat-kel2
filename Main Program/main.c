@@ -129,12 +129,18 @@ int main(){
                 while (InfoGraph(P1)!=CurrentPos(M2)){
                     P1=NextGraph(P1);
                 }
-                address AdrTarget = First(Link(P1));
-                for (int i=1;i<InputTarget;i++){
-                    AdrTarget=Next(AdrTarget);
+                address AdrTarget = First(Link(P1));                
+                if(InputTarget>NbElmt(Link(P1))){
+                    printf("That area is not accessible.\n");
                 }
-                infotype IndexTarget=Info(AdrTarget);
-                Move(G,CurrentPos(M2),IndexTarget,&M2);
+                else{
+                    for (int i=1;i<InputTarget;i++){
+                        AdrTarget=Next(AdrTarget);
+                    }
+                    infotype IndexTarget;
+                    IndexTarget=Info(AdrTarget);
+                    Move(G,CurrentPos(M2),IndexTarget,&M2);                    
+                }
             }
             else{
                 printf("Input Anda salah!\n");
