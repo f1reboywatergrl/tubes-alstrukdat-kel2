@@ -14,8 +14,12 @@
 
 /* Nil adalah stack dengan elemen kosong . */
 
-typedef int infotype;
 typedef int address;   /* indeks tabel */
+
+typedef struct {
+    char name[100]; // Bentuk String, menjelaskan nama
+    int count; //Untuk menjelaskan harga dan jumlah
+}infotype;
 
 /* Contoh deklarasi variabel bertype stack dengan ciri TOP : */
 /* Versi I : dengan menyimpan tabel dan alamat top secara eksplisit*/
@@ -60,10 +64,23 @@ void Pop (Stack * S, infotype* X);
 /* F.S. X adalah nilai elemen TOP yang lama, TOP berkurang 1 */
 
 void CopyStack (Stack S, Stack *S1);
+
 void InverseStack (Stack *S);
 
 Stack MergeStack (Stack S, Stack S1);
 /*S2 diletakkan dibawah S1*/
+
+/*
 boolean CekUrutan (Stack S, int urutan);
-/* saat user add component, komponen direpresentasikan sebagai angka urutan kategori komponen tersebut*/
+/* saat user add component, kategori komponen direpresentasikan sebagai 
+angka urutan kategori komponen tersebut*/
+
+boolean IsStackEqual(Stack S1, Stack S2);
+/* Mengirim true jika kedua stack yang full adalah sama
+   Mengirim false jika kedua stack berbeda atau stack tidak full */
+
+boolean IsStringEqual(char A[100], char B[100]);
+/* Mengirim true jika kedua string sama */
+
+
 #endif

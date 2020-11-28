@@ -463,38 +463,41 @@ int CountXKol (MATRIKS M, indeks j, ElType X)
 
 //Kemungkinan Primitif Tambahan Kepentingan Tubes
 
-void ZeroMatrix (MATRIKS *M)
-/* Mengisi semua nilai matriks dengan 0 */
+void EmptyMatrix (MATRIKS *M)
+/* Mengosongkan Matriks peta, semua titik diisi dengan -3 */
 {
     indeks i,j;
-    for(i=BrsMin;i<BrsMax;i++){
-        for(j=KolMin;j<KolMax;j++){
-            Elmt(*M,i,j) = 0;
+    for(i=BrsMin;i<NBrsEff(*M);i++){
+        for(j=KolMin;j<NKolEff(*M);j++){
+            Elmt((*M),i,j) = -3;
         }
     }
 }
 
-void IsiPoint (MATRIKS *M, indeks i, indeks j, char *Type, int *CustFileOrder)
+void IsiPoint (MATRIKS *M, POINT PointInput)
 /* Mengisi Point baru letak customer */
 {
-    if (Type=="S"){
+    indeks i=Absis(PointInput);
+    indeks j=Ordinat(PointInput);
+    int custFileOrder = CustFileOrder(PointInput);
+    char type = Type(PointInput);
+    if (type=='S'){
+        Elmt(*M,i,j) = 0;
+    }
+    else if (type == 'B'){
         Elmt(*M,i,j) = -1;
     }
-    else if (Type == "B"){
-        Elmt(*M,i,j) = -2;
-    }
-    else if (Type == "C"){
-        Elmt(*M,i,j) = *CustFileOrder;
-        *CustFileOrder = *CustFileOrder+1;
+    else if (type == 'C'){
+        Elmt(*M,i,j) = custFileOrder;
     }
 }
 void PrintMap (MATRIKS M)
 /* Mencetak Peta berikut koordinatnya yang sudah diisi */
 {
     indeks i,j;
-    for(i=BrsMin;i<BrsMax;i++){
-        for(j=KolMin;j<KolMax;j++){
-            if(i==BrsMin || i==BrsMax-1 || j==KolMin || j==KolMax-1){
+    for(i=BrsMin;i<NBrsEff(M);i++){
+        for(j=KolMin;j<NKolEff(M);j++){
+            if(i==BrsMin || i==NBrsEff(M)-1 || j==KolMin || j==NKolEff(M)-1){
                 printf("*");
             }
             else if (i==CurrentAbsis(M) && j==CurrentOrdinat(M)){
@@ -503,10 +506,10 @@ void PrintMap (MATRIKS M)
             else if(Elmt(M,i,j)>0){
                 printf("%d",Elmt(M,i,j));
             }
-            else if(Elmt(M,i,j)==-1){
+            else if(Elmt(M,i,j)==0){
                 printf("S");
             }
-            else if(Elmt(M,i,j)==-2){
+            else if(Elmt(M,i,j)==-1){
                 printf("B");
             }
             else{
@@ -515,4 +518,54 @@ void PrintMap (MATRIKS M)
         }
         printf("\n");
     }
+    printf("Your position is marked by 'P'.\n");
+    printf("B: Your base, S: The shop\n");
+}
+POINT SearchMatrix (MATRIKS M, int X)
+/* Mencari letak X pada matriks M */
+{
+    POINT P;
+    CustFileOrder(P)=-999;
+    Type(P)='X';
+    for (int i=BrsMin;i<NBrsEff(M);i++){
+        for (int j=KolMin;j<NKolEff(M);j++){
+            if (Elmt(M,i,j)==X){
+                Absis(P)=i;
+                Ordinat(P)=j;
+                return P;
+            }
+        }
+    }
+}
+void GenerateStaticAdjacency(MATRIKS *GraphMatrix){
+    Elmt(*GraphMatrix,3,0)=1;
+    Elmt(*GraphMatrix,0,3)=1;
+    Elmt(*GraphMatrix,0,6)=1;
+    Elmt(*GraphMatrix,6,0)=1;
+    Elmt(*GraphMatrix,1,3)=1;
+    Elmt(*GraphMatrix,3,1)=1;
+    Elmt(*GraphMatrix,1,4)=1;
+    Elmt(*GraphMatrix,4,1)=1;
+    Elmt(*GraphMatrix,2,5)=1;
+    Elmt(*GraphMatrix,5,2)=1;
+    Elmt(*GraphMatrix,1,7)=1;
+    Elmt(*GraphMatrix,7,1)=1;
+    Elmt(*GraphMatrix,1,8)=1;
+    Elmt(*GraphMatrix,8,1)=1;
+    Elmt(*GraphMatrix,1,2)=1;
+    Elmt(*GraphMatrix,2,1)=1;
+    Elmt(*GraphMatrix,2,4)=1;
+    Elmt(*GraphMatrix,4,2)=1;
+    Elmt(*GraphMatrix,7,4)=1;
+    Elmt(*GraphMatrix,4,7)=1;
+    Elmt(*GraphMatrix,7,5)=1;
+    Elmt(*GraphMatrix,5,7)=1;
+    Elmt(*GraphMatrix,6,8)=1;
+    Elmt(*GraphMatrix,8,6)=1;
+
+    /* Tambahan buat debug */
+    Elmt(*GraphMatrix,4,5)=1;
+    Elmt(*GraphMatrix,5,4)=1;
+    Elmt(*GraphMatrix,6,9)=1;
+    Elmt(*GraphMatrix,9,6)=1;    
 }

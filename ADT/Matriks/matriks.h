@@ -7,9 +7,9 @@
 #include "../Point/point.c"
 /* Ukuran minimum dan maksimum baris dan kolom */
 #define BrsMin 0
-#define BrsMax 12
+#define BrsMax 21
 #define KolMin 0
-#define KolMax 17
+#define KolMax 31
 
 /* Definisi Point berisi Shop atau Base */
 #define ShopPoint -1
@@ -40,6 +40,7 @@ void MakeMATRIKS (int NB, int NK, MATRIKS * M);
 #define Elmt(M,i,j) (M).Mem[(i)][(j)]
 #define CurrentAbsis(M) (M).currentAbsis
 #define CurrentOrdinat(M) (M).currentOrdinat
+#define CurrentPos(M) Elmt(M2,CurrentAbsis(M2),CurrentOrdinat(M2))
 
 /* *** Selektor "DUNIA MATRIKS" *** */
 boolean IsIdxValid (int i, int j);
@@ -162,9 +163,9 @@ int CountXKol (MATRIKS M, indeks j, ElType X);
 
 
 //Kemungkinan Primitif Tambahan
-void ZeroMatrix (MATRIKS *M);
-/* Mengisi semua nilai matriks dengan 0 */
-void IsiPoint (MATRIKS *M, indeks i, indeks j, char *Type, int *CustFileOrder);
+void EmptyMatrix (MATRIKS *M);
+/* Mengosongkan Matriks peta */
+void IsiPoint (MATRIKS *M, POINT PointInput);
 /* Mengisi Point baru letak customer */
 void PrintMap (MATRIKS M);
 /* Mencetak Peta yang sudah diisi koordinatnya */

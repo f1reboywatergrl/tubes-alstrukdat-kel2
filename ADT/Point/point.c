@@ -13,7 +13,7 @@
         
 /* *** DEFINISI PROTOTIPE PRIMITIF *** */
 /* *** Konstruktor membentuk POINT *** */
-POINT MakePOINT (float X, float Y)
+POINT MakePOINT (int X, int Y)
 /* Membentuk sebuah POINT dari komponen-komponennya */
 {
     POINT a;
@@ -32,8 +32,8 @@ void BacaPOINT (POINT * P)
 /* I.S. Sembarang */
 /* F.S. P terdefinisi */
 {
-    float x,y;
-    scanf("%f %f",&x,&y);
+    int x,y;
+    scanf("%d %d",&x,&y);
     Absis(*P) = x;
     Ordinat(*P) = y;
 }
@@ -46,7 +46,7 @@ void TulisPOINT (POINT P)
 /* I.S. P terdefinisi */
 /* F.S. P tertulis di layar dengan format "(X,Y)" */
 {
-    printf("(%.2f,%.2f)",Absis(P),Ordinat(P)); /* perhatikan bahwa untuk menghasilkan 2 desimal, gunakan %.2f */
+    printf("<%d %d>, Type=%c, CustFileOrder=%d\n",Absis(P),Ordinat(P),Type(P),CustFileOrder(P));
 }
           
 
@@ -101,7 +101,7 @@ int Kuadran (POINT P)
 
 
 /* *** KELOMPOK OPERASI LAIN TERHADAP TYPE *** */
-POINT PlusDelta (POINT P, float deltaX, float deltaY)
+POINT PlusDelta (POINT P, int deltaX, int deltaY)
 /* Mengirim salinan P yang absisnya adalah Absis(P) + deltaX dan ordinatnya adalah Ordinat(P) + deltaY */
 {
     Absis(P) = Absis(P) + deltaX;
@@ -109,7 +109,7 @@ POINT PlusDelta (POINT P, float deltaX, float deltaY)
     return P;
 }
 
-void Geser (POINT *P, float deltaX, float deltaY)
+void Geser (POINT *P, int deltaX, int deltaY)
 /* I.S. P terdefinisi */
 /* F.S. P digeser, absisnya sebesar deltaX dan ordinatnya sebesar deltaY */
 {
@@ -117,21 +117,30 @@ void Geser (POINT *P, float deltaX, float deltaY)
     Ordinat(*P) = Ordinat(*P) + deltaY;
 }
 
-float Jarak0 (POINT P)
+int Jarak0 (POINT P)
 /* Menghitung jarak P ke (0,0) */
 {
     return (sqrt( (Absis(P) * Absis(P) ) + (Ordinat(P) * Ordinat(P) ) ) ); /* atau bisa dengan pow(...,2) */
 }
 
-float Panjang (POINT P1, POINT P2)
+int Panjang (POINT P1, POINT P2)
 /* Menghitung panjang garis yang dibentuk P1 dan P2. */
 {
     return sqrt(pow(Absis(P1) - Absis(P2), 2) + pow(Ordinat(P1) - Ordinat(P2), 2));
 }
 
-void CurrentPoint (POINT *P, float X, float Y)
+void CurrentPoint (POINT *P, int X, int Y)
 /* Menentukan posisi pemain sekarang */
 {
     Absis(*P)=X;
     Ordinat(*P)=Y;
+}
+
+void SimpanPoint (POINT *P, int X, int Y, char Type, int custFileOrder)
+/* Menyimpan point hasil pembacaan pita karakter */
+{
+    Absis(*P)=X;
+    Ordinat(*P)=Y;
+    Type(*P)=Type;
+    CustFileOrder(*P)=custFileOrder;
 }
