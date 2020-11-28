@@ -20,6 +20,8 @@ typedef struct
     int count; //Untuk menjelaskan harga dan jumlah
 }ElType;
 
+
+
 typedef struct {
     ElType *A;
     int Capacity;
