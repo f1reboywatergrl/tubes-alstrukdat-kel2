@@ -109,7 +109,6 @@ void PrintInfoHead(Queue Q){
 void PrintQueue (Queue Q){
     infotype order;
     int i;
-
     if (!IsQEmpty(Q)){
         PrintInfoHead(Q);
         if (QNBElmt(Q)>1){

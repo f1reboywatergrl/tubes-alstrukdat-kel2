@@ -4,29 +4,27 @@
 
 #define InitialSize 10
 //BUAT SHOP & INVENTORY PEMAIN
-/*ElType dibikin tipe bentukan lagi,
-isinya name & count.
-Nanti pas mo nambah, lakuin skema search,
-abis itu klo udh ada, tambain countnya aj
-
-Ada ElTypeShop => nama, harga
-ElTypeInventory => nama, jumlah
-*/
     
 typedef int IdxType;
 typedef struct 
 {
-    char name[100]; // Bentuk String, menjelaskan nama
-    int count; //Untuk menjelaskan harga dan jumlah
-}ElType;
-
-
+    char nama[100]; // Bentuk String, menjelaskan nama
+    int harga; //Untuk menjelaskan harga 
+    int jumlah; //Untuk menjelaskan jumlah
+    int kategori; //Untuk menjelaskan kategori
+}ElTypeList;
 
 typedef struct {
-    ElType *A;
+    ElTypeList *A;
     int Capacity;
     int Neff;
 } List;
+
+#define ListElmt(T,i) (T).A[i] //Macro buat element ke-i pada list T
+#define Harga(T) T.harga
+#define Nama(T) T.nama
+#define Jumlah(T) T.jumlah
+#define Kategori(T) T.kategori
 
 /**
  * Konstruktor
@@ -41,47 +39,44 @@ List MakeList();
  * F.S. list->A terdealokasi
  */
 void DeallocateList(List *list);
-
+ 
 /**
  * Fungsi untuk mengetahui apakah suatu list kosong.
  * Prekondisi: list terdefinisi
  */
-boolean IsEmpty(List list);
+boolean IsLEmpty(List list);
 
-/**
- * Fungsi untuk mendapatkan banyaknya elemen efektif list, 0 jika tabel kosong.
- * Prekondisi: list terdefinisi
- */
-int Length(List list);
+int LengthList(List list) ;
 
-/**
- * Mengembalikan elemen list L yang ke-I (indeks lojik).
- * Prekondisi: list tidak kosong, i di antara 0..Length(list).
- */
-ElType Get(List list, IdxType i);
+
+ElTypeList GetL(List list, IdxType i);
 
 /**
  * Fungsi untuk mendapatkan kapasitas yang tersedia.
  * Prekondisi: list terdefinisi
  */
-int GetCapacity(List list);
+int GetLCapacity(List list);
 
 /**
  * Fungsi untuk menambahkan elemen baru di index ke-i
  * Prekondisi: list terdefinisi, i di antara 0..Length(list).
  */
-void InsertAt(List *list, ElType el, IdxType i);
+
+ElTypeList InputLElType();
+
+
+void InsertLAt(List *list, ElTypeList el, IdxType i);
+
+
+void InsertLast(List *list, ElTypeList el);
 
 /**
- * Fungsi untuk menambahkan elemen baru di akhir list.
+ * Fungsi uLntuk menambahkan elemen baru di awal list.
  * Prekondisi: list terdefinisi
  */
-void InsertLast(List *list, ElType el);
+void InsertFirst(List *list, ElTypeList el);
 
-/**
- * Fungsi untuk menambahkan elemen baru di awal list.
- * Prekondisi: list terdefinisi
- */
-void InsertFirst(List *list, ElType el);
+
+void TulisIsiList(List T);
 
 #endif

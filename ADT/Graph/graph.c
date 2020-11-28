@@ -15,7 +15,7 @@ boolean IsGraphEmpty(Graph G)
     return (First(G)==Nil);
 }
 
-addressGraph AlokasiGraph(infotype X)
+addressGraph AlokasiGraph(infotypeGraph X)
 /* Mengirimkan addressGraph hasil alokasi sebuah elemen */
 /* Jika alokasi berhasil, maka addressGraph tidak nil, dan misalnya */
 /* menghasilkan P, maka InfoGraph(P)=X, NextGraph(P)=NULL, dan Link(P) berisi list kosong */
@@ -65,7 +65,7 @@ void PrintGraph(Graph G)
 }
 
 
-void AddLink(Graph *G, infotype n, infotype p)
+void AddLink(Graph *G, infotypeGraph n, infotypeGraph p)
 /* I. S. Graph G terdefinisi, n dan p pasti tidak lebih dari jumlah titik
    F. S. Link dari elemen n bertambah dengan p, dan sebaliknya (soalnya bolak balik)
 */
@@ -91,11 +91,11 @@ void AddLink(Graph *G, infotype n, infotype p)
     }
     //Add element to list of links
 }
-void PrintLink(Graph G, infotype X)
+void PrintLink(Graph G, infotypeGraph X)
 /* Print X berkait ke mana aja */
 {
     addressGraph P;
-    List L;
+    ListLinier L;
     P=FirstGraph(G);
     while (InfoGraph(P)!=X){
         P=NextGraph(P);
@@ -105,7 +105,7 @@ void PrintLink(Graph G, infotype X)
     PrintInfo(L);
 }
 
-boolean IsLinked(Graph G, infotype n, infotype p)
+boolean IsLinked(Graph G, infotypeGraph n, infotypeGraph p)
 /* Mengembalikan true jika pada link n ada p */
 {
     addressGraph Adrn;
@@ -123,11 +123,11 @@ boolean IsLinked(Graph G, infotype n, infotype p)
     return cek;
 }
 
-addressGraph SearchGraph(Graph G, infotype X)
+addressGraph SearchGraph(Graph G, infotypeGraph X)
 {
     addressGraph P;
     while (InfoGraph(P)!=X && NextGraph(P)!=Nil){
-        P=Next(P);
+        P=NextGraph(P);
     }
     if(InfoGraph(P)!=X){
         P=Nil;
@@ -176,7 +176,7 @@ void ShowValidTargets (Graph G, int CurrentPos)
     P=First(Link(PGraph));
     while (P!=Nil){
         printf("%d. ",C);
-        switch(Info(P)){
+        switch(InfoLinier(P)){
             case -1:
             printf("Base\n");break;
 
@@ -184,9 +184,9 @@ void ShowValidTargets (Graph G, int CurrentPos)
             printf("Shop\n");break;
 
             default:
-            printf("Pelanggan %d\n",Info(P));
+            printf("Pelanggan %d\n",InfoLinier(P));
         }
-        P=Next(P);
+        P=NextGraph(P);
         C++;
     }
 }

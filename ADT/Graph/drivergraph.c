@@ -18,11 +18,14 @@ int main(){
     Graph G;
     MATRIKS GraphMatrix;
     MakeMATRIKS(9,9,&GraphMatrix);
+
+    //Buat smua 0
     for(int i=BrsMin;i<NBrsEff(GraphMatrix);i++){
         for (int j=KolMin;j<NKolEff(GraphMatrix);j++){
-            Elmt(GraphMatrix,i,j)=0;
+            ElmtMatrix(GraphMatrix,i,j)=0;
         }
     }
+
     GenerateStaticAdjacency(&GraphMatrix);
     TulisMATRIKS(GraphMatrix);printf("\n");
     
@@ -30,7 +33,7 @@ int main(){
     initGraph(&G,9);
     for (int i=BrsMin;i<NBrsEff(GraphMatrix);i++){
         for (int j=KolMin;j<NKolEff(GraphMatrix);j++){
-            if (Elmt(GraphMatrix,i,j)==1){
+            if (ElmtMatrix(GraphMatrix,i,j)==1){
                 AddLink(&G,i-1,j-1);
             }
         }
@@ -52,17 +55,17 @@ int main(){
     for (int i=0;i<2;i++){
         AdrTarget=Next(AdrTarget);
     }
-    infotype IndexTarget=Info(AdrTarget);
-    printf("%d\n",IndexTarget);
+    //infotype IndexTarget=Info(AdrTarget);
+    //printf("%d\n",IndexTarget);
     //Move(G,CurrentPos(M2),IndexTarget,&M2);
     //Move (G,&CurrentPos,6);
     ShowValidTargets(G,7);
     // Pembacaan graph static OK
-
+    
     /* Test Delivery */
     int CurrentDeliveryLoc = 5;
     //POINT PointDeliveryLoc = SearchMatrix(M,5);
     
-
+    
     return 0;
 }

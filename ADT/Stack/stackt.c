@@ -2,34 +2,34 @@
 #include <stdio.h>
 /* ************ Prototype ************ */
 /* *** Konstruktor/Kreator *** */
-void CreateEmpty (Stack *S)
+void CreateStackEmpty (Stack *S)
 /* I.S. sembarang; */
 /* F.S. Membuat sebuah stack S yang kosong berkapasitas MaxEl */
 /* jadi indeksnya antara 0.. MaxEl */
-/* Ciri stack kosong : TOP bernilai Nil */
+/* Ciri stack kosong : TOP berNilStackai NilStack */
 {
-    Top(*S)=Nil;
+    Top(*S)=NilStack;
 }
 
 /* ************ Predikat Untuk test keadaan KOLEKSI ************ */
-boolean IsEmpty (Stack S)
+boolean IsStackEmpty (Stack S)
 /* Mengirim true jika Stack kosong: lihat definisi di atas */
 {
-    return (Top(S)==Nil);
+    return (Top(S)==NilStack);
 }
-boolean IsFull (Stack S)
-/* Mengirim true jika tabel penampung nilai elemen stack penuh */
+boolean IsStackFull (Stack S)
+/* Mengirim true jika tabel penampung NilStackai elemen stack penuh */
 {
     return (Top(S)==MaxEl-1);
 }
 
 /* ************ Menambahkan sebuah elemen ke Stack ************ */
-void Push (Stack * S, infotype X)
+void Push (Stack * S, ElTypeList X)
 /* Menambahkan X sebagai elemen Stack S. */
 /* I.S. S mungkin kosong, tabel penampung elemen stack TIDAK penuh */
 /* F.S. X menjadi TOP yang baru,TOP bertambah 1 */
 {
-    if (IsEmpty(*S)){
+    if (IsStackEmpty(*S)){
         Top(*S)=0;
     }
     else{
@@ -39,14 +39,14 @@ void Push (Stack * S, infotype X)
 }
 
 /* ************ Menghapus sebuah elemen Stack ************ */
-void Pop (Stack * S, infotype* X)
+void Pop (Stack * S, ElTypeList* X)
 /* Menghapus X dari Stack S. */
 /* I.S. S  tidak mungkin kosong */
-/* F.S. X adalah nilai elemen TOP yang lama, TOP berkurang 1 */
+/* F.S. X adalah NilStackai elemen TOP yang lama, TOP berkurang 1 */
 {
     (*X) = InfoTop(*S);
     if (Top(*S)==0){
-        Top(*S)=Nil;
+        Top(*S)=NilStack;
     }
     else{
         Top(*S)--;
@@ -54,13 +54,13 @@ void Pop (Stack * S, infotype* X)
 }
 void CopyStack (Stack S, Stack *S1){
     Stack Temp;
-    CreateEmpty(&Temp);
-    infotype X;
-    while(Top(S)!=Nil){
+    CreateStackEmpty(&Temp);
+    ElTypeList X;
+    while(Top(S)!=NilStack){
         Pop(&S,&X);
         Push(&Temp,X);
     }
-    while(Top(Temp)!=Nil){
+    while(Top(Temp)!=NilStack){
         Pop(&Temp,&X);
         Push(S1,X);
     }
@@ -68,11 +68,11 @@ void CopyStack (Stack S, Stack *S1){
 }
 void InverseStack(Stack *S){
     Stack S1;
-    CreateEmpty(&S1);
+    CreateStackEmpty(&S1);
     CopyStack((*S),&S1);
-    CreateEmpty(S);
-    infotype X;
-    while(Top(S1)!=Nil){
+    CreateStackEmpty(S);
+    ElTypeList X;
+    while(Top(S1)!=NilStack){
         Pop(&S1,&X);
         Push(S,X);
     }
@@ -80,39 +80,39 @@ void InverseStack(Stack *S){
 /*S1 diletakkan dibawah S*/
 Stack MergeStack (Stack S, Stack S1){
     Stack Temp;
-    CreateEmpty(&Temp);
+    CreateStackEmpty(&Temp);
     CopyStack(S1,&Temp);
     CopyStack(S,&Temp);
     return Temp;
 }
 
-/*
+
 boolean CekUrutan (Stack S, int urutan){
-    if (IsEmpty(S)){
+    if (IsStackEmpty(S)){
         return (urutan == 1);
     }
     else{
-        return (urutan - InfoTop(S) == 1);
+        return (urutan - InfoTop(S).kategori == 1);
     }
 }
-*/
+
 
 /* saat user add component, kategori komponen direpresentasikan 
 sebagai angka urutan kategori komponen tersebut*/
 
 boolean IsStackEqual(Stack S1, Stack S2){
-    if(!IsFull(S1) || !IsFull(S2)){
+    if(!IsStackFull(S1) || !IsStackFull(S2)){
         return false;
     }
     else{
-        infotype X1;
-        infotype X2;
+        ElTypeList X1;
+        ElTypeList X2;
         int i = 0;
         boolean sama = true;
         while(i<8 && sama){
             Push(&S1, X1);
             Push(&S2,X2);
-            if(!IsStringEqual(X1.name, X2.name)){
+            if(!IsStringEqual(X1.nama, X2.nama)){
                 sama = false;
             }
             i++;
@@ -135,3 +135,112 @@ boolean IsStringEqual(char A[100], char B[100]){
         return(A[i]==B[i]);
     }
 }
+
+
+void PrintStack(Stack S)
+{
+    int i;
+
+    for (i = Top(S); i >= 0; i--){
+        printf("%d. %s ",i, S.T[i].nama);
+        if (i == Top(S)){
+            printf("<top>");
+        }
+        printf("\n");
+    }
+}
+
+void PrintInventory(List T){
+    if (!IsLEmpty(T)){
+        int nomor = 1;
+        int i;
+        int panjang = LengthList(T);
+        for (i=0; i < panjang; i++){
+            if ((ListElmt(T,i).jumlah) > 0){
+                printf("%d. %s\n", nomor, ((ListElmt(T,i)).nama));
+                nomor++;
+            }
+        }
+    }
+}
+
+/*** COMMAND ***/
+
+/* COMMAND 4 : STARTBUILD */
+
+void STARTBUILD(Stack *S, boolean *lagiBuild, int NoPesanan, int NoPelanggan){
+    CreateStackEmpty(S);
+    if (*lagiBuild){
+        printf("Sedang merakit komputer lain, tidak bisa merakit pesanan yang lainnya.");
+    }
+    else{
+        *lagiBuild = true;
+        printf("kamu telah memulai pesanan %d untuk pelanggan %d.\n", NoPesanan, NoPelanggan);
+    }
+}
+
+/* COMMAND 5 : FINISHBUILD */
+
+void FINISHBUILD(Stack Pesanan, Stack Rakitan, boolean *lagiBuild, int NoPesanan, int NoPelanggan){
+    if (IsStackEqual(Pesanan, Rakitan)){ //List di CheckOrder harus bentuknya Stack
+        *lagiBuild = false;
+        printf("Pesanan %d telah selesai. Silahkan antar ke pelanggan %d!\n", NoPesanan, NoPelanggan);
+    }
+    else{
+        printf("Komponen yang dipasangkan belum sesuai dengan pesanan, build belum dapat diselesaikan.\n");
+    }
+}
+/* lagiBuild adalah variabel yang menandakan apakah user sedang mengerjakan suatu pesanan (status) */
+
+/* COMMAND 6 : ADDCOMPONENT */
+
+void ADDCOMPONENT(Stack *Rakitan, List *inventory){
+    if(IsStackFull(*Rakitan)){
+        printf("Tidak bisa menambah komponen karena rakitan sudah penuh");
+    }
+    else{
+        printf("Komponen yang telah terpasang:\n");
+        PrintStack(*Rakitan);
+
+        printf("Komponen yang tersedia:");
+        PrintInventory(*inventory);
+        
+        printf("Komponen yang ingin dipasang: ");
+        int nomor; // dari daftar nomor yang muncul di interface
+        int penanda = 0; // untuk mencari nomor itu ada di index berapa
+        int index = -1; // index inventory 
+        scanf("%d", &nomor); 
+        while(nomor != penanda){
+            index++;
+            if ((ListElmt(*inventory,index).jumlah) > 0){
+                penanda++;
+            }
+        }
+        if (CekUrutan(*Rakitan, (ListElmt(*inventory,index)).kategori)){
+            Push(Rakitan, (ListElmt(*inventory,index)));
+            Jumlah(ListElmt(*inventory,index))--;
+            printf("Komponen berhasil dipasang!\n");
+        }
+        else{
+            printf("Komponen gagal dipasang karena salah urutan pemasangan\n");
+        }
+    }
+}
+
+/* COMMAND 7 : REMOVECOMPONENT */
+
+void REMOVECOMPONENT(Stack *Rakitan, List *inventory){
+    if(IsStackEmpty(*Rakitan)){
+        printf("Tidak bisa remove karena rakitan kosong\n");
+    }
+    else{
+        ElTypeList komponen;
+        Pop(Rakitan,&komponen);
+        int i = 0;
+        while(!IsStringEqual(Nama(ListElmt(*inventory,i)), Nama(komponen))){
+            i++;
+        }
+        Jumlah(ListElmt(*inventory,i))++;
+    }
+}
+
