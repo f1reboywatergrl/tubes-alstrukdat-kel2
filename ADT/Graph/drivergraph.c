@@ -1,8 +1,6 @@
 #include "graph.c"
 #include "stdio.h"
 #include "stdlib.h"
-#include "../Matriks/matriks.c"
-#include "../Matriks/matriks.h"
 /*
 0 0 0 1 0 0 1 0 0
 0 0 1 1 1 0 0 1 1
@@ -15,33 +13,6 @@
 0 1 0 0 0 0 1 0 0
 
 */
-
-void GenerateStaticAdjacency(MATRIKS *GraphMatrix){
-    Elmt(*GraphMatrix,3,0)=1;
-    Elmt(*GraphMatrix,0,3)=1;
-    Elmt(*GraphMatrix,0,6)=1;
-    Elmt(*GraphMatrix,6,0)=1;
-    Elmt(*GraphMatrix,1,3)=1;
-    Elmt(*GraphMatrix,3,1)=1;
-    Elmt(*GraphMatrix,1,4)=1;
-    Elmt(*GraphMatrix,4,1)=1;
-    Elmt(*GraphMatrix,2,5)=1;
-    Elmt(*GraphMatrix,5,2)=1;
-    Elmt(*GraphMatrix,1,7)=1;
-    Elmt(*GraphMatrix,7,1)=1;
-    Elmt(*GraphMatrix,1,8)=1;
-    Elmt(*GraphMatrix,8,1)=1;
-    Elmt(*GraphMatrix,1,2)=1;
-    Elmt(*GraphMatrix,2,1)=1;
-    Elmt(*GraphMatrix,2,4)=1;
-    Elmt(*GraphMatrix,4,2)=1;
-    Elmt(*GraphMatrix,7,4)=1;
-    Elmt(*GraphMatrix,4,7)=1;
-    Elmt(*GraphMatrix,7,5)=1;
-    Elmt(*GraphMatrix,5,7)=1;
-    Elmt(*GraphMatrix,6,8)=1;
-    Elmt(*GraphMatrix,8,6)=1;    
-}
 
 int main(){
     Graph G;
@@ -70,8 +41,22 @@ int main(){
     }
     int CurrentPos = 5;
     ShowValidTargets(G,CurrentPos);
+    PrintLink(G,5);printf("\n");
+    addressGraph P1;
+    P1=FirstGraph(G);
+    while (InfoGraph(P1)!=5){
+        P1=NextGraph(P1);
+    }
+    printf("%d\n",Info(First(Link(P1))));
+    address AdrTarget = First(Link(P1));
+    for (int i=0;i<2;i++){
+        AdrTarget=Next(AdrTarget);
+    }
+    infotype IndexTarget=Info(AdrTarget);
+    printf("%d\n",IndexTarget);
+    //Move(G,CurrentPos(M2),IndexTarget,&M2);
     //Move (G,&CurrentPos,6);
-    ShowValidTargets(G,CurrentPos);
+    ShowValidTargets(G,7);
     // Pembacaan graph static OK
     return 0;
 }

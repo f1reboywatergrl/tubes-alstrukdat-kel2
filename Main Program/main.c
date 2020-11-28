@@ -8,7 +8,7 @@
 #include "stdlib.h"
 
 int main(){
-    /* ---- TAMPILAN MENU UTAMA BANGET ----*/
+    /* ---- TAMPILAN MENU UTAMA BANGET ---- */
     system("cls");
     static FILE * fsave;
     fsave = fopen("save.txt","a");
@@ -75,7 +75,24 @@ int main(){
             }
             IsiPoint(&M2,CTemp);
         }
-        ADVKATA();
+        ADVKATA();                
+        Graph G;
+        MATRIKS GraphMatrix;
+        MakeMATRIKS(TitikTotal,TitikTotal,&GraphMatrix);
+        for(int i=BrsMin;i<NBrsEff(GraphMatrix);i++){
+            for (int j=KolMin;j<NKolEff(GraphMatrix);j++){
+                Elmt(GraphMatrix,i,j)=0;
+            }
+        }
+        GenerateStaticAdjacency(&GraphMatrix);
+        initGraph(&G,TitikTotal);
+        for (int i=BrsMin;i<NBrsEff(GraphMatrix);i++){
+            for (int j=KolMin;j<NKolEff(GraphMatrix);j++){
+                if (Elmt(GraphMatrix,i,j)==1){
+                    AddLink(&G,i-1,j-1);
+                }
+            }
+        }
         White;
 
 
@@ -102,29 +119,22 @@ int main(){
                 printf("C/User/Documents/GitHub/tubes-alstrukdat-kel2/ADT/Mesin Karakter & Kata/save.txt\n");
                 printf("Game berhasil di save!\n");
             }
-            else if (strcmp(InputCommand,"MOVE")==0){
-                Graph G;
-                MATRIKS GraphMatrix;
-                MakeMATRIKS(9,9,&GraphMatrix);
-                for(int i=BrsMin;i<NBrsEff(GraphMatrix);i++){
-                    for (int j=KolMin;j<NKolEff(GraphMatrix);j++){
-                        Elmt(GraphMatrix,i,j)=0;
-                    }
-                }
-                GenerateStaticAdjacency(&GraphMatrix);
-                initGraph(&G,9);
-                for (int i=BrsMin;i<NBrsEff(GraphMatrix);i++){
-                    for (int j=KolMin;j<NKolEff(GraphMatrix);j++){
-                        if (Elmt(GraphMatrix,i,j)==1){
-                            AddLink(&G,i-1,j-1);
-                        }
-                    }
-                }            
+            else if (strcmp(InputCommand,"MOVE")==0){            
                 
                 ShowValidTargets(G,CurrentPos(M2));
                 int InputTarget;
                 scanf("%d",&InputTarget);
-                Move(G,CurrentPos(M2),InputTarget,&M2);
+                addressGraph P1;
+                P1=FirstGraph(G);
+                while (InfoGraph(P1)!=CurrentPos(M2)){
+                    P1=NextGraph(P1);
+                }
+                address AdrTarget = First(Link(P1));
+                for (int i=1;i<InputTarget;i++){
+                    AdrTarget=Next(AdrTarget);
+                }
+                infotype IndexTarget=Info(AdrTarget);
+                Move(G,CurrentPos(M2),IndexTarget,&M2);
             }
             else{
                 printf("Input Anda salah!\n");
