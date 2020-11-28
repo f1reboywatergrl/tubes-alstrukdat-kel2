@@ -14,7 +14,6 @@
 Infotype dipecah sesuai maunya tubes
 */
 
-
 /* Definisi elemen dan address */
 typedef int infotype;
 typedef int address;   /* indeks tabel */
@@ -37,16 +36,16 @@ typedef struct { infotype * T;   /* tabel penyimpan elemen */
 #define MaxEl(Q) (Q).MaxEl
 
 /* ********* Prototype ********* */
-boolean IsEmpty (Queue Q);
+boolean IsQEmpty (Queue Q);
 /* Mengirim true jika Q kosong: lihat definisi di atas */
-boolean IsFull (Queue Q);
+boolean IsQFull (Queue Q);
 /* Mengirim true jika tabel penampung elemen Q sudah penuh */
 /* yaitu mengandung elemen sebanyak MaxEl */
-int NBElmt (Queue Q);
+int QNBElmt (Queue Q);
 /* Mengirimkan banyaknya elemen queue. Mengirimkan 0 jika Q kosong. */
 
 /* *** Kreator *** */
-void CreateEmpty (Queue * Q, int Max);
+void QCreateEmpty (Queue * Q, int Max);
 /* I.S. sembarang */
 /* F.S. Sebuah Q kosong terbentuk dan salah satu kondisi sbb: */
 /* Jika alokasi berhasil, Tabel memori dialokasi berukuran Max+1 */
@@ -54,17 +53,17 @@ void CreateEmpty (Queue * Q, int Max);
 /* Proses : Melakukan alokasi, membuat sebuah Q kosong */
 
 /* *** Destruktor *** */
-void DeAlokasi(Queue * Q);
+void QDeAlokasi(Queue * Q);
 /* Proses: Mengembalikan memori Q */
 /* I.S. Q pernah dialokasi */
 /* F.S. Q menjadi tidak terdefinisi lagi, MaxEl(Q) diset 0 */
 
 /* *** Primitif Add/Delete *** */
-void Add (Queue * Q, infotype X);
+void QAdd (Queue * Q, infotype X);
 /* Proses: Menambahkan X pada Q dengan aturan FIFO */
 /* I.S. Q mungkin kosong, tabel penampung elemen Q TIDAK penuh */
 /* F.S. X menjadi TAIL yang baru, TAIL "maju" dengan mekanisme circular buffer */
-void Del (Queue * Q, infotype * X);
+void QDel (Queue * Q, infotype * X);
 /* Proses: Menghapus X pada Q dengan aturan FIFO */
 /* I.S. Q tidak mungkin kosong */
 /* F.S. X = nilai elemen HEAD pd I.S., HEAD "maju" dengan mekanisme circular buffer; 
