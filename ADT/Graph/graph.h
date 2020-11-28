@@ -1,20 +1,20 @@
 /* File: graph.h */
 /* ADT graph dengan representasi multilist */
-
+#include "../Matriks/matriks.c"
 #ifndef GRAPH_H
 #define GRAPH_H
 
 #include "boolean.h"
-#include "listlinier.h"
+#include "listlinier.c"
+#include <stdlib.h>
 
+#define Nil NULL
 
-// Maksimum simpul dari graph = maks bangunan
-#define N  600
+typedef int infotypeGraph;
 
-// Struktur data pake list of list jancok
 typedef struct tElmtgraph *addressGraph;
 typedef struct tElmtgraph {
-	infotype info;
+	infotypeGraph info;
 	List link;
 	addressGraph next;
 } ElmtGraph;
@@ -27,19 +27,21 @@ typedef struct {
    Setiap elemen dengan addressGraph P dapat diacu Info(P), Next(P)
    Elemen terakhir graph : jika addressnya Last, maka NextGraph(Last)=Nil */
 
-/*	Penggunaan pada tubes:
-	Graph digunakan untuk menyimpan indeks dari building pada array of building.
-	contoh = graph untuk jumlah building 4
-	file config =
-   			0 1 1 1
-   			1 0 0 0
-   			1 0 0 1
-   			1 0 1 0
-	graph yang terjadi
-		1 2->3->4
-		2 1
-		3 1->4
-		4 1->3
+/*	
+	Misal file konfigurasi
+	1 2 3 4
+
+1	0 1 1 0
+2	1 0 1 0
+3	1 1 0 1
+4	0 0 1 0 
+
+Maka
+	1 -> 2,3
+	2 -> 1,3
+	3 -> 1,2,4
+	4 -> 3
+akan berupa List Linier yang menunjuk ke titik2nya
 */
 
 #define InfoGraph(P) (P)->info
@@ -90,4 +92,7 @@ boolean IsLinked(Graph G, infotype n, infotype p);
 
 addressGraph SearchGraph(Graph G, infotype X);
 
+void Move (Graph G, int CurrentPos, int TargetPos,MATRIKS *M);
+
+void ShowValidTargets (Graph G, int CurrentPos);
 #endif

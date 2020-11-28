@@ -519,3 +519,45 @@ void PrintMap (MATRIKS M)
         printf("\n");
     }
 }
+POINT SearchMatrix (MATRIKS M, int X)
+/* Mencari letak X pada matriks M */
+{
+    POINT P;
+    CustFileOrder(P)=-999;
+    Type(P)='X';
+    for (int i=BrsMin;i<NBrsEff(M);i++){
+        for (int j=KolMin;j<NKolEff(M);j++){
+            if (Elmt(M,i,j)==X){
+                Absis(P)=i;
+                Ordinat(P)=j;
+                return P;
+            }
+        }
+    }
+}
+void GenerateStaticAdjacency(MATRIKS *GraphMatrix){
+    Elmt(*GraphMatrix,3,0)=1;
+    Elmt(*GraphMatrix,0,3)=1;
+    Elmt(*GraphMatrix,0,6)=1;
+    Elmt(*GraphMatrix,6,0)=1;
+    Elmt(*GraphMatrix,1,3)=1;
+    Elmt(*GraphMatrix,3,1)=1;
+    Elmt(*GraphMatrix,1,4)=1;
+    Elmt(*GraphMatrix,4,1)=1;
+    Elmt(*GraphMatrix,2,5)=1;
+    Elmt(*GraphMatrix,5,2)=1;
+    Elmt(*GraphMatrix,1,7)=1;
+    Elmt(*GraphMatrix,7,1)=1;
+    Elmt(*GraphMatrix,1,8)=1;
+    Elmt(*GraphMatrix,8,1)=1;
+    Elmt(*GraphMatrix,1,2)=1;
+    Elmt(*GraphMatrix,2,1)=1;
+    Elmt(*GraphMatrix,2,4)=1;
+    Elmt(*GraphMatrix,4,2)=1;
+    Elmt(*GraphMatrix,7,4)=1;
+    Elmt(*GraphMatrix,4,7)=1;
+    Elmt(*GraphMatrix,7,5)=1;
+    Elmt(*GraphMatrix,5,7)=1;
+    Elmt(*GraphMatrix,6,8)=1;
+    Elmt(*GraphMatrix,8,6)=1;    
+}

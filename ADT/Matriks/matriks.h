@@ -40,6 +40,7 @@ void MakeMATRIKS (int NB, int NK, MATRIKS * M);
 #define Elmt(M,i,j) (M).Mem[(i)][(j)]
 #define CurrentAbsis(M) (M).currentAbsis
 #define CurrentOrdinat(M) (M).currentOrdinat
+#define CurrentPos(M) Elmt(M2,CurrentAbsis(M2),CurrentOrdinat(M2))
 
 /* *** Selektor "DUNIA MATRIKS" *** */
 boolean IsIdxValid (int i, int j);

@@ -42,3 +42,12 @@ void ShowUI (){
     Red; //set color Red
     printf("EXIT");
 }
+
+void MainMenu(){
+    printf("Santo's World\n");
+    printf("Please choose your input... \n");
+    Red;
+    printf("START ");
+    Green;
+    printf("LOAD\n");
+}
