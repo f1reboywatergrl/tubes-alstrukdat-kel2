@@ -518,6 +518,8 @@ void PrintMap (MATRIKS M)
         }
         printf("\n");
     }
+    printf("Your position is marked by 'P'.\n");
+    printf("B: Your base, S: The shop\n");
 }
 POINT SearchMatrix (MATRIKS M, int X)
 /* Mencari letak X pada matriks M */
@@ -559,5 +561,11 @@ void GenerateStaticAdjacency(MATRIKS *GraphMatrix){
     Elmt(*GraphMatrix,7,5)=1;
     Elmt(*GraphMatrix,5,7)=1;
     Elmt(*GraphMatrix,6,8)=1;
-    Elmt(*GraphMatrix,8,6)=1;    
+    Elmt(*GraphMatrix,8,6)=1;
+
+    /* Tambahan buat debug */
+    Elmt(*GraphMatrix,4,5)=1;
+    Elmt(*GraphMatrix,5,4)=1;
+    Elmt(*GraphMatrix,6,9)=1;
+    Elmt(*GraphMatrix,9,6)=1;    
 }

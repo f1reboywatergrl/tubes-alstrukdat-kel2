@@ -16,6 +16,7 @@ int main(){
     MainMenu();
     scanf("%s",InputCommand);
     if (strcmp(InputCommand,"START")==0){
+        /* PEMBACAAN FILE KONFIGURASI */
         MATRIKS M2;
         STARTKATA("../ADT/Matriks/map.txt");
         //2 karena tambah ruang untuk border
@@ -93,11 +94,13 @@ int main(){
                 }
             }
         }
+        int CurrentDeliveryLoc = 3;
+        POINT PointDeliveryLoc = SearchMatrix(M2,CurrentDeliveryLoc);
         White;
 
 
         
-        /* ---- TAMPILAN MENU SETELAH START GAME ---- */
+        /* ---- TAMPILAN MENU SETELAH IN-GAME ---- */
         system("cls");
         printf("Selamat datang! Silahkan pilih input Anda:\n");
         ShowUI();
@@ -107,19 +110,9 @@ int main(){
             White; //set color White
             system("cls");
             
-            if (strcmp(InputCommand,"MAP")==0){
-                fputs("MAP ",fsave); // Menyimpan command dalam file save
-                
-                PrintMap(M2); //AMAN
-            
-            }
-            else if (strcmp(InputCommand,"SAVE")==0){
-                fputs(". ",fsave); // akhir dari program yang disave ditandai mark
-                printf("Lokasi save file:");
-                printf("C/User/Documents/GitHub/tubes-alstrukdat-kel2/ADT/Mesin Karakter & Kata/save.txt\n");
-                printf("Game berhasil di save!\n");
-            }
-            else if (strcmp(InputCommand,"MOVE")==0){            
+            /* ---- DAFTAR COMMAND UTAMA PERMAINAN ---- */
+            /* COMMAND 1: MOVE */
+            if (strcmp(InputCommand,"MOVE")==0){            
                 
                 ShowValidTargets(G,CurrentPos(M2));
                 int InputTarget;
@@ -130,8 +123,8 @@ int main(){
                     P1=NextGraph(P1);
                 }
                 address AdrTarget = First(Link(P1));                
-                if(InputTarget>NbElmt(Link(P1))){
-                    printf("That area is not accessible.\n");
+                if(InputTarget>NbElmt(Link(P1)) || InputTarget<1){
+                    printf("That area is not accessible, please impute according to shown indices (1-%d).\n", NbElmt(Link(P1)));
                 }
                 else{
                     for (int i=1;i<InputTarget;i++){
@@ -139,9 +132,47 @@ int main(){
                     }
                     infotype IndexTarget;
                     IndexTarget=Info(AdrTarget);
-                    Move(G,CurrentPos(M2),IndexTarget,&M2);                    
+                    Move(G,CurrentPos(M2),IndexTarget,&M2);
+                    printf("You have reached ");
+                    switch(CurrentPos(M2)){
+                        case -1:
+                            printf("your\033[0;33m Base");break;
+                        case 0:
+                            printf("the\033[0;32m Shop");break;
+                        default:
+                            printf("Pelanggan\033[0;31m %d",CurrentPos(M2));break;
+                    }
+                    White;
+                    printf(".\n");                   
                 }
             }
+
+            /* COMMAND 9: DELIVER */
+            else if (strcmp(InputCommand,"DELIVER")==0){
+                if(CurrentAbsis(M2)==Absis(PointDeliveryLoc) && CurrentOrdinat(M2)==Ordinat(PointDeliveryLoc)){
+                    printf("Item successfully delivered to Pelanggan %d!\n",CurrentPos(M2));
+                    //harusnya ada Dequeue disini
+                }
+                else{
+                    printf("This is not the right address for your delivery!\n");
+                }
+            }
+
+            /* COMMAND 11: SAVE */
+            else if (strcmp(InputCommand,"SAVE")==0){
+                fputs(". ",fsave); // akhir dari program yang disave ditandai mark
+                printf("Lokasi save file:");
+                printf("C/User/Documents/GitHub/tubes-alstrukdat-kel2/ADT/Mesin Karakter & Kata/save.txt\n");
+                printf("Game berhasil di save!\n");
+            }
+            /* COMMAND 12: MAP */
+            else if (strcmp(InputCommand,"MAP")==0){
+                fputs("MAP ",fsave); // Menyimpan command dalam file save
+                
+                PrintMap(M2); //AMAN
+            
+            }
+            /* WRONG INPUT */
             else{
                 printf("Input Anda salah!\n");
             }
@@ -154,10 +185,9 @@ int main(){
         White;
         fclose(fsave);
         printf("Thank you for playing!\n");
-        return 0;
+        
 
 
     }
-
-    
+    return 0;
 }

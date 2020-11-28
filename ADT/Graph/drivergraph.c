@@ -58,5 +58,11 @@ int main(){
     //Move (G,&CurrentPos,6);
     ShowValidTargets(G,7);
     // Pembacaan graph static OK
+
+    /* Test Delivery */
+    int CurrentDeliveryLoc = 5;
+    //POINT PointDeliveryLoc = SearchMatrix(M,5);
+    
+
     return 0;
 }
