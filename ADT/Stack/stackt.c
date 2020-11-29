@@ -157,11 +157,11 @@ void PrintInventory(List T){
 void STARTBUILD(Stack *S, boolean *lagiBuild, int NoPesanan, int NoPelanggan){
     CreateStackEmpty(S);
     if (*lagiBuild){
-        printf("Sedang merakit komputer lain, tidak bisa merakit pesanan yang lainnya.\n");
+        printf("Currently building another computer, unable to start a new build.\n");
     }
     else{
         *lagiBuild = true;
-        printf("kamu telah memulai pesanan %d untuk pelanggan %d.\n", NoPesanan, NoPelanggan);
+        printf("Started order %d for Customer %d.\n", NoPesanan, NoPelanggan);
     }
 }
 
@@ -170,7 +170,7 @@ void STARTBUILD(Stack *S, boolean *lagiBuild, int NoPesanan, int NoPelanggan){
 void FINISHBUILD(List *inventory, Stack Pesanan, Stack Rakitan, boolean *lagiBuild, int NoPesanan, int NoPelanggan){
     if (IsStackEqual(Pesanan, Rakitan)){ //Harus cari cara nyocokin + nentuin Invoice
         *lagiBuild = false;
-        printf("Pesanan %d telah selesai. Silahkan antar ke pelanggan %d!\n", NoPesanan, NoPelanggan);
+        printf("Order #%d is complete. Deliver it to Customer %d!\n", NoPesanan, NoPelanggan);
         ElTypeList hasilBuild;
         sprintf(Nama(hasilBuild), "%d", NoPesanan);
         Kategori(hasilBuild) = 9;
@@ -188,16 +188,16 @@ void FINISHBUILD(List *inventory, Stack Pesanan, Stack Rakitan, boolean *lagiBui
 
 void ADDCOMPONENT(Stack *Rakitan, List *inventory){
     if(IsStackFull(*Rakitan)){
-        printf("Tidak bisa menambah komponen karena rakitan sudah penuh\n");
+        printf("Cannot add anymore components!\n");
     }
     else{
-        printf("Komponen yang telah terpasang:\n");
+        printf("Currently attached components:\n");
         PrintStack(*Rakitan);
 
-        printf("Komponen yang tersedia:\n");
+        printf("Available components:\n");
         PrintInventory(*inventory);
         
-        printf("Komponen yang ingin dipasang:\n");
+        printf("Attach which component?:\n");
         int nomor; // dari daftar nomor yang muncul di interface
         int penanda = 0; // untuk mencari nomor itu ada di index berapa
         int index = -1; // index inventory 
@@ -211,10 +211,10 @@ void ADDCOMPONENT(Stack *Rakitan, List *inventory){
         if (CekUrutan(*Rakitan, (ListElmt(*inventory,index)).kategori)){
             Push(Rakitan, (ListElmt(*inventory,index)));
             Jumlah(ListElmt(*inventory,index))--;
-            printf("Komponen berhasil dipasang!\n");
+            printf("Successfully attached!\n");
         }
         else{
-            printf("Komponen gagal dipasang karena salah urutan pemasangan\n");
+            printf("Attachment unsucessful! Re-check your order!\n");
         }
     }
 }
@@ -223,7 +223,7 @@ void ADDCOMPONENT(Stack *Rakitan, List *inventory){
 
 void REMOVECOMPONENT(Stack *Rakitan, List *inventory){
     if(IsStackEmpty(*Rakitan)){
-        printf("Tidak bisa remove karena rakitan kosong\n");
+        printf("Your build is currently empty.\n");
     }
     else{
         ElTypeList komponen;
@@ -233,7 +233,20 @@ void REMOVECOMPONENT(Stack *Rakitan, List *inventory){
             i++;
         }
         Jumlah(ListElmt(*inventory,i))++;
+        printf("%s has been sucessfully removed from the current build.\n",Nama(komponen));
     }
 }
                         
-                    
+void CreateDummyStacks (Stack *Dummies, ElTypeList order1, ElTypeList order2, ElTypeList order3, ElTypeList order4, ElTypeList order5, ElTypeList order6, ElTypeList order7, ElTypeList order8)
+/* Membuat data dummy kumpulan stack untuk order*/
+{
+    CreateStackEmpty(Dummies);
+    Push(Dummies,order1);
+    Push(Dummies,order2);
+    Push(Dummies,order3);
+    Push(Dummies,order4);
+    Push(Dummies,order5);
+    Push(Dummies,order6);
+    Push(Dummies,order7);
+    Push(Dummies,order8);
+}                    

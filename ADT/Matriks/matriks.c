@@ -227,7 +227,7 @@ void PrintMap (MATRIKS M)
         case 0:
         printf("the\033[0;32m Shop");break;
         default:
-        printf("Pelanggan\033[0;31m %d",CurrentPos(M));
+        printf("Customer\033[0;31m %d",CurrentPos(M));
     }
     printf("\033[0;37m).\n");
     printf("B: Your base, S: The shop\n");

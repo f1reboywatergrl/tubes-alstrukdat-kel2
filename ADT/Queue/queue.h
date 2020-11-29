@@ -6,7 +6,7 @@
 #define queue_H
 
 #include "boolean.h"
-#include "../Stack/stackt.h"
+#include "../Stack/stackt.c"
 
 
 /* Konstanta untuk mendefinisikan address tak terdefinisi */

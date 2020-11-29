@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "list.c" 
 
-void Status(int UangPemain, int Build, int Order, List Inventory, int Lokasi){
+void Status(int UangPemain, int Build, int Order, List InventoryPemain, int Lokasi){
     printf("Uang tersisa: $%d\n",UangPemain);
     printf("Build yang sedang dikerjakan: pesanan %d untuk pelanggan %d.\n", Order, Build);
     printf("Lokasi: pemain sedang berada pada ");
@@ -18,7 +18,7 @@ void Status(int UangPemain, int Build, int Order, List Inventory, int Lokasi){
     }
     printf("\n");
     printf("Inventory anda:\n");
-    for (int i=0;i<LengthList(Inventory);i++){
-        printf("%d. %s (%d)\n",i+1,Nama(ListElmt(Inventory,i)),Jumlah(ListElmt(Inventory,i)));
+    for (int i=0;i<LengthList(InventoryPemain);i++){
+        printf("%d. %s (%d)\n",i+1,Nama(ListElmt(InventoryPemain,i)),Jumlah(ListElmt(InventoryPemain,i)));
     }
 }

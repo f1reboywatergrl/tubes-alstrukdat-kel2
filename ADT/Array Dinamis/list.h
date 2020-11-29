@@ -80,9 +80,14 @@ void InsertFirst(List *list, ElTypeList el);
 
 void TulisIsiList(List T);
 
+void PrintStore(List T);
+
 void CreateElmt (ElTypeList *el, int Harga, char *Nama, int Type );
 /* Membuat elemen dummy dengan properti el->harga = Harga, el->nama = *Nama, el->kategori = Type, 
 el->jumlah = 0*/
+
+
+void CreateElmtLengkap (ElTypeList *el, int Harga, char *Nama, int Type, int Jumlah);
 
 void CreateDummies(List *Dummies);
 /* Membuat list dummy berisikan elemen dummy (hard-coded) */

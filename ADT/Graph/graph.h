@@ -73,15 +73,7 @@ void PrintGraph(Graph G);
 
 void AddLink(Graph *G, infotypeGraph n, infotypeGraph p);
 /* I. S. Graph G terdefinisi, n dan p pasti tidak lebih dari jumlah building
-   F. S. Link dari elemen n bertambah dengan p, dan sebaliknya (soalnya bolak balik)
-   contoh :
-   1 2->3
-   2 1
-   3 1
-   Add(&G, 2, 3) 
-   1 2->3
-   2 1->3
-   3 1->3 */
+   F. S. Link dari elemen n bertambah dengan p, dan sebaliknya (soalnya bolak balik) */
 
 void PrintLink(Graph G, infotypeGraph X);
 

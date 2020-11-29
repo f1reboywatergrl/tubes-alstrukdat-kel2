@@ -17,20 +17,23 @@ int main(){
     char InputCommand[100];
     MainMenu();
     scanf("%s",InputCommand);
+
     if (strcmp(InputCommand,"START")==0){
         /* INISIALISASI STRUKTUR DATA PENYIMPANAN DATA PENTING */
-        MATRIKS MapMatrix; // -> Nyimpen data Peta, letak pemain, letak pelanggan
+        MATRIKS MapMatrix; // -> Nyimpen data Peta, letak pemain, letak Customer
         Graph G; // -> Nyimpen konektivitas titik2 pada peta
         MATRIKS GraphMatrix; // -> Nyimpen Adjacency Matriks untuk titik2 pada peta
         int UangPemain=4500; // -> Default uang pemain
         Stack Rakitan; // -> Nyimpen Rakitan yang lagi dibangun
         Stack CurrentPesanan; // -> Nyimpen stack komponen2 pesanan sekarang
         boolean lagiBuild=false; // -> Kalo udah startbuild-> true, klo ga false
-        List InventoryPemain; // -> Nyimpen inventory pemain
+        List InventoryPemain = MakeList(); // Nyimpen inventory pemain, set kosong di awal
+        List ListDummy = MakeList(); 
+        
 
         /* Kosongkan semua yang bakal dinamis */
         CreateStackEmpty(&Rakitan);
-        
+        CreateDummies(&ListDummy);
         
         /* PEMBACAAN FILE KONFIGURASI */
 
@@ -172,26 +175,27 @@ int main(){
                         case 0:
                             printf("the\033[0;32m Shop");break;
                         default:
-                            printf("Pelanggan\033[0;31m %d",CurrentPos(MapMatrix));
+                            printf("Customer\033[0;31m %d",CurrentPos(MapMatrix));
                     }
                     White;
                     printf(".\n");                   
                 }
             }
+
             /* COMMAND 2 : STATUS */
             else if (strcmp(InputCommand,"STATUS")==0){  
                 int Build = 3; //Ambil dari Queue
                 int Order = 1; //nanti variablenya disesuain sm yg lain
                 int length = 2; //Contoh contoh contoh
                 
-                List Inventory = MakeList(); //BUAT DUMMY DOANG
-                for (int i=0;i<length;i++){
-                    ElTypeList ElInventory = InputLElType();
-                    InsertLAt(&Inventory,ElInventory,i);
-                }
+                // List InventoryPemain = MakeList(); //BUAT DUMMY DOANG
+                // for (int i=0;i<length;i++){
+                //     ElTypeList ElInventory = InputLElType();
+                //     InsertLAt(&InventoryPemain,ElInventory,i);
+                // }
 
                 printf("Uang tersisa: $%d\n",UangPemain);
-                printf("Build yang sedang dikerjakan: pesanan %d untuk pelanggan %d.\n", Order, Build);
+                printf("Build yang sedang dikerjakan: pesanan %d untuk Customer %d.\n", Order, Build);
                 printf("Lokasi: pemain sedang berada pada ");
                 switch(CurrentPos(MapMatrix)){
                     case -1:
@@ -201,14 +205,14 @@ int main(){
                     printf("Shop");break;
 
                     default:
-                    printf("Pelanggan %d",CurrentPos(MapMatrix));
+                    printf("Customer %d",CurrentPos(MapMatrix));
                 }
                 printf("\n");
-                printf("Inventory anda:\n");
+                printf("InventoryPemain anda:\n");
                 int j = 1;
-                for (int i=0;i<LengthList(Inventory);i++){
-                    if (Jumlah(ListElmt(Inventory,i)) > 0){
-                        printf("%d. %s (%d)\n",j,Nama(ListElmt(Inventory,i)),Jumlah(ListElmt(Inventory,i)));
+                for (int i=0;i<LengthList(InventoryPemain);i++){
+                    if (Jumlah(ListElmt(InventoryPemain,i)) > 0){
+                        printf("%d. %s (%d)\n",j,Nama(ListElmt(InventoryPemain,i)),Jumlah(ListElmt(InventoryPemain,i)));
                         j++;
                     }
                 }            
@@ -223,6 +227,7 @@ int main(){
             /* COMMAND 4 : STARTBUILD */
             else if (strcmp(InputCommand,"STARTBUILD")==0){
                 if(CurrentPos(MapMatrix)==-1){
+                    /* fputs("STARTBUILD ", fsave) */
                     STARTBUILD(&Rakitan,&lagiBuild,1,2);
                 }
                 else{
@@ -233,6 +238,7 @@ int main(){
             /* COMMAND 5 : FINISHBUILD */
             else if (strcmp(InputCommand,"FINISHBUILD")==0){
                 if(CurrentPos(MapMatrix)==-1){
+                    /* fputs("FINISHBUILD ",fsave); */
                     FINISHBUILD(&InventoryPemain, CurrentPesanan, Rakitan, &lagiBuild,1,2);
                 }
                 else{
@@ -243,6 +249,7 @@ int main(){
             /* COMMAND 6 : ADDCOMPONENT */
             else if(strcmp(InputCommand,"ADDCOMPONENT")==0){
                 if(CurrentPos(MapMatrix)==-1 && lagiBuild){
+                    //fputs("ADDCOMPONENT ",fsave);
                     ADDCOMPONENT(&Rakitan, &InventoryPemain);
                 }
                 else{
@@ -257,6 +264,7 @@ int main(){
             /* COMMAND 7 : REMOVECOMPONENT */
             else if (strcmp(InputCommand,"REMOVECOMPONENT")==0){
                 if(CurrentPos(MapMatrix)==-1 && lagiBuild){
+                    //fputs("REMOVECOMPONENT ",fsave);
                     REMOVECOMPONENT(&Rakitan,&InventoryPemain);
                 }
                 else{
@@ -269,12 +277,39 @@ int main(){
                     
                 }
             }
+            
+
+            /* COMMAND 8 : SHOP */
+            else if(strcmp(InputCommand,"SHOP")==0){
+                if(CurrentPos(MapMatrix)==0){
+                    int NoKomponen, JumlahKomponen, HitungTotal;
+                    printf("Komponen yang tersedia:\n");
+                    PrintStore(ListDummy);
+                    printf("Komponen yang ingin dibeli: ");
+                    scanf("%d",(&NoKomponen));
+                    printf("Masukkan jumlah yang ingin dibeli: ");
+                    scanf("%d",(&JumlahKomponen));
+                    HitungTotal = (Harga(ListElmt(ListDummy,NoKomponen-1))*JumlahKomponen);
+                    if (HitungTotal > UangPemain){
+                        printf("Uang tidak cukup!\n");
+                    }
+                    else{
+                        UangPemain = UangPemain-HitungTotal;
+                        printf("Komponen berhasil dibeli!\n");
+                    }                    
+                }
+                else{
+                    printf("Move to the shop to access the shop!\n");
+                }
+
+            }
+
             /* COMMAND 9: DELIVER */
             else if (strcmp(InputCommand,"DELIVER")==0){
                 //Keknya mending delivery loc diambil dari anak queue
                 if(CurrentAbsis(MapMatrix)==Absis(PointDeliveryLoc) && CurrentOrdinat(MapMatrix)==Ordinat(PointDeliveryLoc)){
                     /* fputs("DELIVER ",fsave); */
-                    printf("Item successfully delivered to Pelanggan %d!\n",CurrentPos(MapMatrix));
+                    printf("Item successfully delivered to Customer %d!\n",CurrentPos(MapMatrix));
                     //harusnya ada Enqueue disini
                 }
                 else{

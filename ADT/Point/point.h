@@ -48,32 +48,6 @@ boolean PEQ (POINT P1, POINT P2);
 boolean PNEQ (POINT P1, POINT P2);
 /* Mengirimkan true jika P1 tidak sama dengan P2 */
 
-/* *** Kelompok menentukan di mana P berada *** */
-boolean IsOrigin (POINT P);
-/* Menghasilkan true jika P adalah titik origin */
-boolean IsOnSbX (POINT P);
-/* Menghasilkan true jika P terletak Pada sumbu X */
-boolean IsOnSbY (POINT P);
-/* Menghasilkan true jika P terletak pada sumbu Y */
-int Kuadran (POINT P);
-/* Menghasilkan kuadran dari P: 1, 2, 3, atau 4 */
-/* Prekondisi : P bukan titik origin, */
-/*              dan P tidak terletak di salah satu sumbu */
-
-/* *** KELOMPOK OPERASI LAIN TERHADAP TYPE *** */
-POINT PlusDelta (POINT P, int deltaX, int deltaY);
-/* Mengirim salinan P yang absisnya adalah Absis(P) + deltaX dan ordinatnya adalah Ordinat(P) + deltaY */
-void Geser (POINT *P, int deltaX, int deltaY);
-/* I.S. P terdefinisi */
-/* F.S. P digeser, absisnya sebesar deltaX dan ordinatnya sebesar deltaY */
-int Jarak0 (POINT P);
-/* Menghitung jarak P ke (0,0) */
-int Panjang (POINT P1, POINT P2);
-/* Menghitung panjang garis yang dibentuk P1 dan P2. */
-
-void CurrentPoint (POINT *P, int X, int Y);
-/* Menentukan posisi pemain saat ini */
-
 void SimpanPoint (POINT *P, int X, int Y, char Type, int custFileOrder);
 /* Menyimpan point hasil pembacaan pita karakter */
 #endif
