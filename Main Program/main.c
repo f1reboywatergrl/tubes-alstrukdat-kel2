@@ -208,14 +208,8 @@ int main(){
                     printf("Customer %d",CurrentPos(MapMatrix));
                 }
                 printf("\n");
-                printf("InventoryPemain anda:\n");
-                int j = 1;
-                for (int i=0;i<LengthList(InventoryPemain);i++){
-                    if (Jumlah(ListElmt(InventoryPemain,i)) > 0){
-                        printf("%d. %s (%d)\n",j,Nama(ListElmt(InventoryPemain,i)),Jumlah(ListElmt(InventoryPemain,i)));
-                        j++;
-                    }
-                }            
+                printf("Inventory anda:\n");
+                TampilInventory(InventoryPemain);       
             }
 
 
@@ -277,8 +271,8 @@ int main(){
                     
                 }
             }
-            
 
+    
             /* COMMAND 8 : SHOP */
             else if(strcmp(InputCommand,"SHOP")==0){
                 if(CurrentPos(MapMatrix)==0){
@@ -293,10 +287,24 @@ int main(){
                     if (HitungTotal > UangPemain){
                         printf("Uang tidak cukup!\n");
                     }
+
                     else{
                         UangPemain = UangPemain-HitungTotal;
                         printf("Komponen berhasil dibeli!\n");
-                    }                    
+                        ElTypeList elinventory;
+                        boolean Found = false;
+                        for (int i=0;i<(LengthList(InventoryPemain));i++){
+                            if(strcmp((Nama(ListElmt(InventoryPemain,i))),(Nama(ListElmt(ListDummy,NoKomponen-1))))==0)
+                            {
+                                Found = true;
+                                Jumlah(ListElmt(InventoryPemain,i)) = Jumlah(ListElmt(InventoryPemain,i))+JumlahKomponen;
+                            }
+                        }
+                        if (!Found){
+                            CreateElmtLengkap(&elinventory,Harga(ListElmt(ListDummy,NoKomponen-1)),Nama(ListElmt(ListDummy,NoKomponen-1)),Kategori(ListElmt(ListDummy,NoKomponen-1)),JumlahKomponen);
+                            InsertLLast(&InventoryPemain,elinventory);
+                        }
+                    }
                 }
                 else{
                     printf("Move to the shop to access the shop!\n");

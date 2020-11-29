@@ -170,6 +170,12 @@ void PrintStore(List T){
     }
 }
 
+void TampilInventory(List T){
+    for (int i=0;i<LengthList(T);i++){
+        printf("%d. %s - (%d)\n",i+1,Nama(ListElmt(T,i)),Jumlah(ListElmt(T,i)));
+    }
+
+}
 /* ------------ FUNGSI PEMBUAT DATA DUMMY ------------ */
 void CreateElmt (ElTypeList *el, int Harga, char *Nama, int Type )
 /* Membuat elemen dummy dengan properti el->harga = Harga, el->nama = *Nama, el->kategori = Type, 
@@ -180,17 +186,14 @@ el->jumlah = 0*/
     el->jumlah =0;
     el->kategori = Type;
 }
+void CreateElmtLengkap (ElTypeList *el, int Harga, char *Nama, int Type, int Jumlah){
 
-void CreateElmtLengkap (ElTypeList *el, int Harga, char *Nama, int Type, int Jumlah )
-/* Membuat elemen dummy dengan properti el->harga = Harga, el->nama = *Nama, el->kategori = Type, 
-el->jumlah = Jumlah*/
-{
     el->harga = Harga;
     el->nama = Nama;
     el->jumlah = Jumlah;
     el->kategori = Type;
-}
 
+}
 void CreateDummies(List *Dummies)
 /* Membuat list dummy berisikan elemen dummy (hard-coded) */
 {

@@ -18,7 +18,5 @@ void Status(int UangPemain, int Build, int Order, List InventoryPemain, int Loka
     }
     printf("\n");
     printf("Inventory anda:\n");
-    for (int i=0;i<LengthList(InventoryPemain);i++){
-        printf("%d. %s (%d)\n",i+1,Nama(ListElmt(InventoryPemain,i)),Jumlah(ListElmt(InventoryPemain,i)));
-    }
+    TampilInventory(InventoryPemain);
 }
