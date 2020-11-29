@@ -223,6 +223,7 @@ int main(){
             /* COMMAND 4 : STARTBUILD */
             else if (strcmp(InputCommand,"STARTBUILD")==0){
                 if(CurrentPos(MapMatrix)==-1){
+                    /* fputs("STARTBUILD ", fsave) */
                     STARTBUILD(&Rakitan,&lagiBuild,1,2);
                 }
                 else{
@@ -233,6 +234,7 @@ int main(){
             /* COMMAND 5 : FINISHBUILD */
             else if (strcmp(InputCommand,"FINISHBUILD")==0){
                 if(CurrentPos(MapMatrix)==-1){
+                    /* fputs("FINISHBUILD ",fsave); */
                     FINISHBUILD(&InventoryPemain, CurrentPesanan, Rakitan, &lagiBuild,1,2);
                 }
                 else{
@@ -243,6 +245,7 @@ int main(){
             /* COMMAND 6 : ADDCOMPONENT */
             else if(strcmp(InputCommand,"ADDCOMPONENT")==0){
                 if(CurrentPos(MapMatrix)==-1 && lagiBuild){
+                    fputs("ADDCOMPONENT ",fsave);
                     ADDCOMPONENT(&Rakitan, &InventoryPemain);
                 }
                 else{
@@ -257,6 +260,7 @@ int main(){
             /* COMMAND 7 : REMOVECOMPONENT */
             else if (strcmp(InputCommand,"REMOVECOMPONENT")==0){
                 if(CurrentPos(MapMatrix)==-1 && lagiBuild){
+                    fputs("REMOVECOMPONENT ",fsave);
                     REMOVECOMPONENT(&Rakitan,&InventoryPemain);
                 }
                 else{
