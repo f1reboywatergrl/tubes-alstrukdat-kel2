@@ -8,7 +8,7 @@
 typedef int IdxType;
 typedef struct 
 {
-    char nama[100]; // Bentuk String, menjelaskan nama
+    char *nama; // Bentuk String, menjelaskan nama
     int harga; //Untuk menjelaskan harga 
     int jumlah; //Untuk menjelaskan jumlah
     int kategori; //Untuk menjelaskan kategori
@@ -25,6 +25,7 @@ typedef struct {
 #define Nama(T) T.nama
 #define Jumlah(T) T.jumlah
 #define Kategori(T) T.kategori
+#define Neff(T) T.Neff
 
 /**
  * Konstruktor
@@ -68,7 +69,7 @@ ElTypeList InputLElType();
 void InsertLAt(List *list, ElTypeList el, IdxType i);
 
 
-void InsertLast(List *list, ElTypeList el);
+void InsertLLast(List *list, ElTypeList el);
 
 /**
  * Fungsi uLntuk menambahkan elemen baru di awal list.
@@ -78,5 +79,12 @@ void InsertFirst(List *list, ElTypeList el);
 
 
 void TulisIsiList(List T);
+
+void CreateElmt (ElTypeList *el, int Harga, char *Nama, int Type );
+/* Membuat elemen dummy dengan properti el->harga = Harga, el->nama = *Nama, el->kategori = Type, 
+el->jumlah = 0*/
+
+void CreateDummies(List *Dummies);
+/* Membuat list dummy berisikan elemen dummy (hard-coded) */
 
 #endif

@@ -77,9 +77,6 @@ boolean IsStackEqual(Stack S1, Stack S2);
 /* Mengirim true jika kedua stack yang full adalah sama
    Mengirim false jika kedua stack berbeda atau stack tidak full */
 
-boolean IsStringEqual(char A[100], char B[100]);
-/* Mengirim true jika kedua string sama */
-
 void PrintStack(Stack S);
 
 /***** COMMAND *****/
@@ -87,7 +84,7 @@ void PrintStack(Stack S);
 void STARTBUILD(Stack *S, boolean *lagiBuild, int NoPesanan, int NoPelanggan);
 /* memulai build */
 
-void FINISHBUILD(Stack Pesanan, Stack Rakitan, boolean *lagiBuild, int NoPesanan, int NoPelanggan);
+void FINISHBUILD(List *inventory, Stack Pesanan, Stack Rakitan, boolean *lagiBuild, int NoPesanan, int NoPelanggan);
 /* mengecek kesesuaian rakitan dengan pesanan dan mengakhiri build */
 
 void ADDCOMPONENT(Stack *Rakitan, List *inventory);

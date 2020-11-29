@@ -1,6 +1,6 @@
 #include "list.h"
 #include <stdlib.h>
-
+#include "stdio.h"
 /**
  * Konstruktor
  * I.S. sembarang
@@ -102,10 +102,10 @@ void InsertLAt(List *list, ElTypeList el, IdxType i) {
  * Fungsi untuk menambahkan elemen baru di akhir list.
  * Prekondisi: list terdefinisi
  */
-void InsertLast(List *list, ElTypeList el) 
+void InsertLLast(List *list, ElTypeList el) 
 {
     int insertAt = LengthList(*list);
-    printf("%d",LengthList(*list));
+    //printf("%d",LengthList(*list));
     InsertLAt(list, el, insertAt);
 }
 
@@ -118,7 +118,7 @@ void InsertLFirst(List *list, ElTypeList el) {
 }
 
 void TulisIsiList(List T){
-    printf("[");
+    /*printf("[");
     if (!IsLEmpty(T)){
         int i;
         for (i=0; i < LengthList(T); i++){
@@ -150,6 +150,65 @@ void TulisIsiList(List T){
             }
         }
     }
-    printf("]\n");
-    return;
+    printf("]\n");*/
+
+    /*
+    Dalam bentuk 
+    1. x
+    2. y
+    3. z
+    dst.
+    */
+    for (int i=0;i<LengthList(T);i++){
+        printf("%d. %s (%d)\n",i+1,Nama(ListElmt(T,i)),Jumlah(ListElmt(T,i)));
+    }
+}
+
+
+/* ------------ FUNGSI PEMBUAT DATA DUMMY ------------ */
+void CreateElmt (ElTypeList *el, int Harga, char *Nama, int Type )
+/* Membuat elemen dummy dengan properti el->harga = Harga, el->nama = *Nama, el->kategori = Type, 
+el->jumlah = 0*/
+{
+    el->harga = Harga;
+    el->nama = Nama;
+    el->jumlah =0;
+    el->kategori = Type;
+}
+void CreateDummies(List *Dummies)
+/* Membuat list dummy berisikan elemen dummy (hard-coded) */
+{
+    ElTypeList el;
+    /* MOTHERBOARD */
+    CreateElmt(&el,100,"Motherboard Micro-ATX",1);InsertLLast(Dummies,el);
+    CreateElmt(&el,150,"Motherboard Mini ITX",1);InsertLLast(Dummies,el);
+    CreateElmt(&el,200,"Motherboard E-ATX",1);InsertLLast(Dummies,el);
+    /* CPU */
+    CreateElmt(&el,2000,"Processor Intel i3",2);InsertLLast(Dummies,el);
+    CreateElmt(&el,2500,"Processor Intel i5",2);InsertLLast(Dummies,el);
+    CreateElmt(&el,3000,"Processor Intel i7",2);InsertLLast(Dummies,el);
+    /* MEMORY */
+    CreateElmt(&el,70,"RAM 4GB",3);InsertLLast(Dummies,el);
+    CreateElmt(&el,140,"RAM 8GB",3);InsertLLast(Dummies,el);
+    CreateElmt(&el,210,"RAM 16GB",3);InsertLLast(Dummies,el);
+    /* CPU COOLER */
+    CreateElmt(&el,60,"Heatsink",4);InsertLLast(Dummies,el);
+    CreateElmt(&el,70,"Liquid Cooler",4);InsertLLast(Dummies,el);
+    CreateElmt(&el,80,"Dry Ice Cooler",4);InsertLLast(Dummies,el);
+    /* CASE */
+    CreateElmt(&el,120,"Plastic",5);InsertLLast(Dummies,el);
+    CreateElmt(&el,140,"Metal",5);InsertLLast(Dummies,el);
+    CreateElmt(&el,160,"Carbon Fiber",5);InsertLLast(Dummies,el);
+    /* GPU */
+    CreateElmt(&el,200,"NVDIA NV3",6);InsertLLast(Dummies,el);
+    CreateElmt(&el,400,"NVDIA NV4",6);InsertLLast(Dummies,el);
+    CreateElmt(&el,500,"NVDIA GEFORCE",6);InsertLLast(Dummies,el);
+    /* STORAGE */
+    CreateElmt(&el,500,"512GB",7);InsertLLast(Dummies,el);
+    CreateElmt(&el,750,"1TB",7);InsertLLast(Dummies,el);
+    CreateElmt(&el,1000,"2TB",7);InsertLLast(Dummies,el);
+    /* PSU */
+    CreateElmt(&el,20,"Power Supply AT",8);InsertLLast(Dummies,el);
+    CreateElmt(&el,30,"Power Supply ATX",8);InsertLLast(Dummies,el);
+    CreateElmt(&el,40,"Power Supply BTX",8);InsertLLast(Dummies,el);
 }

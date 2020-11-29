@@ -172,7 +172,7 @@ int main(){
                         case 0:
                             printf("the\033[0;32m Shop");break;
                         default:
-                            printf("Pelanggan\033[0;31m %d",CurrentPos(MapMatrix));break;
+                            printf("Pelanggan\033[0;31m %d",CurrentPos(MapMatrix));
                     }
                     White;
                     printf(".\n");                   
@@ -222,28 +222,60 @@ int main(){
 
             /* COMMAND 4 : STARTBUILD */
             else if (strcmp(InputCommand,"STARTBUILD")==0){
-                STARTBUILD(&Rakitan,&lagiBuild,1,2);
+                if(CurrentPos(MapMatrix)==-1){
+                    STARTBUILD(&Rakitan,&lagiBuild,1,2);
+                }
+                else{
+                    printf("Return to your base to start building!\n");
+                }
             }
 
             /* COMMAND 5 : FINISHBUILD */
             else if (strcmp(InputCommand,"FINISHBUILD")==0){
-                FINISHBUILD(CurrentPesanan,Rakitan,&lagiBuild,1,2);
+                if(CurrentPos(MapMatrix)==-1){
+                    FINISHBUILD(&InventoryPemain, CurrentPesanan, Rakitan, &lagiBuild,1,2);
+                }
+                else{
+                    printf("Return to your base to finish building!\n");
+                }
             }
 
             /* COMMAND 6 : ADDCOMPONENT */
             else if(strcmp(InputCommand,"ADDCOMPONENT")==0){
-                ADDCOMPONENT(&Rakitan, &InventoryPemain);
+                if(CurrentPos(MapMatrix)==-1 && lagiBuild){
+                    ADDCOMPONENT(&Rakitan, &InventoryPemain);
+                }
+                else{
+                    switch(lagiBuild){
+                        case true:
+                        printf("Return to your base to add a component!\n");break;
+                        default:
+                        printf("Cannot add because no project has been started!\n");
+                    }
+                }                
             }
             /* COMMAND 7 : REMOVECOMPONENT */
             else if (strcmp(InputCommand,"REMOVECOMPONENT")==0){
-                REMOVECOMPONENT(&Rakitan,&InventoryPemain);
+                if(CurrentPos(MapMatrix)==-1 && lagiBuild){
+                    REMOVECOMPONENT(&Rakitan,&InventoryPemain);
+                }
+                else{
+                    switch(lagiBuild){
+                        case true:
+                        printf("Return to your base to remove a component!\n");break;
+                        default:
+                        printf("Cannot remove because no project has been started!\n");
+                    }
+                    
+                }
             }
             /* COMMAND 9: DELIVER */
             else if (strcmp(InputCommand,"DELIVER")==0){
+                //Keknya mending delivery loc diambil dari anak queue
                 if(CurrentAbsis(MapMatrix)==Absis(PointDeliveryLoc) && CurrentOrdinat(MapMatrix)==Ordinat(PointDeliveryLoc)){
                     /* fputs("DELIVER ",fsave); */
                     printf("Item successfully delivered to Pelanggan %d!\n",CurrentPos(MapMatrix));
-                    //harusnya ada Dequeue disini
+                    //harusnya ada Enqueue disini
                 }
                 else{
                     printf("This is not the right address for your delivery!\n");

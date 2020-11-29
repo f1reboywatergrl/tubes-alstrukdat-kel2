@@ -50,7 +50,7 @@ void MainMenu(){
     printf("\n");
     
     printf("//========================\\");printf("\n");
-    printf("|| |  \033[0;31mSTART\033[0;37m  |   \033[0;32mLOAD\033[0;37m   | ||");printf("\n");
+    printf("|| |  \033[0;31mSTART\033[0;37m  |   \033[0;32mLOAD\033[0;37m  | ||");printf("\n");
     printf("\\========================//");printf("\n");
     printf("Please choose your input... \n");
     Green;

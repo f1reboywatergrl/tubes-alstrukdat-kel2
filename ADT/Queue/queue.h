@@ -6,23 +6,35 @@
 #define queue_H
 
 #include "boolean.h"
+#include "../Stack/stackt.h"
 
-#define Nil -1
+
 /* Konstanta untuk mendefinisikan address tak terdefinisi */
+#define NilQ -1
 
 /*
-Infotype dipecah sesuai maunya tubes
+Infotype dipecah jadi:
+- Stack Komponen (isinya komponen yang pelanggan mau)
+- int Invoice (isinya duit yang pelanggan akan bayar)
+- int Pemesan (no. pelanggan)
+- int OrderNumber (no. pesanan)
 */
 
+typedef struct{
+        Stack komponen;
+        int invoice;
+        int pemesan;
+        int orderNumber;
+} Qinfotype;
+
 /* Definisi elemen dan address */
-typedef int infotype;
-typedef int address;   /* indeks tabel */
+typedef int Qaddress;   /* indeks tabel */
 /* Contoh deklarasi variabel bertype Queue : */
 /* Versi I : tabel dinamik, Head dan Tail eksplisit, ukuran disimpan */
-typedef struct { infotype * T;   /* tabel penyimpan elemen */
-                 address HEAD;  /* alamat penghapusan */
-                 address TAIL;  /* alamat penambahan */
-                 int MaxEl;     /* Max elemen queue */
+typedef struct { Qinfotype * T;   /* tabel penyimpan elemen */
+                 Qaddress HEAD;  /* alamat penghapusan */
+                 Qaddress TAIL;  /* alamat penambahan */
+                 int MaxElQueue;     /* Max elemen queue */
                } Queue;
 /* Definisi Queue kosong: HEAD=Nil; TAIL=Nil. */
 /* Catatan implementasi: T[0] tidak pernah dipakai */
@@ -33,7 +45,13 @@ typedef struct { infotype * T;   /* tabel penyimpan elemen */
 #define Tail(Q) (Q).TAIL
 #define InfoHead(Q) (Q).T[(Q).HEAD]
 #define InfoTail(Q) (Q).T[(Q).TAIL]
-#define MaxEl(Q) (Q).MaxEl
+#define MaxEl(Q) (Q).MaxElQueue
+
+/* Macro infotype queue */
+#define Komponen(T) (T).komponen
+#define Invoice(T) (T).invoice
+#define Pemesan(T) (T).pemesan
+#define OrderNumber(T) (T).orderNumber
 
 /* ********* Prototype ********* */
 boolean IsQEmpty (Queue Q);
@@ -59,11 +77,11 @@ void QDeAlokasi(Queue * Q);
 /* F.S. Q menjadi tidak terdefinisi lagi, MaxEl(Q) diset 0 */
 
 /* *** Primitif Add/Delete *** */
-void QAdd (Queue * Q, infotype X);
+void QAdd (Queue * Q, Qinfotype X);
 /* Proses: Menambahkan X pada Q dengan aturan FIFO */
 /* I.S. Q mungkin kosong, tabel penampung elemen Q TIDAK penuh */
 /* F.S. X menjadi TAIL yang baru, TAIL "maju" dengan mekanisme circular buffer */
-void QDel (Queue * Q, infotype * X);
+void QDel (Queue * Q, Qinfotype * X);
 /* Proses: Menghapus X pada Q dengan aturan FIFO */
 /* I.S. Q tidak mungkin kosong */
 /* F.S. X = nilai elemen HEAD pd I.S., HEAD "maju" dengan mekanisme circular buffer; 

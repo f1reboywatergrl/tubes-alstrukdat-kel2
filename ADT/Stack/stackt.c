@@ -1,5 +1,6 @@
 #include "stackt.h"
 #include <stdio.h>
+#include "string.h"
 /* ************ Prototype ************ */
 /* *** Konstruktor/Kreator *** */
 void CreateStackEmpty (Stack *S)
@@ -112,7 +113,7 @@ boolean IsStackEqual(Stack S1, Stack S2){
         while(i<8 && sama){
             Push(&S1, X1);
             Push(&S2,X2);
-            if(!IsStringEqual(X1.nama, X2.nama)){
+            if(strcmp(X1.nama, X2.nama)!=0){
                 sama = false;
             }
             i++;
@@ -121,31 +122,16 @@ boolean IsStackEqual(Stack S1, Stack S2){
     }
 }
 
-boolean IsStringEqual(char A[100], char B[100]){
-    int i = 0;
-    while ((A[i] == B[i]) &&
-          (A[i] != '\0' && B[i] != '\0') &&
-          (i<99)){
-        i++;
-    }
-    if (i==98 && A[i]==B[i]){
-        return(A[i+1]==B[i+1]);
-    }
-    else{
-        return(A[i]==B[i]);
-    }
-}
-
-
 void PrintStack(Stack S)
 {
+    InverseStack(&S);
+    ElTypeList komponen;
     int i;
-
+    int nomor=1;
     for (i = Top(S); i >= 0; i--){
-        printf("%d. %s ",i, S.T[i].nama);
-        if (i == Top(S)){
-            printf("<top>");
-        }
+        Pop(&S, &komponen);
+        printf("%d. %s ",nomor, Nama(komponen));
+        nomor++;
         printf("\n");
     }
 }
@@ -171,7 +157,7 @@ void PrintInventory(List T){
 void STARTBUILD(Stack *S, boolean *lagiBuild, int NoPesanan, int NoPelanggan){
     CreateStackEmpty(S);
     if (*lagiBuild){
-        printf("Sedang merakit komputer lain, tidak bisa merakit pesanan yang lainnya.");
+        printf("Sedang merakit komputer lain, tidak bisa merakit pesanan yang lainnya.\n");
     }
     else{
         *lagiBuild = true;
@@ -181,10 +167,16 @@ void STARTBUILD(Stack *S, boolean *lagiBuild, int NoPesanan, int NoPelanggan){
 
 /* COMMAND 5 : FINISHBUILD */
 
-void FINISHBUILD(Stack Pesanan, Stack Rakitan, boolean *lagiBuild, int NoPesanan, int NoPelanggan){
-    if (IsStackEqual(Pesanan, Rakitan)){ //List di CheckOrder harus bentuknya Stack
+void FINISHBUILD(List *inventory, Stack Pesanan, Stack Rakitan, boolean *lagiBuild, int NoPesanan, int NoPelanggan){
+    if (IsStackEqual(Pesanan, Rakitan)){ //Harus cari cara nyocokin + nentuin Invoice
         *lagiBuild = false;
         printf("Pesanan %d telah selesai. Silahkan antar ke pelanggan %d!\n", NoPesanan, NoPelanggan);
+        ElTypeList hasilBuild;
+        sprintf(Nama(hasilBuild), "%d", NoPesanan);
+        Kategori(hasilBuild) = 9;
+        Harga(hasilBuild) = NoPelanggan*(-1);
+        Jumlah(hasilBuild) = 1;
+        InsertLLast(inventory,hasilBuild);
     }
     else{
         printf("Komponen yang dipasangkan belum sesuai dengan pesanan, build belum dapat diselesaikan.\n");
@@ -196,16 +188,16 @@ void FINISHBUILD(Stack Pesanan, Stack Rakitan, boolean *lagiBuild, int NoPesanan
 
 void ADDCOMPONENT(Stack *Rakitan, List *inventory){
     if(IsStackFull(*Rakitan)){
-        printf("Tidak bisa menambah komponen karena rakitan sudah penuh");
+        printf("Tidak bisa menambah komponen karena rakitan sudah penuh\n");
     }
     else{
         printf("Komponen yang telah terpasang:\n");
         PrintStack(*Rakitan);
 
-        printf("Komponen yang tersedia:");
+        printf("Komponen yang tersedia:\n");
         PrintInventory(*inventory);
         
-        printf("Komponen yang ingin dipasang: ");
+        printf("Komponen yang ingin dipasang:\n");
         int nomor; // dari daftar nomor yang muncul di interface
         int penanda = 0; // untuk mencari nomor itu ada di index berapa
         int index = -1; // index inventory 
@@ -237,10 +229,11 @@ void REMOVECOMPONENT(Stack *Rakitan, List *inventory){
         ElTypeList komponen;
         Pop(Rakitan,&komponen);
         int i = 0;
-        while(!IsStringEqual(Nama(ListElmt(*inventory,i)), Nama(komponen))){
+        while(strcmp(Nama(ListElmt(*inventory,i)), Nama(komponen))!=0){
             i++;
         }
         Jumlah(ListElmt(*inventory,i))++;
     }
 }
-
+                        
+                    

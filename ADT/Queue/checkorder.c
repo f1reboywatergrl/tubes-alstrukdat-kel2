@@ -2,9 +2,12 @@
 #include <stdlib.h>
 #include <queue.c>
 
-void CheckOrder (int order, int pelanggan, int invoice){
-    printf("Nomor Order: %d\n", order);
-    printf("Pemesan : %d\n", pelanggan);
-    printf("Invoice: %d\n", invoice);
+void CheckOrder (int Order, int Build, int Invoice, int Komponen){
+    printf("Nomor Order: %d\n", Order);
+    printf("Pemesan : %d\n", Build);
+    printf("Invoice: %d\n", Invoice);
     printf("Komponen:\n");
+    for (int i=0; i<LengthList(Komponen);i++){
+        printf("%d. %s (%d)\n"), i+1, Nama(ListElmt(Komponen, i));
+    }
 }
