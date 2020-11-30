@@ -225,7 +225,23 @@ int main(){
 
             /* COMMAND 3 : CHECKORDER */
             else if (strcmp(InputCommand,"CHECKORDER")==0){
+                int Order = 3;
+                int Pemesan = 1;
+                int Invoice = 0;
+                Stack S;
+                ElTypeList X;
 
+                CopyStack(CurrentPesanan, &S);
+                while (!IsStackEmpty(S)){
+                    Pop(&S, &X);
+                    Invoice += X.harga;
+                }
+                printf("Nomor Order: %d\n", Order);
+                printf("Pemesan: %d\n", Pemesan);
+                printf("Invoice: %d\n", Invoice);
+                printf("Komponen:");
+
+                PrintStack(CurrentPesanan);
             }
 
             /* COMMAND 4 : STARTBUILD */
