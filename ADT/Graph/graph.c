@@ -125,7 +125,7 @@ boolean IsLinked(Graph G, infotypeGraph n, infotypeGraph p)
 
 addressGraph SearchGraph(Graph G, infotypeGraph X)
 {
-    addressGraph P;
+    addressGraph P=FirstGraph(G);
     while (InfoGraph(P)!=X && NextGraph(P)!=Nil){
         P=NextGraph(P);
     }

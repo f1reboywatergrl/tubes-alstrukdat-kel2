@@ -17,21 +17,26 @@ int main(){
     char InputCommand[100];
     MainMenu();
     scanf("%s",InputCommand);
+    /* INISIALISASI STRUKTUR DATA PENYIMPANAN DATA PENTING */
+    MATRIKS MapMatrix; // -> Nyimpen data Peta, letak pemain, letak Customer
+    Graph G; // -> Nyimpen konektivitas titik2 pada peta
+    MATRIKS GraphMatrix; // -> Nyimpen Adjacency Matriks untuk titik2 pada peta
+    int UangPemain; // -> Default uang pemain
+    Stack Rakitan; // -> Nyimpen Rakitan yang lagi dibangun
+    Stack CurrentPesanan; // -> Nyimpen stack komponen2 pesanan sekarang
+    boolean lagiBuild; // -> Kalo udah startbuild-> true, klo ga false
+    List InventoryPemain; // Nyimpen inventory pemain, set kosong di awal
+    List ListDummy ; // Nyimpen semua data barang yang bisa dijual/diorder 
+    boolean SecretShop; // Nyimpen apakah udah pernah masuk ke secret shop
 
     if (strcmp(InputCommand,"START")==0){
-        /* INISIALISASI STRUKTUR DATA PENYIMPANAN DATA PENTING */
-        MATRIKS MapMatrix; // -> Nyimpen data Peta, letak pemain, letak Customer
-        Graph G; // -> Nyimpen konektivitas titik2 pada peta
-        MATRIKS GraphMatrix; // -> Nyimpen Adjacency Matriks untuk titik2 pada peta
-        int UangPemain=4500; // -> Default uang pemain
-        Stack Rakitan; // -> Nyimpen Rakitan yang lagi dibangun
-        Stack CurrentPesanan; // -> Nyimpen stack komponen2 pesanan sekarang
-        boolean lagiBuild=false; // -> Kalo udah startbuild-> true, klo ga false
-        List InventoryPemain = MakeList(); // Nyimpen inventory pemain, set kosong di awal
-        List ListDummy = MakeList(); 
-        
 
-        /* Kosongkan semua yang bakal dinamis */
+        /* Kosongkan semua yang bakal dinamis / set defaults for new game */
+        UangPemain = 4000;
+        lagiBuild=false;
+        SecretShop=false;
+        InventoryPemain=MakeList();
+        ListDummy= MakeList();
         CreateStackEmpty(&Rakitan);
         CreateDummies(&ListDummy);
         
@@ -286,30 +291,62 @@ int main(){
                     PrintStore(ListDummy);
                     printf("Komponen yang ingin dibeli: ");
                     scanf("%d",(&NoKomponen));
-                    printf("Masukkan jumlah yang ingin dibeli: ");
-                    scanf("%d",(&JumlahKomponen));
-                    HitungTotal = (Harga(ListElmt(ListDummy,NoKomponen-1))*JumlahKomponen);
-                    if (HitungTotal > UangPemain){
-                        printf("Uang tidak cukup!\n");
+                    if (NoKomponen==-999){
+                        if (!SecretShop){
+                            system("cls");
+                            int Choice;
+                            SecretShopIntro();
+                            scanf("%d",&Choice);
+                            Red;
+                            if(Choice==2111){
+                                printf("You have chosen... wisely. Come back to the shop, there's a surprise waiting for you...\n");
+                                
+                                //fungsi discount 
+                            }
+                            else{
+                                printf("You have chosen... poorly. I am sorry, but there are no second chances...\n");
+                            }
+                            printf("I will seal this room permanently now. See you soon, computer cowboy...\n");
+                            LockShop(&SecretShop);
+                        }
+                        else{
+                            Red;
+                            printf("The door is locked...\n");
+                            //show failed entry ui
+                        }
+                        White;
+                        
+                    }
+                    else if (NoKomponen<0 || NoKomponen>24){
+                        printf("Masukkan jumlah yang ingin dibeli: ");
+                        scanf("%d",(&JumlahKomponen));
+                        HitungTotal = (Harga(ListElmt(ListDummy,NoKomponen-1))*JumlahKomponen);
+                        if (HitungTotal > UangPemain){
+                            printf("Uang tidak cukup!\n");
+                        }
+
+                        else{
+                            UangPemain = UangPemain-HitungTotal;
+                            printf("Komponen berhasil dibeli!\n");
+                            ElTypeList elinventory;
+                            boolean Found = false;
+                            for (int i=0;i<(LengthList(InventoryPemain));i++){
+                                if(strcmp((Nama(ListElmt(InventoryPemain,i))),(Nama(ListElmt(ListDummy,NoKomponen-1))))==0)
+                                {
+                                    Found = true;
+                                    Jumlah(ListElmt(InventoryPemain,i)) = Jumlah(ListElmt(InventoryPemain,i))+JumlahKomponen;
+                                }
+                            }
+                            if (!Found){
+                                CreateElmtLengkap(&elinventory,Harga(ListElmt(ListDummy,NoKomponen-1)),Nama(ListElmt(ListDummy,NoKomponen-1)),Kategori(ListElmt(ListDummy,NoKomponen-1)),JumlahKomponen);
+                                InsertLLast(&InventoryPemain,elinventory);
+                            }
+                        }                        
+                    }
+                    else{
+                        printf("Enter a correct input!\n");
                     }
 
-                    else{
-                        UangPemain = UangPemain-HitungTotal;
-                        printf("Komponen berhasil dibeli!\n");
-                        ElTypeList elinventory;
-                        boolean Found = false;
-                        for (int i=0;i<(LengthList(InventoryPemain));i++){
-                            if(strcmp((Nama(ListElmt(InventoryPemain,i))),(Nama(ListElmt(ListDummy,NoKomponen-1))))==0)
-                            {
-                                Found = true;
-                                Jumlah(ListElmt(InventoryPemain,i)) = Jumlah(ListElmt(InventoryPemain,i))+JumlahKomponen;
-                            }
-                        }
-                        if (!Found){
-                            CreateElmtLengkap(&elinventory,Harga(ListElmt(ListDummy,NoKomponen-1)),Nama(ListElmt(ListDummy,NoKomponen-1)),Kategori(ListElmt(ListDummy,NoKomponen-1)),JumlahKomponen);
-                            InsertLLast(&InventoryPemain,elinventory);
-                        }
-                    }
                 }
                 else{
                     printf("Move to the shop to access the shop!\n");

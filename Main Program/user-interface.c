@@ -1,5 +1,5 @@
 #include <stdio.h>
-
+#include "../ADT/Stack/boolean.h"
 /* --------GALERI WARNA------------ */
 #define Yellow printf("\033[0;33m");
 #define Purple printf("\033[0;35m");
@@ -54,4 +54,21 @@ void MainMenu(){
     printf("\\========================//");printf("\n");
     printf("Please choose your input... \n");
     Green;
+}
+
+void SecretShopIntro(){
+    Yellow;
+    printf("Through the Shop's back door, Santo found his way inside a secret room.\n");
+    Red;
+    printf("Well done, you have managed to find this room.\n");
+    printf("I see your potential... so I've set a reward for you.\n");
+    printf("Below are 5 goblets. Choose wisely, and a reward will be bestowed upon you.\n");
+    printf("I'll give you a hint: Remember where you came from, why you're doing this, and what your goal is.\n");
+    printf("Sometimes, the answer may be hiding in a different place... think about the question, not the options...\n");
+    IBlue;printf("1 ");Green;printf("2 ");Yellow;printf("3 ");Purple;printf("4 ");BCyan;printf("5\n");
+    Red;printf("Choose Wisely: ");
+}
+
+void LockShop(boolean *SecretShop){
+    *SecretShop=!(*SecretShop);
 }
