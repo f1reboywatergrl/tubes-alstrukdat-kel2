@@ -45,13 +45,15 @@ int main(){
         for (int a=0;a<CKata.Length;a++){
             char temp = CKata.TabKata[a]; // berisi nilai akuisisi
             int convert = temp - '0'; // mengubah dari char ke int
-            BrsPita += pow(10,CKata.Length-a-1)*convert;
+            int pangkat = Pangkat(10,CKata.Length-a-1);
+            BrsPita += pangkat*convert;
         }
         ADVKATA();
         for (int b = 0;b<CKata.Length;b++){
             char temp = CKata.TabKata[b]; // berisi nilai akuisisi
             int convert = temp - '0'; // mengubah dari char ke int
-            KolPita += pow(10,CKata.Length-b-1)*convert;
+            int pangkat = Pangkat(10,CKata.Length-b-1);
+            KolPita += pangkat*convert;
         }
         MakeMATRIKS(BrsPita,KolPita,&MapMatrix);
         EmptyMatrix(&MapMatrix);
@@ -64,7 +66,8 @@ int main(){
         for (int c=1;c<CKata.Length;c++){ /* mulai dari c=1 karena Lengthnya tambah akibat ada blank*/
             char temp = CKata.TabKata[c]; // berisi nilai akuisisi
             int convert = temp - '0'; // mengubah dari char ke int
-            TitikTotal += pow(10,CKata.Length-c-1)*convert;
+            int pangkat = Pangkat(10,CKata.Length-c-1);
+            TitikTotal += pangkat*convert;
         }
         TitikTotal-=2; //karena kita mulai dari -1
         // baca titik total AMAN
@@ -79,14 +82,16 @@ int main(){
             for (int d=0;d<CKata.Length;d++){
                 char temp = CKata.TabKata[d]; // berisi nilai akuisisi
                 int convert = temp - '0'; // mengubah dari char ke int
-                Absis += pow(10,CKata.Length-d-1)*convert;
+                int pangkat = Pangkat(10,CKata.Length-d-1);
+                Absis += pangkat*convert;
             }
             ADVKATA();
             int Ordinat=0;
             for (int e=0;e<CKata.Length;e++){
                 char temp = CKata.TabKata[e]; // berisi nilai akuisisi
                 int convert = temp - '0'; // mengubah dari char ke int
-                Ordinat += pow(10,CKata.Length-e-1)*convert;
+                int pangkat = Pangkat(10,CKata.Length-e-1);
+                Ordinat += pangkat*convert;
             }
             SimpanPoint(&CTemp,Absis,Ordinat,Type,I);
             if (I==-1){

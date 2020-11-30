@@ -40,4 +40,8 @@ F.S.: CKata berisi kata yang sudah diakuisisi;
 CC = BLANK atau CC = MARK;
 CC adalah karakter sesudah karakter terakhir yang diakuisisi */
 
+/* Tambahan fungsi untuk pangkat*/
+int Pangkat(int base, int power);
+/* mereturn base**power */
+
 #endif
