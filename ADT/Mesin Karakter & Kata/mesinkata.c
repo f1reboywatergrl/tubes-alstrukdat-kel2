@@ -1,4 +1,5 @@
 #include "mesinkata.h"
+#include <string.h>
 
 boolean EndKata;
 Kata CKata;
@@ -76,4 +77,22 @@ int Pangkat(int base, int power){
 		result = result*base;
 	}
 	return result;
+}
+
+void BacaInput(char Kata[100]){
+	char InputCommand[100];
+    scanf("%s",&InputCommand);
+    char CC;
+	int i;
+	/* definisi */
+/* Algoritma*/
+	CC = InputCommand[0];
+	int length = strlen(InputCommand);
+	i = 0; /* inisialisasi */
+	while (i < length) {
+		Kata[i] = CC;
+		CC = InputCommand[i+1];
+		i++;
+	}
+	
 }

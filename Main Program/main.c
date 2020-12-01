@@ -5,18 +5,18 @@
 // #include "../ADT/Array Dinamis/list.c"
 #include "../ADT/Stack/stackt.c"
 
-#include "string.h"
+#include <string.h>
 #include "user-interface.c"
 #include "stdlib.h"
 
 int main(){
     /* ---- TAMPILAN MENU UTAMA BANGET ---- */
     system("cls");
-    static FILE * fsave;
-    fsave = fopen("save.txt","a");
-    char InputCommand[100];
     MainMenu();
-    scanf("%s",InputCommand);
+    char Kata[100];
+    BacaInput(Kata); // Membaca input dari user
+    int length = strlen(Kata); //JANGAN DIAPUS NANTI ERROR
+    // variabel Kata menyimpan hasil input
     /* INISIALISASI STRUKTUR DATA PENYIMPANAN DATA PENTING */
     MATRIKS MapMatrix; // -> Nyimpen data Peta, letak pemain, letak Customer
     Graph G; // -> Nyimpen konektivitas titik2 pada peta
@@ -28,8 +28,10 @@ int main(){
     List InventoryPemain; // Nyimpen inventory pemain, set kosong di awal
     List ListDummy ; // Nyimpen semua data barang yang bisa dijual/diorder 
     boolean SecretShop; // Nyimpen apakah udah pernah masuk ke secret shop
+    int diskon; 
+    diskon = 1; // Diskon awal
 
-    if (strcmp(InputCommand,"START")==0){
+    if (strcmp(Kata,"START")==0){
 
         /* Kosongkan semua yang bakal dinamis / set defaults for new game */
         UangPemain = 4000;
@@ -143,14 +145,19 @@ int main(){
         printf("Welcome to Santo's World...\n");
         ShowUI();
         Cyan; //set color Cyan
-        scanf("%s",InputCommand);
-        while(strcmp(InputCommand,"EXIT")!=0){
+        // Reset isi Kata
+        for (int x=0;x<100;x++){ // Reset nilai Kata supaya bisa input lag
+            Kata[x] = '\0';
+        }
+        BacaInput(Kata);
+        // Kata menyimpan hasil input
+        while(strcmp(Kata,"EXIT")!=0){
             White; //set color White
             system("cls");
             
             /* ---- DAFTAR COMMAND UTAMA PERMAINAN ---- */
             /* COMMAND 1: MOVE */
-            if (strcmp(InputCommand,"MOVE")==0){            
+            if (strcmp(Kata,"MOVE")==0){            
                 ShowValidTargets(G,CurrentPos(MapMatrix));
                 int InputTarget;
                 scanf("%d",&InputTarget);
@@ -164,14 +171,6 @@ int main(){
                     printf("That area is not accessible, please impute according to shown indices (1-%d).\n", NbElmt(Link(P1)));
                 }
                 else{
-                    fputs("MOVE ",fsave); // Menyimpan command ke save file
-                    // Save input perpindahan lokasi ke save file
-                    char input[3];
-                    sprintf(input,"%d ",InputTarget); // Mengubah int menjadi char
-                    // "%d " membuat ada spasi di input
-                    const char* p = input; // mengubah char ke const char* supaya menjadi parameter fputs
-                    fputs(p,fsave);
-                    // Selesai disave
                     for (int i=1;i<InputTarget;i++){
                         AdrTarget=NextGraph(AdrTarget);
                     }
@@ -193,7 +192,7 @@ int main(){
             }
 
             /* COMMAND 2 : STATUS */
-            else if (strcmp(InputCommand,"STATUS")==0){  
+            else if (strcmp(Kata,"STATUS")==0){  
                 int Build = 3; //Ambil dari Queue
                 int Order = 1; //nanti variablenya disesuain sm yg lain
                 int length = 2; //Contoh contoh contoh
@@ -219,12 +218,12 @@ int main(){
                 }
                 printf("\n");
                 printf("Inventory anda:\n");
-                TampilInventory(InventoryPemain);       
+                TampilInventory(InventoryPemain);
             }
 
 
             /* COMMAND 3 : CHECKORDER */
-            else if (strcmp(InputCommand,"CHECKORDER")==0){
+            else if (strcmp(Kata,"CHECKORDER")==0){
                 int Order = 3;
                 int Pemesan = 1;
                 int Invoice = 0;
@@ -245,7 +244,7 @@ int main(){
             }
 
             /* COMMAND 4 : STARTBUILD */
-            else if (strcmp(InputCommand,"STARTBUILD")==0){
+            else if (strcmp(Kata,"STARTBUILD")==0){
                 if(CurrentPos(MapMatrix)==-1){
                     /* fputs("STARTBUILD ", fsave) */
                     STARTBUILD(&Rakitan,&lagiBuild,1,2);
@@ -256,7 +255,7 @@ int main(){
             }
 
             /* COMMAND 5 : FINISHBUILD */
-            else if (strcmp(InputCommand,"FINISHBUILD")==0){
+            else if (strcmp(Kata,"FINISHBUILD")==0){
                 if(CurrentPos(MapMatrix)==-1){
                     /* fputs("FINISHBUILD ",fsave); */
                     FINISHBUILD(&InventoryPemain, CurrentPesanan, Rakitan, &lagiBuild,1,2);
@@ -267,7 +266,7 @@ int main(){
             }
 
             /* COMMAND 6 : ADDCOMPONENT */
-            else if(strcmp(InputCommand,"ADDCOMPONENT")==0){
+            else if(strcmp(Kata,"ADDCOMPONENT")==0){
                 if(CurrentPos(MapMatrix)==-1 && lagiBuild){
                     //fputs("ADDCOMPONENT ",fsave);
                     ADDCOMPONENT(&Rakitan, &InventoryPemain);
@@ -282,7 +281,7 @@ int main(){
                 }                
             }
             /* COMMAND 7 : REMOVECOMPONENT */
-            else if (strcmp(InputCommand,"REMOVECOMPONENT")==0){
+            else if (strcmp(Kata,"REMOVECOMPONENT")==0){
                 if(CurrentPos(MapMatrix)==-1 && lagiBuild){
                     //fputs("REMOVECOMPONENT ",fsave);
                     REMOVECOMPONENT(&Rakitan,&InventoryPemain);
@@ -300,11 +299,13 @@ int main(){
 
     
             /* COMMAND 8 : SHOP */
-            else if(strcmp(InputCommand,"SHOP")==0){
+            else if(strcmp(Kata,"SHOP")==0){
                 if(CurrentPos(MapMatrix)==0){
                     int NoKomponen, JumlahKomponen, HitungTotal;
                     printf("Komponen yang tersedia:\n");
-                    PrintStore(ListDummy);
+                    for (int i=0;i<LengthList(ListDummy);i++){
+                        printf("%d. %s - $%d\n",i+1,Nama(ListElmt(ListDummy,i)),(Harga(ListElmt(ListDummy,i)))/diskon);
+                    }
                     printf("Komponen yang ingin dibeli: ");
                     scanf("%d",(&NoKomponen));
                     if (NoKomponen==-999){
@@ -315,9 +316,8 @@ int main(){
                             scanf("%d",&Choice);
                             Red;
                             if(Choice==2111){
-                                printf("You have chosen... wisely. Come back to the shop, there's a surprise waiting for you...\n");
-                                
-                                //fungsi discount 
+                                diskon = 2;
+                                printf("You have chosen... wisely. Come back to the shop, there's a surprise waiting for you...\n");                                
                             }
                             else{
                                 printf("You have chosen... poorly. I am sorry, but there are no second chances...\n");
@@ -333,14 +333,13 @@ int main(){
                         White;
                         
                     }
-                    else if (NoKomponen<0 || NoKomponen>24){
+                    else if (NoKomponen>0 && NoKomponen<=24){
                         printf("Masukkan jumlah yang ingin dibeli: ");
                         scanf("%d",(&JumlahKomponen));
-                        HitungTotal = (Harga(ListElmt(ListDummy,NoKomponen-1))*JumlahKomponen);
+                        HitungTotal = ((Harga(ListElmt(ListDummy,NoKomponen-1))/diskon)*JumlahKomponen);
                         if (HitungTotal > UangPemain){
                             printf("Uang tidak cukup!\n");
                         }
-
                         else{
                             UangPemain = UangPemain-HitungTotal;
                             printf("Komponen berhasil dibeli!\n");
@@ -362,7 +361,6 @@ int main(){
                     else{
                         printf("Enter a correct input!\n");
                     }
-
                 }
                 else{
                     printf("Move to the shop to access the shop!\n");
@@ -371,27 +369,59 @@ int main(){
             }
 
             /* COMMAND 9: DELIVER */
-            else if (strcmp(InputCommand,"DELIVER")==0){
+            else if (strcmp(Kata,"DELIVER")==0){
                 //Keknya mending delivery loc diambil dari anak queue
                 if(CurrentAbsis(MapMatrix)==Absis(PointDeliveryLoc) && CurrentOrdinat(MapMatrix)==Ordinat(PointDeliveryLoc)){
-                    /* fputs("DELIVER ",fsave); */
                     printf("Item successfully delivered to Customer %d!\n",CurrentPos(MapMatrix));
-                    //harusnya ada Enqueue disini
+                    //harusnya ada Dequeue disini
                 }
                 else{
                     printf("This is not the right address for your delivery!\n");
                 }
             }
+            /* COMMAND 10: END_DAY */
+            else if (strcmp(Kata,"END_DAY")==0){
+                //harusnya ada Enqueue disini
+            }
 
             /* COMMAND 11: SAVE */
-            else if (strcmp(InputCommand,"SAVE")==0){
-                fputs(". ",fsave); // akhir dari program yang disave ditandai mark
+            else if (strcmp(Kata,"SAVE")==0){
+                static FILE * fsave;
+                fsave = fopen("save.txt","w"); // isi save.txt teroverwrite dengan kondisi pemain terakhir
+                /* Append UangPemain */
+                char Uang[100];
+                sprintf(Uang,"%d ",UangPemain);
+                const char* konvertuang = Uang;
+                fputs(konvertuang,fsave);
+                /* Append Rakitan */
+                InverseStack(&Rakitan); // Supaya yang disave itu adalah yang paling bawah stack terlebih dahulu
+                ElTypeList komponen;
+                int i;
+                for (i = Top(Rakitan); i >= 0; i--){
+                    Pop(&Rakitan, &komponen);
+                    const char* komp = Nama(komponen);
+                    fputs(komp,fsave);
+                    fputs(" ",fsave); // Kasih blank antar komponen
+                }
+                /* harusnya simpen Queue pesanan di sini*/
+                /* Append lagiBuild*/
+                /*
+                char buildchar = Convert.ToChar(lagiBuild); // Mengubah kata 'true'/'false' dari boolean ke string
+                const char* buildcchar = buildchar;
+                fputs(buildcchar,fsave);
+                fputs(" ",fsave); // Tambah blank untuk memisahkan kata
+                /* 
+                List InventoryPemain; // Nyimpen inventory pemain, set kosong di awal
+                List ListDummy ; // Nyimpen semua data barang yang bisa dijual/diorder 
+                boolean SecretShop; // Nyimpen apakah udah pernah masuk ke secret shop
                 printf("Lokasi save file:");
                 printf("C/User/Documents/GitHub/tubes-alstrukdat-kel2/ADT/Mesin Karakter & Kata/save.txt\n");
                 printf("Game berhasil di save!\n");
+                fclose(fsave);
+                */
             }
             /* COMMAND 12: MAP */
-            else if (strcmp(InputCommand,"MAP")==0){   
+            else if (strcmp(Kata,"MAP")==0){   
                 PrintMap(MapMatrix); //AMAN
             
             }
@@ -401,15 +431,19 @@ int main(){
             }
             ShowUI();
             Cyan;
-            scanf("%s",InputCommand);       
+            for (int x=0;x<100;x++){ // Reset semua nilai Kata supaya bisa input lagi
+                Kata[x] = '\0';
+            }
+            BacaInput(Kata);
+            // Kata menyimpan hasil input             
         }
         
         White;
-        fclose(fsave);
         printf("Thank you for playing!\n");
         
 
 
     }
+    
     return 0;
 }

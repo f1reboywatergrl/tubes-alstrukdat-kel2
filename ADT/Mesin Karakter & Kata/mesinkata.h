@@ -44,4 +44,8 @@ CC adalah karakter sesudah karakter terakhir yang diakuisisi */
 int Pangkat(int base, int power);
 /* mereturn base**power */
 
+/* Tambahan fungsi untuk membaca input COMMAND dari user*/
+void BacaInput(char InputCommand[100]);
+/* Modifikasi mesin kata untuk membaca input COMMAND dari user */
+
 #endif

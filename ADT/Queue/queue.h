@@ -26,7 +26,7 @@ typedef struct{
         int pemesan;
         int orderNumber;
 } Qinfotype;
-
+/* 1. 2. 3. 4. 5. */
 /* Definisi elemen dan address */
 typedef int Qaddress;   /* indeks tabel */
 /* Contoh deklarasi variabel bertype Queue : */

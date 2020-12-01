@@ -14,6 +14,10 @@ int main(){
     scanf("%d",(&NoKomponen));
     printf("Masukkan jumlah yang ingin dibeli: ");
     scanf("%d",(&JumlahKomponen));
+
+    boolean Diskon = false; 
+
+    HitungTotal = ((Harga(ListElmt(ListDummy,NoKomponen-1))*JumlahKomponen)/2);
     HitungTotal = (Harga(ListElmt(ListDummy,NoKomponen-1))*JumlahKomponen);
     TampilInventory(InventoryPemain);
     if (HitungTotal > UangPemain){
@@ -35,7 +39,6 @@ int main(){
             CreateElmtLengkap(&elinventory,Harga(ListElmt(ListDummy,NoKomponen-1)),Nama(ListElmt(ListDummy,NoKomponen-1)),Kategori(ListElmt(ListDummy,NoKomponen-1)),JumlahKomponen);
             InsertLLast(&InventoryPemain,elinventory);
         }
-
 
         int Build = 3; //Ambil dari Queue
         int Order = 1; //nanti variablenya disesuain sm yg lain

@@ -27,67 +27,56 @@ typedef struct {
 #define Kategori(T) T.kategori
 #define Neff(T) T.Neff
 
-/**
- * Konstruktor
- * I.S. sembarang
- * F.S. Terbentuk List kosong dengan ukuran InitialSize
- */
 List MakeList();
+/* Konstruktor
+ * I.S. sembarang
+ * F.S. Terbentuk List kosong dengan ukuran InitialSize */
 
-/**
- * Destruktor
- * I.S. List terdefinisi
- * F.S. list->A terdealokasi
- */
 void DeallocateList(List *list);
- 
-/**
- * Fungsi untuk mengetahui apakah suatu list kosong.
- * Prekondisi: list terdefinisi
- */
+ /* Destruktor
+ * I.S. List terdefinisi
+ * F.S. list->A terdealokasi */
+
 boolean IsLEmpty(List list);
+/* Fungsi untuk mengetahui apakah suatu list kosong.
+ Prekondisi: list terdefinisi */
 
 int LengthList(List list) ;
-
+/* Mengukur panjang dari suatu list */
 
 ElTypeList GetL(List list, IdxType i);
 
-/**
- * Fungsi untuk mendapatkan kapasitas yang tersedia.
- * Prekondisi: list terdefinisi
- */
 int GetLCapacity(List list);
-
-/**
- * Fungsi untuk menambahkan elemen baru di index ke-i
- * Prekondisi: list terdefinisi, i di antara 0..Length(list).
- */
+/* Fungsi untuk mendapatkan kapasitas yang tersedia.
+ Prekondisi: list terdefinisi */
 
 ElTypeList InputLElType();
-
+/* Fungsi untuk menambahkan elemen baru di index ke-i
+ Prekondisi: list terdefinisi, i di antara 0..Length(list). */
 
 void InsertLAt(List *list, ElTypeList el, IdxType i);
-
+/* Fungsi untuk menambahkan elemen baru di akhir indeks i */
 
 void InsertLLast(List *list, ElTypeList el);
+/* Fungsi untuk menambahkan elemen baru di akhir list. */
 
-/**
- * Fungsi uLntuk menambahkan elemen baru di awal list.
- * Prekondisi: list terdefinisi
- */
 void InsertFirst(List *list, ElTypeList el);
-
+/* Fungsi untuk menambahkan elemen baru di awal list.
+ * Prekondisi: list terdefinisi */
 
 void TulisIsiList(List T);
-
-void PrintStore(List T);
+/*Menampilkan isi dari list */
 
 void TampilInventory(List T);
+/* Menampilkan Isi Inventory untuk command STATUS */
 
 void CreateElmt (ElTypeList *el, int Harga, char *Nama, int Type );
 /* Membuat elemen dummy dengan properti el->harga = Harga, el->nama = *Nama, el->kategori = Type, 
 el->jumlah = 0*/
+
 void CreateElmtLengkap (ElTypeList *el, int Harga, char *Nama, int Type, int Jumlah);
+/* Membuat elemen dummy dengan properti el->harga = Harga, el->nama = *Nama, el->kategori = Type, 
+el->jumlah = Jumlah*/
 
 void CreateDummies(List *Dummies);
 /* Membuat list dummy berisikan elemen dummy (hard-coded) */

@@ -34,10 +34,12 @@
 */
 
 int main(){
+/*    
     List inventory = MakeList();
     CreateDummies(&inventory);
 
-    /*ElTypeList El;      Nama(El) = "A";     Kategori(El) = 1;       Jumlah(El) = 1;     Harga(El)=5000;
+    /*
+    ElTypeList El;      Nama(El) = "A";     Kategori(El) = 1;       Jumlah(El) = 1;     Harga(El)=5000;
     ElTypeList El2;     Nama(El2) = "B";    Kategori(El2) = 2;      Jumlah(El2) = 1;    Harga(El2)=5000;
     ElTypeList El3;     Nama(El3) = "C";    Kategori(El3) = 3;      Jumlah(El3) = 1;    Harga(El3)=5000;
     ElTypeList El4;     Nama(El4) = "D";    Kategori(El4) = 4;      Jumlah(El4) = 1;    Harga(El4)=5000;
@@ -54,7 +56,7 @@ int main(){
     InsertLLast(&inventory,El5);
     InsertLLast(&inventory,El6);
     InsertLLast(&inventory,El7);
-    InsertLLast(&inventory,El8);*/
+    InsertLLast(&inventory,El8);
 
     printf("Isi inventory: \n");
     PrintInventory(inventory);
@@ -72,6 +74,7 @@ int main(){
     Jumlah(ListElmt(inventory,18))=1;
     Jumlah(ListElmt(inventory,21))=1;
 
+
     Stack Pesanan;
     CreateStackEmpty(&Pesanan);
     Push(&Pesanan, ListElmt(inventory,0));
@@ -83,8 +86,12 @@ int main(){
     Push(&Pesanan, ListElmt(inventory,18));
     Push(&Pesanan, ListElmt(inventory,21));
 
+
     Stack S;
     CreateStackEmpty(&S);
+
+    ADDCOMPONENT(&S, &inventory);
+
 
     STARTBUILD(&S,&lagiBuild, NoPesanan, NoPelanggan);
 
@@ -99,7 +106,17 @@ int main(){
     PrintStack(S);
 
     FINISHBUILD(&inventory, Pesanan, S, &lagiBuild, NoPesanan, NoPelanggan);
+*/
 
+    Stack Rakitan;
+    CreateStackEmpty(&Rakitan);
+
+    List inventory = MakeList();
+    ElTypeList El;      Nama(El) = "A";     Kategori(El) = 1;       Jumlah(El) = 1;     Harga(El)=5000;
+    ElTypeList El2;     Nama(El2) = "B";    Kategori(El2) = 2;      Jumlah(El2) = 1;    Harga(El2)=5000;
+    InsertLLast(&inventory,El);
+    InsertLLast(&inventory,El2);
+    ADDCOMPONENT(&Rakitan, &inventory);
 
     return 0;
 }

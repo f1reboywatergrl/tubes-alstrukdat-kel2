@@ -164,15 +164,13 @@ void TulisIsiList(List T){
     }
 }
 
-void PrintStore(List T){
-    for (int i=0;i<LengthList(T);i++){
-        printf("%d. %s - $%d\n",i+1,Nama(ListElmt(T,i)),Harga(ListElmt(T,i)));
-    }
-}
-
 void TampilInventory(List T){
+    int j = 1;
     for (int i=0;i<LengthList(T);i++){
-        printf("%d. %s - (%d)\n",i+1,Nama(ListElmt(T,i)),Jumlah(ListElmt(T,i)));
+        if (Jumlah(ListElmt(T,i))>0){
+            printf("%d. %s - (%d)\n",j,Nama(ListElmt(T,i)),Jumlah(ListElmt(T,i)));
+            j++;
+        }
     }
 
 }

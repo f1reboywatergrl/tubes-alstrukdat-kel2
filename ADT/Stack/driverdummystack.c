@@ -59,6 +59,7 @@ int main(){
  
     //Nanti buat ngebantu bikin orderan dummy
 
+    TulisIsiList(L);printf("\n");
     printf("STEK \n\n");
     PrintStack(S1);printf("\n");
     PrintStack(S2);printf("\n");
@@ -67,5 +68,14 @@ int main(){
     PrintStack(S4);printf("\n");
     PrintStack(S5);printf("\n");
     PrintStack(S6);printf("\n");
+
+    PrintStack(S7);printf("\n");
+    PrintStack(S8);printf("\n");
+    PrintStack(S9);printf("\n");
+
+    PrintStack(S10);printf("\n");
+    PrintStack(S11);printf("\n");
+    PrintStack(S12);printf("\n");
+   
     return 0;
 }

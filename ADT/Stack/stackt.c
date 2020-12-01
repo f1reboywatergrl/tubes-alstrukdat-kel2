@@ -136,20 +136,27 @@ void PrintStack(Stack S)
     }
 }
 
-void PrintInventory(List T){
+int PrintInventory(List T){
     if (!IsLEmpty(T)){
-        int nomor = 1;
+        int nomor = 0;
         int i;
         int panjang = LengthList(T);
         for (i=0; i < panjang; i++){
             if ((ListElmt(T,i).jumlah) > 0){
-                printf("%d. %s\n", nomor, ((ListElmt(T,i)).nama));
+                printf("%d. %s\n", nomor+1, ((ListElmt(T,i)).nama));
                 nomor++;
             }
         }
+        if(nomor == 0){
+            printf("Inventory is empty\n");
+        }
+        return nomor;
+    }
+    else{
+        printf("Inventory is empty\n");
+        return 0;
     }
 }
-
 /*** COMMAND ***/
 
 /* COMMAND 4 : STARTBUILD */
@@ -187,6 +194,7 @@ void FINISHBUILD(List *inventory, Stack Pesanan, Stack Rakitan, boolean *lagiBui
 /* COMMAND 6 : ADDCOMPONENT */
 
 void ADDCOMPONENT(Stack *Rakitan, List *inventory){
+
     if(IsStackFull(*Rakitan)){
         printf("Cannot add anymore components!\n");
     }
@@ -195,26 +203,36 @@ void ADDCOMPONENT(Stack *Rakitan, List *inventory){
         PrintStack(*Rakitan);
 
         printf("Available components:\n");
-        PrintInventory(*inventory);
-        
-        printf("Attach which component?:\n");
-        int nomor; // dari daftar nomor yang muncul di interface
-        int penanda = 0; // untuk mencari nomor itu ada di index berapa
-        int index = -1; // index inventory 
-        scanf("%d", &nomor); 
-        while(nomor != penanda){
-            index++;
-            if ((ListElmt(*inventory,index).jumlah) > 0){
-                penanda++;
-            }
-        }
-        if (CekUrutan(*Rakitan, (ListElmt(*inventory,index)).kategori)){
-            Push(Rakitan, (ListElmt(*inventory,index)));
-            Jumlah(ListElmt(*inventory,index))--;
-            printf("Successfully attached!\n");
+        int amount = PrintInventory(*inventory); //jumlah komponen yang tersedia
+        if(amount==0){
+            //printf("Cannot add anymore components!\n");
+            printf("Go to shop to buy component\n");
         }
         else{
-            printf("Attachment unsucessful! Re-check your order!\n");
+            printf("Attach which component?:\n");
+            int nomor; // dari daftar nomor yang muncul di interface
+            int penanda = 0; // untuk mencari nomor itu ada di index berapa
+            int index = -1; // index inventory 
+            scanf("%d", &nomor);
+            if(nomor<1 || nomor>amount){
+                printf("Wrong input!\n");
+            }
+            else{        
+                while(nomor != penanda){
+                    index++;
+                    if ((ListElmt(*inventory,index).jumlah) > 0){
+                        penanda++;
+                    }
+                }
+                if (CekUrutan(*Rakitan, (ListElmt(*inventory,index)).kategori)){
+                    Push(Rakitan, (ListElmt(*inventory,index)));
+                    Jumlah(ListElmt(*inventory,index))--;
+                    printf("Successfully attached!\n");
+                }
+                else{
+                    printf("Attachment unsucessful! Re-check your order!\n");
+                }
+            }
         }
     }
 }
