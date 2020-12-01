@@ -81,7 +81,7 @@ int Pangkat(int base, int power){
 
 void BacaInput(char Kata[100]){
 	char InputCommand[100];
-    scanf("%s",&InputCommand);
+    scanf("%s",InputCommand);
     char CC;
 	int i;
 	/* definisi */

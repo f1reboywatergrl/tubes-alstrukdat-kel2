@@ -18,10 +18,10 @@ typedef int indeks; /* indeks baris, kolom */
 typedef int ElTypeMatriks; 
 typedef struct { 
 	ElTypeMatriks Mem[BrsMax+1][KolMax+1];
-   int NBrsEff; /* banyaknya/ukuran baris yg terdefinisi */
-	int NKolEff; /* banyaknya/ukuran kolom yg terdefinisi */
-   int currentAbsis;
-   int currentOrdinat;
+   indeks NBrsEff; /* banyaknya/ukuran baris yg terdefinisi */
+	indeks NKolEff; /* banyaknya/ukuran kolom yg terdefinisi */
+   indeks currentAbsis;
+   indeks currentOrdinat;
 } MATRIKS;
 /* NBrsEff >= 1 dan NKolEff >= 1 */
 /* Indeks matriks yang digunakan: [BrsMin..BrsMax][KolMin..KolMax] */
