@@ -34,7 +34,7 @@
 */
 
 int main(){
-/*    
+   
     List inventory = MakeList();
     CreateDummies(&inventory);
 
@@ -57,7 +57,7 @@ int main(){
     InsertLLast(&inventory,El6);
     InsertLLast(&inventory,El7);
     InsertLLast(&inventory,El8);
-
+*/
     printf("Isi inventory: \n");
     PrintInventory(inventory);
     //TulisIsiList(inventory);
@@ -90,24 +90,28 @@ int main(){
     Stack S;
     CreateStackEmpty(&S);
 
-    ADDCOMPONENT(&S, &inventory);
-
+    ADDCOMPONENT(&S, &inventory, lagiBuild);
+    printf("\n");
 
     STARTBUILD(&S,&lagiBuild, NoPesanan, NoPelanggan);
+    printf("\n");
 
-    ADDCOMPONENT(&S, &inventory);
+    ADDCOMPONENT(&S, &inventory, lagiBuild);
     PrintStack(S);
+    printf("\n");
 
-    ADDCOMPONENT(&S, &inventory);
+    ADDCOMPONENT(&S, &inventory, lagiBuild);
     PrintStack(S);
+    printf("\n");
 
 
-    REMOVECOMPONENT(&S, &inventory);
+    REMOVECOMPONENT(&S, &inventory, lagiBuild);
     PrintStack(S);
+    printf("\n");
 
     FINISHBUILD(&inventory, Pesanan, S, &lagiBuild, NoPesanan, NoPelanggan);
-*/
 
+/*
     Stack Rakitan;
     CreateStackEmpty(&Rakitan);
 
@@ -117,6 +121,7 @@ int main(){
     InsertLLast(&inventory,El);
     InsertLLast(&inventory,El2);
     ADDCOMPONENT(&Rakitan, &inventory);
+*/
 
     return 0;
 }

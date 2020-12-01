@@ -87,10 +87,10 @@ void STARTBUILD(Stack *S, boolean *lagiBuild, int NoPesanan, int NoPelanggan);
 void FINISHBUILD(List *inventory, Stack Pesanan, Stack Rakitan, boolean *lagiBuild, int NoPesanan, int NoPelanggan);
 /* mengecek kesesuaian rakitan dengan pesanan dan mengakhiri build */
 
-void ADDCOMPONENT(Stack *Rakitan, List *inventory);
+void ADDCOMPONENT(Stack *Rakitan, List *inventory, boolean lagiBuild);
 /* menambah komponen dari inventory untuk merakit */
 
-void REMOVECOMPONENT(Stack *Rakitan, List *inventory);
+void REMOVECOMPONENT(Stack *Rakitan, List *inventory, boolean lagiBuild);
 /* melepas komponen dari rakitan dan memasukannya ke inventory kembali */
 
 void CreateDummyStacks (Stack *Dummies, ElTypeList order1, ElTypeList order2, ElTypeList order3, ElTypeList order4, ElTypeList order5, ElTypeList order6, ElTypeList order7, ElTypeList order8);

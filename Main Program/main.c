@@ -269,7 +269,7 @@ int main(){
             else if(strcmp(Kata,"ADDCOMPONENT")==0){
                 if(CurrentPos(MapMatrix)==-1 && lagiBuild){
                     //fputs("ADDCOMPONENT ",fsave);
-                    ADDCOMPONENT(&Rakitan, &InventoryPemain);
+                    ADDCOMPONENT(&Rakitan, &InventoryPemain, lagiBuild);
                 }
                 else{
                     switch(lagiBuild){
@@ -284,7 +284,7 @@ int main(){
             else if (strcmp(Kata,"REMOVECOMPONENT")==0){
                 if(CurrentPos(MapMatrix)==-1 && lagiBuild){
                     //fputs("REMOVECOMPONENT ",fsave);
-                    REMOVECOMPONENT(&Rakitan,&InventoryPemain);
+                    REMOVECOMPONENT(&Rakitan,&InventoryPemain, lagiBuild);
                 }
                 else{
                     switch(lagiBuild){
