@@ -11,7 +11,7 @@
 
 int main(){
     /* ---- TAMPILAN MENU UTAMA BANGET ---- */
-    system("cls");
+    clear();
     MainMenu();
     char Kata[100];
     BacaInput(Kata); // Membaca input dari user
@@ -141,7 +141,7 @@ int main(){
 
         
         /* ---- TAMPILAN MENU SETELAH IN-GAME ---- */
-        system("cls");
+        clear();
         printf("Welcome to Santo's World...\n");
         ShowUI();
         Cyan; //set color Cyan
@@ -153,7 +153,7 @@ int main(){
         // Kata menyimpan hasil input
         while(strcmp(Kata,"EXIT")!=0){
             White; //set color White
-            system("cls");
+            clear();
             
             /* ---- DAFTAR COMMAND UTAMA PERMAINAN ---- */
             /* COMMAND 1: MOVE */
@@ -310,7 +310,7 @@ int main(){
                     scanf("%d",(&NoKomponen));
                     if (NoKomponen==-999){
                         if (!SecretShop){
-                            system("cls");
+                            clear();
                             int Choice;
                             SecretShopIntro();
                             scanf("%d",&Choice);
