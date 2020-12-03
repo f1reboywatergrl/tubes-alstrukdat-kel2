@@ -292,7 +292,6 @@ int main(){
             /* COMMAND 7 : REMOVECOMPONENT */
             else if (strcmp(Kata,"REMOVECOMPONENT")==0){
                 if(CurrentPos(MapMatrix)==-1 && lagiBuild){
-                    //fputs("REMOVECOMPONENT ",fsave);
                     REMOVECOMPONENT(&Rakitan,&InventoryPemain, lagiBuild);
                 }
                 else{
@@ -397,11 +396,26 @@ int main(){
             else if (strcmp(Kata,"SAVE")==0){
                 static FILE * fsave;
                 fsave = fopen("save.txt","w"); // isi save.txt teroverwrite dengan kondisi pemain terakhir
-                /* Append UangPemain */
+                /* Append UangPemain, Build, dan Order */
                 char Uang[100];
                 sprintf(Uang,"%d ",UangPemain);
                 const char* konvertuang = Uang;
                 fputs(konvertuang,fsave);
+                /* bagian build belom ada jadi dikomentari dulu
+                char Bangun[100];
+                sprintf(Bangun,"%d ",Build);
+                const char* konvertbangun = Bangun;
+                fputs(konvertbangun,fsave);
+                char pesanan[100];
+                sprintf(pesanan,"%d ",Order);
+                const char* konvertpesanan = pesanan;
+                fputs(konvertpesanan,fsave);
+                */
+                /* Append current position */
+                char CPosition[100];
+                sprintf(CPosition,"%d ",CurrentPos(MapMatrix));
+                const char* konvertposition = CPosition;
+                fputs(konvertposition,fsave);
                 /* Append Rakitan */
                 InverseStack(&Rakitan); // Supaya yang disave itu adalah yang paling bawah stack terlebih dahulu
                 ElTypeList komponen;
@@ -414,20 +428,42 @@ int main(){
                 }
                 /* harusnya simpen Queue pesanan di sini*/
                 /* Append lagiBuild*/
-                /*
-                char buildchar = Convert.ToChar(lagiBuild); // Mengubah kata 'true'/'false' dari boolean ke string
-                const char* buildcchar = buildchar;
-                fputs(buildcchar,fsave);
-                fputs(" ",fsave); // Tambah blank untuk memisahkan kata
-                /* 
-                List InventoryPemain; // Nyimpen inventory pemain, set kosong di awal
-                List ListDummy ; // Nyimpen semua data barang yang bisa dijual/diorder 
-                boolean SecretShop; // Nyimpen apakah udah pernah masuk ke secret shop
+                if (lagiBuild == true){
+                    fputs("true ",fsave);
+                }
+                else{ // lagiBuild == false
+                    fputs("false ",fsave);
+                }
+                /* Append SecretShop */
+                if (SecretShop == true){
+                    fputs("true ",fsave);
+                }
+                else{ // SecretShop == false
+                    fputs("false ",fsave);
+                }
+                /* Append Inventory Pemain */
+                const char *appendnama;
+                char tempjumlah[10];
+                const char *appendjumlah;
+                for (int i=0;i<LengthList(InventoryPemain);i++){
+                    if (Jumlah(ListElmt(InventoryPemain,i))>0){
+                        appendnama = Nama(ListElmt(InventoryPemain,i));
+                        fputs(appendnama,fsave);
+                        fputs(" ",fsave); // Beri spasi antara nama barang dan jumlahnya
+                        sprintf(tempjumlah, "%d ", Jumlah(ListElmt(InventoryPemain,i)));
+                        appendjumlah = tempjumlah;
+                        fputs(appendjumlah,fsave);
+                        for (int x=0;x<10;x++){ // Reset semua nilai tempjumlah supaya bisa diisi lagi
+                            tempjumlah[x] = '\0';
+                        }
+                    }
+                }
+                /* Tambahan mark di akhir untuk menandakan akhir file */
+                fputs(".",fsave);
                 printf("Lokasi save file:");
                 printf("C/User/Documents/GitHub/tubes-alstrukdat-kel2/ADT/Mesin Karakter & Kata/save.txt\n");
                 printf("Game berhasil di save!\n");
                 fclose(fsave);
-                */
             }
             /* COMMAND 12: MAP */
             else if (strcmp(Kata,"MAP")==0){   
