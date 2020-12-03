@@ -34,8 +34,7 @@ int main(){
     ListStatik DataDummyPesanan; // Meyimpan data dummy pesanan
     int RandomSeed=1; // Untuk kebutuhan random
     int OrderNumber; //Variable global order number
-
-    if (strcmp(Kata,"START")==0){
+    if (strncmp(Kata,"START",5)==0){ // Hanya membandingkan 5 karakter pertama dari Kata
 
         /* Kosongkan semua yang bakal dinamis / set defaults for new game */
         UangPemain = 4000;
@@ -50,7 +49,85 @@ int main(){
         diskon = 1; // Diskon awal
         OrderNumber=1; //Ordernumber Awal
         
+        /* SEMENTARA LOAD ADA DI SINI
+        else if (strncmp(Kata,"LOAD",4)==0){
+        STARTKATA("save.txt");
+        // Uang Pemain
+        UangPemain = 0;
+        for (int a=0;a<CKata.Length;a++){
+            char temp = CKata.TabKata[a]; // berisi nilai akuisisi
+            int convert = temp - '0'; // mengubah dari char ke int
+            int pangkat = Pangkat(10,CKata.Length-a-1);
+            UangPemain += pangkat*convert;
+        }
+        ADVKATA();
+        // Current Position
+        char temp = CKata.TabKata[0]; // langsung 0 karena current pos tidak bisa lebih dari 1 digit
+        int convert = temp - '0'; // mengubah dari char ke int
+        POINT P = SearchMatrix(MapMatrix,convert); // dari posisi pelanggan/base/shop didapat koordinat
+        CurrentAbsis(MapMatrix) = Absis(P);
+        CurrentOrdinat(MapMatrix) = Ordinat(P);
+
+        // LagiBuild
+        ADVKATA();
+        if (CKata.TabKata = 'true'){
+            lagiBuild = true;
+        }
+        else{
+            lagiBuild = false;
+        }
+
+        // Secret Shop
+        ADVKATA();
+        if (CKata.TabKata = 'true'){
+            SecretShop = true;
+        }
+        else{
+            SecretShop = false;
+        }
+
+        // RAKITAN
+        IgnoreBlank();
+        List listtemp;
+        listtemp=MakeList(); // berisi komponen yang akan dipush ke dalam rakitan
+        CreateStackEmpty(&Rakitan);
+        int i;
+        while (CC != MARK){
+	            while (CC != ';') {
+		            CKata.TabKata[i] = CC;
+		            ADV();
+		            i++;
+	            } 
+	            CKata.Length = i;
+                Nama(listtemp) = CKata.TabKata;
+                ADV(); // Memajukkan CC sekali karena CC sekarang berada di ';'
+                ADVKATA();
+                int price = 0;
+                for (int a=0;a<CKata.Length;a++){
+                    char temp = CKata.TabKata[a]; // berisi nilai akuisisi
+                    int convert = temp - '0'; // mengubah dari char ke int
+                    int pangkat = Pangkat(10,CKata.Length-a-1);
+                    price += pangkat*convert;
+                }
+                Harga(listtemp) = price;
+                Jumlah(listtemp) = 1; // Jumlah komponen pada rakitan pasti 1
+                ADVKATA();
+                int category = 0;
+                for (int a=0;a<CKata.Length;a++){
+                    char temp = CKata.TabKata[a]; // berisi nilai akuisisi
+                    int convert = temp - '0'; // mengubah dari char ke int
+                    int pangkat = Pangkat(10,CKata.Length-a-1);
+                    category += pangkat*convert;
+                }
+                Kategori(listtemp) = Category;
+                ADDCOMPONENT(&Rakitan, &listtemp, lagiBuild);
+                }
+                ADVKATA();
+        }
         
+        }
+        */
+
         /* PEMBACAAN FILE KONFIGURASI */
 
         STARTKATA("../ADT/Matriks/map.txt");
@@ -402,25 +479,26 @@ int main(){
                 sprintf(Uang,"%d ",UangPemain);
                 const char* konvertuang = Uang;
                 fputs(konvertuang,fsave);
-                /* bagian build belom ada jadi dikomentari dulu
-                char Bangun[100];
-                sprintf(Bangun,"%d ",Build);
-                const char* konvertbangun = Bangun;
-                fputs(konvertbangun,fsave);
-                char pesanan[100];
-                sprintf(pesanan,"%d ",Order);
-                const char* konvertpesanan = pesanan;
-                fputs(konvertpesanan,fsave);
-                */
-                /* Append current absis dan ordinat */
-                char CAbsis[100];
-                char COrdinat[100];
-                sprintf(CAbsis,"%d ",CurrentAbsis(MapMatrix));
-                sprintf(COrdinat,"%d ",CurrentOrdinat(MapMatrix));
-                const char* konvertabsis = CAbsis;
-                const char* konvertordinat = COrdinat;
-                fputs(konvertabsis,fsave);
-                fputs(konvertordinat,fsave);
+                
+                /* Append current position*/
+                char Cpos[100];
+                sprintf(Cpos,"%d ",CurrentPos(MapMatrix));
+                const char* konvertcpos = Cpos;
+                fputs(konvertcpos,fsave);
+                /* Append lagiBuild*/
+                if (lagiBuild == true){
+                    fputs("true ",fsave);
+                }
+                else{ // lagiBuild == false
+                    fputs("false ",fsave);
+                }
+                /* Append SecretShop */
+                if (SecretShop == true){
+                    fputs("true ",fsave);
+                }
+                else{ // SecretShop == false
+                    fputs("false ",fsave);
+                }
                 /* Append Rakitan */
                 Stack copyrakit;
                 CreateStackEmpty(&copyrakit);
@@ -433,6 +511,14 @@ int main(){
                     const char* komp = Nama(komponenrakit);
                     fputs(komp,fsave);
                     fputs(";",fsave); // Kasih titik koma antar komponen
+                    char hrg[100]; // simpan harga komponen
+                    sprintf(hrg,"%d ",Jumlah(komponenrakit));
+                    const char* converthrg = hrg;
+                    fputs(converthrg,fsave);
+                    char ktg[100]; // simpan kategori komponen
+                    sprintf(ktg,"%d ",Kategori(komponenrakit));
+                    const char* convertktg = ktg;
+                    fputs(convertktg,fsave);
                 }
                 fputs(".",fsave); // Tambahkan mark supaya tau akhir dari stack rakitan
                 /* Append Queue pesanan */
@@ -496,20 +582,8 @@ int main(){
                          }
                     }
                 }
-                /* Append lagiBuild*/
-                if (lagiBuild == true){
-                    fputs("true ",fsave);
-                }
-                else{ // lagiBuild == false
-                    fputs("false ",fsave);
-                }
-                /* Append SecretShop */
-                if (SecretShop == true){
-                    fputs("true ",fsave);
-                }
-                else{ // SecretShop == false
-                    fputs("false ",fsave);
-                }
+                fputs(".",fsave); // Penanda sudah selesai simpan queue pesanan
+               
                 /* Append Inventory Pemain */
                 const char *appendnama;
                 char tempjumlah[10];
@@ -526,6 +600,19 @@ int main(){
                             tempjumlah[x] = '\0';
                         }
                     }
+                }
+                fputs(".",fsave); // Penanda akhir dari inventory
+                /* Append indeks data dummies untuk pesanan yang memiliki invoice -999 */
+                char idx[2]; // simpan index
+                for (int p = 0;p<27;p++){
+                    if (ElmtStatik(DataDummyPesanan,p).invoice==ValUndefStatik){ // Jika invoice untku seed/index p itu -999
+                        sprintf(idx,"%d ",p);
+                        const char* konvertidx = idx;
+                        fputs(konvertidx,fsave);
+                        fputs(";",fsave); // Pemisah antar index yang ditemukan
+                    }
+                    idx[0] = '\0'; // Reset nilai idx
+                    idx[1] = '\0'; // Reset nilai idx
                 }
                 /* Tambahan mark di akhir untuk menandakan akhir file */
                 fputs(".",fsave);
