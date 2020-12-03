@@ -256,7 +256,8 @@ int main(){
             else if (strcmp(Kata,"STARTBUILD")==0){
                 if(CurrentPos(MapMatrix)==-1){
                     /* fputs("STARTBUILD ", fsave) */
-                    STARTBUILD(&Rakitan,&lagiBuild,1,2);
+                    Qinfotype CurrentPesanan = InfoHead(AntrianPesanan);
+                    STARTBUILD(&Rakitan,&lagiBuild,OrderNumber(CurrentPesanan),Pemesan(CurrentPesanan));
                 }
                 else{
                     printf("Return to your base to start building!\n");
@@ -267,7 +268,9 @@ int main(){
             else if (strcmp(Kata,"FINISHBUILD")==0){
                 if(CurrentPos(MapMatrix)==-1){
                     /* fputs("FINISHBUILD ",fsave); */
-                    FINISHBUILD(&InventoryPemain, CurrentPesanan, Rakitan, &lagiBuild,1,2);
+                    Qinfotype CurrentPesanan = InfoHead(AntrianPesanan);
+                    FINISHBUILD(&InventoryPemain, Komponen(CurrentPesanan), Rakitan, &lagiBuild,OrderNumber(CurrentPesanan),Pemesan(CurrentPesanan));
+                    QDel(&AntrianPesanan, CurrentPesanan);
                 }
                 else{
                     printf("Return to your base to finish building!\n");

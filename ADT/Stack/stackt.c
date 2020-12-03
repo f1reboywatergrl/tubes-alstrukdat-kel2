@@ -179,9 +179,9 @@ void STARTBUILD(Stack *S, boolean *lagiBuild, int NoPesanan, int NoPelanggan){
 
 /* COMMAND 5 : FINISHBUILD */
 
-void FINISHBUILD(List *inventory, Stack Pesanan, Stack Rakitan, boolean *lagiBuild, int NoPesanan, int NoPelanggan){
+void FINISHBUILD(List *inventory, Queue *Pesanan, Stack Rakitan, boolean *lagiBuild, int NoPesanan, int NoPelanggan){
     if(*lagiBuild){    
-        if (IsStackEqual(Pesanan, Rakitan)){ //Harus cari cara nyocokin + nentuin Invoice
+        if (IsStackEqual(Komponen(InfoHead(*Pesanan)), Rakitan)){ //Harus cari cara nyocokin + nentuin Invoice
             *lagiBuild = false;
             printf("Order #%d is complete. Deliver it to Customer %d!\n", NoPesanan, NoPelanggan);
             ElTypeList hasilBuild;
