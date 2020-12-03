@@ -1,6 +1,7 @@
 #include "list.h"
 #include <stdlib.h>
 #include "stdio.h"
+
 /**
  * Konstruktor
  * I.S. sembarang
@@ -14,6 +15,9 @@ List MakeList() {
     return list;
 }
 
+/*
+Mendealokasi suatu list, mengosongkan isi elemen list yang ada
+*/
 void DeallocateList(List *list) {
     free(list->A);
 }
@@ -117,58 +121,34 @@ void InsertLFirst(List *list, ElTypeList el) {
     InsertLAt(list, el, 0);
 }
 
-void TulisIsiList(List T){
-    /*printf("[");
-    if (!IsLEmpty(T)){
-        int i;
-        for (i=0; i < LengthList(T); i++){
-            int panjang = LengthList(T);
-            if ((ListElmt(T,i).jumlah) > 0){
-                printf("[");
-                int j;
-                for (j=0; j<4; j++){
-                    if (j==0){
-                        printf("%s",((ListElmt(T,i)).nama));
-                    }
-                    if (j==1){
-                        printf("%d",(((ListElmt(T,i)).harga)));
-                    }
-                    if (j==2){
-                        printf("%d",((ListElmt(T,i)).jumlah));
-                    }   
-                    if (j==3){
-                        printf("%d",((ListElmt(T,i)).kategori));
-                    }
-                if (j != 3){
-                    printf(",");
-                    }
-                }
-                printf("]");
-                if (i != (LengthList(T)-1)){
-                    printf(",");
-                }
-            }
-        }
-    }
-    printf("]\n");*/
-
-    /*
-    Dalam bentuk 
+/*
+ Menampilkan Isi List 
+ Dalam bentuk 
     1. x
     2. y
     3. z
     dst.
-    */
+ */
+void TulisIsiList(List T){
     for (int i=0;i<LengthList(T);i++){
         printf("%d. %s (%d)\n",i+1,Nama(ListElmt(T,i)),Jumlah(ListElmt(T,i)));
     }
 }
 
+/*
+Menampilkan Isi List untuk tampilan inventory di status
+ */
 void TampilInventory(List T){
     int j = 1;
     for (int i=0;i<LengthList(T);i++){
         if (Jumlah(ListElmt(T,i))>0){
-            printf("%d. %s - (%d)\n",j,Nama(ListElmt(T,i)),Jumlah(ListElmt(T,i)));
+            if(Kategori(ListElmt(T,i)) == 9)
+            {
+                printf("%d. Build for #%d Order (%d)\n",j,j /*Ini masih salah, nunggu finishbuild */,Jumlah(ListElmt(T,i)));
+            }
+            else{
+                printf("%d. %s - (%d)\n",j,Nama(ListElmt(T,i)),Jumlah(ListElmt(T,i)));
+            }
             j++;
         }
     }
