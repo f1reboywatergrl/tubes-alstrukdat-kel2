@@ -3,8 +3,9 @@
 #include "../ADT/Mesin Karakter & Kata/mesinkata.c"
 #include "../ADT/Graph/graph.c"
 // #include "../ADT/Array Dinamis/list.c"
-#include "../ADT/Stack/stackt.c"
-#include "../ADT/Queue/queue.c"
+//#include "../ADT/Stack/stackt.c"
+//#include "../ADT/Queue/queue.c"
+#include "../ADT/ADT Lain/list-statik.c"
 #include <string.h>
 #include "user-interface.c"
 #include "stdlib.h"
@@ -28,10 +29,11 @@ int main(){
     List InventoryPemain; // Nyimpen inventory pemain, set kosong di awal
     List ListDummy ; // Nyimpen semua data barang yang bisa dijual/diorder 
     boolean SecretShop; // Nyimpen apakah udah pernah masuk ke secret shop
-    int diskon; 
-    diskon = 1; // Diskon awal
-    int pemesan;
-    Queue AntrianPesanan;
+    int diskon;  // Nyimpen jumlah diskon (bernilai 2 kalo secret shop dah kebuka)
+    Queue AntrianPesanan; // Menyimpan antrian pesanan
+    ListStatik DataDummyPesanan; // Meyimpan data dummy pesanan
+    int RandomSeed=1; // Untuk kebutuhan random
+    int OrderNumber; //Variable global order number
 
     if (strcmp(Kata,"START")==0){
 
@@ -43,8 +45,11 @@ int main(){
         ListDummy= MakeList();
         CreateStackEmpty(&Rakitan);
         CreateDummies(&ListDummy);
-        QCreateEmpty(&AntrianPesanan, 100);
-
+        //PENGISIAN DATA DUMMY PEMESAN SETELAH AKUISISI JUMLAH CUSTOMER
+        QCreateEmpty(&AntrianPesanan, 20);
+        diskon = 1; // Diskon awal
+        OrderNumber=1; //Ordernumber Awal
+        
         
         /* PEMBACAAN FILE KONFIGURASI */
 
@@ -138,11 +143,17 @@ int main(){
                 }
             }
         }
-        int CurrentDeliveryLoc = 3;
-        POINT PointDeliveryLoc = SearchMatrix(MapMatrix,CurrentDeliveryLoc);
+
         White;
-
-
+        CreateDummiesPemesan(&DataDummyPesanan,TitikTotal-2,ListDummy);
+        QAdd(&AntrianPesanan,ElmtStatik(DataDummyPesanan,RandomSeed));
+        SetOrderNumber(&AntrianPesanan,OrderNumber);
+        //OrderNumber++;
+        DelAtStatik(&DataDummyPesanan,RandomSeed);
+        //copy stack dari head q ke currentpesanan
+        CopyStack(InfoHead(AntrianPesanan).komponen,&CurrentPesanan);
+        int CurrentDeliveryLoc = InfoHead(AntrianPesanan).pemesan;
+        POINT PointDeliveryLoc = SearchMatrix(MapMatrix,CurrentDeliveryLoc);
         
         /* ---- TAMPILAN MENU SETELAH IN-GAME ---- */
         clear();
@@ -197,18 +208,8 @@ int main(){
 
             /* COMMAND 2 : STATUS */
             else if (strcmp(Kata,"STATUS")==0){  
-                int Build = 3; //Ambil dari Queue
-                int Order = 1; //nanti variablenya disesuain sm yg lain
-                int length = 2; //Contoh contoh contoh
-                
-                // List InventoryPemain = MakeList(); //BUAT DUMMY DOANG
-                // for (int i=0;i<length;i++){
-                //     ElTypeList ElInventory = InputLElType();
-                //     InsertLAt(&InventoryPemain,ElInventory,i);
-                // }
-
                 printf("Uang tersisa: $%d\n",UangPemain);
-                printf("Build yang sedang dikerjakan: pesanan %d untuk Customer %d.\n", Order, Build);
+                printf("Build yang sedang dikerjakan: pesanan %d untuk Customer %d.\n", InfoHead(AntrianPesanan).orderNumber, InfoHead(AntrianPesanan).pemesan);
                 printf("Lokasi: pemain sedang berada pada ");
                 switch(CurrentPos(MapMatrix)){
                     case -1:
@@ -228,28 +229,11 @@ int main(){
 
             /* COMMAND 3 : CHECKORDER */
             else if (strcmp(Kata,"CHECKORDER")==0){
-                int Invoice;
-                Stack Komponen;
-                int Pemesan;
-                int OrderNumber; //Mengecek build yang sedang dibangun dari head queue pesanan
-                // Cek -> kalo udah finishbuild -> head di pop
-
-                /*int Order = 3; //permisalan
-                int Pemesan = 1; //permisalan
-                int Invoice = 0;*/
-                Stack S;
-
-                CopyStack(CurrentPesanan, &S);
-                while (!IsStackEmpty(S)){
-                    Pop(&S, &AntrianPesanan);
-                    Invoice = (Invoice + (ListElmt(ListDummy, 0)).harga)*1.1;
-                }
-                /*printf("Nomor Order: %d\n", Order);
-                printf("Pemesan: %d\n", Pemesan);
-                printf("Invoice: %d\n", Invoice);
-                printf("Komponen:");
-
-                PrintStack(CurrentPesanan);*/
+                printf("Order Number: %d\n",OrderNumber);
+                printf("Customer: Pelanggan %d\n",InfoHead(AntrianPesanan).pemesan);
+                printf("Invoice: %d\n",InfoHead(AntrianPesanan).invoice);
+                printf("Komponen: \n");
+                PrintStack(InfoHead(AntrianPesanan).komponen);
             }
 
             /* COMMAND 4 : STARTBUILD */
@@ -257,7 +241,8 @@ int main(){
                 if(CurrentPos(MapMatrix)==-1){
                     /* fputs("STARTBUILD ", fsave) */
                     Qinfotype CurrentPesanan = InfoHead(AntrianPesanan);
-                    STARTBUILD(&Rakitan,&lagiBuild,OrderNumber(CurrentPesanan),Pemesan(CurrentPesanan));
+                    STARTBUILD(&Rakitan,&lagiBuild,1,2);
+                    //STARTBUILD(&Rakitan,&lagiBuild,OrderNumber(CurrentPesanan),Pemesan(CurrentPesanan));
                 }
                 else{
                     printf("Return to your base to start building!\n");
@@ -268,9 +253,12 @@ int main(){
             else if (strcmp(Kata,"FINISHBUILD")==0){
                 if(CurrentPos(MapMatrix)==-1){
                     /* fputs("FINISHBUILD ",fsave); */
+                    //FINISHBUILD(&InventoryPemain, CurrentPesanan, Rakitan, &lagiBuild,1,2);
+                    /*
                     Qinfotype CurrentPesanan = InfoHead(AntrianPesanan);
                     FINISHBUILD(&InventoryPemain, Komponen(CurrentPesanan), Rakitan, &lagiBuild,OrderNumber(CurrentPesanan),Pemesan(CurrentPesanan));
                     QDel(&AntrianPesanan, CurrentPesanan);
+                    */
                 }
                 else{
                     printf("Return to your base to finish building!\n");
@@ -384,7 +372,6 @@ int main(){
                 //Keknya mending delivery loc diambil dari anak queue
                 if(CurrentAbsis(MapMatrix)==Absis(PointDeliveryLoc) && CurrentOrdinat(MapMatrix)==Ordinat(PointDeliveryLoc)){
                     printf("Item successfully delivered to Customer %d!\n",CurrentPos(MapMatrix));
-                    //harusnya ada Dequeue disini
                 }
                 else{
                     printf("This is not the right address for your delivery!\n");
@@ -392,7 +379,22 @@ int main(){
             }
             /* COMMAND 10: END_DAY */
             else if (strcmp(Kata,"END_DAY")==0){
-                //harusnya ada Enqueue disini
+                Qinfotype X;
+                QDel(&AntrianPesanan,&X);
+                Yellow;
+                printf("Santo shuts his eyelids and started counting sheep... 1...2...\n\n");
+                printf("A new day has arrived, the sun has risen again.\n");
+                Green;
+                printf("Today is not just another day. It is a new opportunity, another chance, a new beginning.\n");
+                RandomSeed=AvoidCollision(DataDummyPesanan,RandomSeed,TitikTotal,ListDummy);
+                QAdd(&AntrianPesanan,ElmtStatik(DataDummyPesanan,RandomSeed));
+                SetOrderNumber(&AntrianPesanan,OrderNumber);
+                IncrementOrderNumber(&OrderNumber);
+                DelAtStatik(&DataDummyPesanan,RandomSeed);
+                CreateStackEmpty(&CurrentPesanan);
+                CopyStack(InfoHead(AntrianPesanan).komponen,&CurrentPesanan);
+                
+                White;
             }
 
             /* COMMAND 11: SAVE */
@@ -414,22 +416,90 @@ int main(){
                 const char* konvertpesanan = pesanan;
                 fputs(konvertpesanan,fsave);
                 */
-                /* Append current position */
-                char CPosition[100];
-                sprintf(CPosition,"%d ",CurrentPos(MapMatrix));
-                const char* konvertposition = CPosition;
-                fputs(konvertposition,fsave);
+                /* Append current absis dan ordinat */
+                char CAbsis[100];
+                char COrdinat[100];
+                sprintf(CAbsis,"%d ",CurrentAbsis(MapMatrix));
+                sprintf(COrdinat,"%d ",CurrentOrdinat(MapMatrix));
+                const char* konvertabsis = CAbsis;
+                const char* konvertordinat = COrdinat;
+                fputs(konvertabsis,fsave);
+                fputs(konvertordinat,fsave);
                 /* Append Rakitan */
-                InverseStack(&Rakitan); // Supaya yang disave itu adalah yang paling bawah stack terlebih dahulu
-                ElTypeList komponen;
+                Stack copyrakit;
+                CreateStackEmpty(&copyrakit);
+                CopyStack(Rakitan,&copyrakit); // Mengcopy stack Rakitan
+                InverseStack(&copyrakit); // Supaya yang disave itu adalah yang paling bawah stack terlebih dahulu
+                ElTypeList komponenrakit;
                 int i;
-                for (i = Top(Rakitan); i >= 0; i--){
-                    Pop(&Rakitan, &komponen);
-                    const char* komp = Nama(komponen);
+                for (i = Top(copyrakit); i >= 0; i--){
+                    Pop(&copyrakit, &komponenrakit);
+                    const char* komp = Nama(komponenrakit);
                     fputs(komp,fsave);
-                    fputs(" ",fsave); // Kasih blank antar komponen
+                    fputs(";",fsave); // Kasih titik koma antar komponen
                 }
-                /* harusnya simpen Queue pesanan di sini*/
+                fputs(".",fsave); // Tambahkan mark supaya tau akhir dari stack rakitan
+                /* Append Queue pesanan */
+                ElTypeList komponenqueue;
+                int j;
+                const char* kompqueue;
+                if (!IsQEmpty(AntrianPesanan)){ // Jika queue tidak empty, berarti ada pesanan
+                    /* Simpan nilai head queue */
+                    Stack copyqueue;
+                    CreateStackEmpty(&copyqueue);
+                    CopyStack((InfoHead(AntrianPesanan).komponen),&copyqueue);
+                    InverseStack(&copyqueue);
+                    for (i = Top(copyqueue); i >= 0; i--){ // Simpan stack komponen untuk pesanan
+                        Pop(&copyqueue, &komponenqueue);
+                        kompqueue = Nama(komponenqueue);
+                        fputs(kompqueue,fsave);
+                        fputs(";",fsave); // Kasih titik koma antar komponen
+                    }
+                    fputs(".",fsave); // penanda sudah akhir dari stack
+                    char inv[100]; // simpan invoice
+                    sprintf(inv,"%d ",(InfoHead(AntrianPesanan).invoice));
+                    const char* konvertinv = inv;
+                    fputs(konvertinv,fsave);
+                    char pmsn[100]; // simpan pemesan
+                    sprintf(pmsn,"%d ",(InfoHead(AntrianPesanan).pemesan));
+                    const char* konvertpmsn = pmsn;
+                    fputs(konvertpmsn,fsave);
+                    char ordN[100]; // simpan orderNumber
+                    sprintf(ordN,"%d ",(InfoHead(AntrianPesanan).orderNumber));
+                    const char* konvertordN = ordN;
+                    fputs(konvertordN,fsave);
+                    if (QNBElmt(AntrianPesanan)>1){ // Jika queue lebih dari 1 pesanan
+                        for (i = Head(AntrianPesanan)+1; i <= Tail(AntrianPesanan); i++){
+                            for (int x=0;x<100;x++){ // Reset semua nilai inv, pmsn, dan ordN supaya bisa diisi lagi
+                                inv[x] = '\0';
+                                pmsn[x] = '\0';
+                                ordN[x] = '\0';
+                            }
+                            CreateStackEmpty(&copyqueue); // Mereset isi stack copyqueue supaya bisa diisi ulang
+                            CopyStack(((AntrianPesanan).T[i].komponen),&copyqueue);
+                            InverseStack(&((AntrianPesanan).T[i].komponen));
+                            for (j = Top(((AntrianPesanan).T[i].komponen)); j >= 0; j--){ // Simpan stack komponen
+                                Pop(&((AntrianPesanan).T[i].komponen), &komponenqueue);
+                                kompqueue = Nama(komponenqueue);
+                                fputs(kompqueue,fsave);
+                                fputs(";",fsave); // Kasih titik koma antar komponen
+                            }
+                            fputs(".",fsave); // penanda sudah akhir dari stack
+                            // simpan invoice
+                            sprintf(inv,"%d ",((AntrianPesanan).T[i].invoice));
+                            const char* konvertinv = inv;
+                            fputs(konvertinv,fsave);
+                            // simpan pemesan
+                            sprintf(pmsn,"%d ",((AntrianPesanan).T[i].pemesan));
+                            const char* konvertpmsn = pmsn;
+                            fputs(konvertpmsn,fsave);
+                            // simpan orderNumber
+                            sprintf(ordN,"%d ",((AntrianPesanan).T[i].orderNumber));
+                            const char* konvertordN = ordN;
+                            fputs(konvertordN,fsave);
+                         }
+                    }
+                }
                 /* Append lagiBuild*/
                 if (lagiBuild == true){
                     fputs("true ",fsave);
@@ -452,7 +522,7 @@ int main(){
                     if (Jumlah(ListElmt(InventoryPemain,i))>0){
                         appendnama = Nama(ListElmt(InventoryPemain,i));
                         fputs(appendnama,fsave);
-                        fputs(" ",fsave); // Beri spasi antara nama barang dan jumlahnya
+                        fputs(";",fsave); // Beri spasi antara nama barang dan jumlahnya
                         sprintf(tempjumlah, "%d ", Jumlah(ListElmt(InventoryPemain,i)));
                         appendjumlah = tempjumlah;
                         fputs(appendjumlah,fsave);
@@ -482,6 +552,7 @@ int main(){
             for (int x=0;x<100;x++){ // Reset semua nilai Kata supaya bisa input lagi
                 Kata[x] = '\0';
             }
+            RandomSeed++;
             BacaInput(Kata);
             // Kata menyimpan hasil input             
         }

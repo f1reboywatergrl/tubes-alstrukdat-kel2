@@ -88,5 +88,8 @@ void QDel (Queue * Q, Qinfotype * X);
         Q mungkin kosong */
 void PrintInfoHead(Queue Q);
 void PrintQueue (Queue Q);
-
+void SetOrderNumber (Queue *Q, int OrderNumber);
+/* Set order number dari TAIL(Q) (setelah Enqueue) */
+void IncrementOrderNumber (int *OrderNumber);
+/* Increments order number */
 #endif

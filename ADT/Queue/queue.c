@@ -121,3 +121,15 @@ void PrintQueue (Queue Q){
         }
     }
 }
+
+void SetOrderNumber (Queue *Q, int OrderNumber)
+/* Set order number dari TAIL(Q) (setelah Enqueue) */
+{
+    OrderNumber(InfoTail(*Q)) = OrderNumber;
+}
+
+void IncrementOrderNumber (int *OrderNumber)
+/* Increments order number */
+{
+    *OrderNumber = *OrderNumber +1;
+}
