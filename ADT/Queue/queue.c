@@ -13,9 +13,9 @@ boolean IsQEmpty (Queue Q)
 }
 boolean IsQFull (Queue Q)
 /* Mengirim true jika tabel penampung elemen Q sudah penuh */
-/* yaitu mengandung elemen sebanyak MaxEl */
+/* yaitu mengandung elemen sebanyak MaxElQueue */
 {
-    return (QNBElmt(Q)==MaxEl(Q));
+    return (QNBElmt(Q)==MaxElQueue(Q));
 }
 int QNBElmt (Queue Q)
 /* Mengirimkan banyaknya elemen queue. Mengirimkan 0 jika Q kosong. */
@@ -28,7 +28,7 @@ int QNBElmt (Queue Q)
             return (Tail(Q)-Head(Q)+1);
         }
         else{
-            return (MaxEl(Q)-(Head(Q)-Tail(Q))+1);
+            return (MaxElQueue(Q)-(Head(Q)-Tail(Q))+1);
         }
     }
 }
@@ -37,17 +37,17 @@ void QCreateEmpty (Queue * Q, int Max)
 /* I.S. sembarang */
 /* F.S. Sebuah Q kosong terbentuk dan salah satu kondisi sbb: */
 /* Jika alokasi berhasil, Tabel memori dialokasi berukuran Max+1 */
-/* atau : jika alokasi gagal, Q kosong dg MaxEl=0 */
+/* atau : jika alokasi gagal, Q kosong dg MaxElQueue=0 */
 /* Proses : Melakukan alokasi, membuat sebuah Q kosong */
 {
     (*Q).T = (Qinfotype *)malloc((Max+1)*sizeof(Qinfotype));
     if((*Q).T!=NULL){
-        MaxEl(*Q) = Max;
+        MaxElQueue(*Q) = Max;
         Head(*Q) = NilQ;
         Tail(*Q) = NilQ;
     }
     else{
-        MaxEl(*Q)=0;
+        MaxElQueue(*Q)=0;
     }
 
 }
@@ -56,10 +56,10 @@ void QCreateEmpty (Queue * Q, int Max)
 void QDeAlokasi(Queue * Q)
 /* Proses: Mengembalikan memori Q */
 /* I.S. Q pernah dialokasi */
-/* F.S. Q menjadi tidak terdefinisi lagi, MaxEl(Q) diset 0 */
+/* F.S. Q menjadi tidak terdefinisi lagi, MaxElQueue(Q) diset 0 */
 {
     free((*Q).T);
-    MaxEl(*Q)=0;
+    MaxElQueue(*Q)=0;
 }
 
 /* *** Primitif Add/Delete *** */
@@ -75,7 +75,7 @@ void QAdd (Queue * Q, Qinfotype X)
         InfoHead(*Q)=X;        
     }
     else{
-        Tail(*Q)=((Tail(*Q)%MaxEl(*Q) + 1));
+        Tail(*Q)=((Tail(*Q)%MaxElQueue(*Q) + 1));
         InfoTail(*Q)=X;
     }
 }
@@ -92,7 +92,7 @@ void QDel (Queue * Q, Qinfotype * X)
     }
     else{
         *X=InfoHead(*Q);
-        Head(*Q)=((Head(*Q)%MaxEl(*Q))+1);        
+        Head(*Q)=((Head(*Q)%MaxElQueue(*Q))+1);        
     }
 }
 

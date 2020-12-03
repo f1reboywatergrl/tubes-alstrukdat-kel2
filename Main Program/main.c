@@ -4,7 +4,7 @@
 #include "../ADT/Graph/graph.c"
 // #include "../ADT/Array Dinamis/list.c"
 #include "../ADT/Stack/stackt.c"
-
+#include "../ADT/Queue/queue.c"
 #include <string.h>
 #include "user-interface.c"
 #include "stdlib.h"
@@ -30,6 +30,8 @@ int main(){
     boolean SecretShop; // Nyimpen apakah udah pernah masuk ke secret shop
     int diskon; 
     diskon = 1; // Diskon awal
+    int pemesan;
+    Queue AntrianPesanan;
 
     if (strcmp(Kata,"START")==0){
 
@@ -41,6 +43,8 @@ int main(){
         ListDummy= MakeList();
         CreateStackEmpty(&Rakitan);
         CreateDummies(&ListDummy);
+        QCreateEmpty(&AntrianPesanan, 100);
+
         
         /* PEMBACAAN FILE KONFIGURASI */
 
@@ -224,23 +228,28 @@ int main(){
 
             /* COMMAND 3 : CHECKORDER */
             else if (strcmp(Kata,"CHECKORDER")==0){
-                int Order = 3;
-                int Pemesan = 1;
-                int Invoice = 0;
+                int Invoice;
+                Stack Komponen;
+                int Pemesan;
+                int OrderNumber; //Mengecek build yang sedang dibangun dari head queue pesanan
+                // Cek -> kalo udah finishbuild -> head di pop
+
+                /*int Order = 3; //permisalan
+                int Pemesan = 1; //permisalan
+                int Invoice = 0;*/
                 Stack S;
-                ElTypeList X;
 
                 CopyStack(CurrentPesanan, &S);
                 while (!IsStackEmpty(S)){
-                    Pop(&S, &X);
-                    Invoice += X.harga;
+                    Pop(&S, &AntrianPesanan);
+                    Invoice = (Invoice + (ListElmt(ListDummy, 0)).harga)*1.1;
                 }
-                printf("Nomor Order: %d\n", Order);
+                /*printf("Nomor Order: %d\n", Order);
                 printf("Pemesan: %d\n", Pemesan);
                 printf("Invoice: %d\n", Invoice);
                 printf("Komponen:");
 
-                PrintStack(CurrentPesanan);
+                PrintStack(CurrentPesanan);*/
             }
 
             /* COMMAND 4 : STARTBUILD */

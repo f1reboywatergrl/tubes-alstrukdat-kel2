@@ -1,4 +1,4 @@
-#include "stackt.c"
+#include "stackt.h"
 /*
 1. Motherboard Micro-ATX (0)
 2. Motherboard Mini ITX (0)
