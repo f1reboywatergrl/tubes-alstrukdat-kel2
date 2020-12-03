@@ -79,12 +79,14 @@ boolean IsStackEqual(Stack S1, Stack S2);
 
 void PrintStack(Stack S);
 
+int PrintInventory(List T);
+
 /***** COMMAND *****/
 
 void STARTBUILD(Stack *S, boolean *lagiBuild, int NoPesanan, int NoPelanggan);
 /* memulai build */
 
-//void FINISHBUILD(List *inventory, Queue *Pesanan, Stack Rakitan, boolean *lagiBuild, int NoPesanan, int NoPelanggan);
+void FINISHBUILD(List *inventory, Stack Pesanan, Stack Rakitan, boolean *lagiBuild, int NoPesanan, int NoPelanggan);
 /* mengecek kesesuaian rakitan dengan pesanan dan mengakhiri build */
 
 void ADDCOMPONENT(Stack *Rakitan, List *inventory, boolean lagiBuild);

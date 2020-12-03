@@ -1,4 +1,6 @@
-#include "stackt.h"
+//#include "stackt.c"
+#include "../Queue/queue.c"
+
 /*
 1. Motherboard Micro-ATX (0)
 2. Motherboard Mini ITX (0)
@@ -65,14 +67,14 @@ int main(){
     int NoPesanan = 1;
     int NoPelanggan = 2;
 
-    Jumlah(ListElmt(inventory,0))=1;
-    Jumlah(ListElmt(inventory,3))=1;
-    Jumlah(ListElmt(inventory,6))=1;
-    Jumlah(ListElmt(inventory,9))=1;
-    Jumlah(ListElmt(inventory,12))=1;
-    Jumlah(ListElmt(inventory,15))=1;
-    Jumlah(ListElmt(inventory,18))=1;
-    Jumlah(ListElmt(inventory,21))=1;
+    Jumlah(ListElmt(inventory,0))=4;
+    Jumlah(ListElmt(inventory,3))=4;
+    Jumlah(ListElmt(inventory,6))=4;
+    Jumlah(ListElmt(inventory,9))=4;
+    Jumlah(ListElmt(inventory,12))=4;
+    Jumlah(ListElmt(inventory,15))=4;
+    Jumlah(ListElmt(inventory,18))=4;
+    Jumlah(ListElmt(inventory,21))=4;
 
 
     Stack Pesanan;
@@ -86,30 +88,48 @@ int main(){
     Push(&Pesanan, ListElmt(inventory,18));
     Push(&Pesanan, ListElmt(inventory,21));
 
+    Queue Q;
+    QCreateEmpty (&Q, 10);
+    
+    Qinfotype isipesanan;
+    isipesanan.invoice = 100000;
+    isipesanan.pemesan = 1;
+    isipesanan.orderNumber = 1;
+    isipesanan.komponen = Pesanan;
 
-    Stack S;
-    CreateStackEmpty(&S);
+    QAdd (&Q, isipesanan);
+    QAdd (&Q, isipesanan);
+    QAdd (&Q, isipesanan);
 
-    ADDCOMPONENT(&S, &inventory, lagiBuild);
+    Stack Rakitan;
+    CreateStackEmpty(&Rakitan);
+
+    ADDCOMPONENT(&Rakitan, &inventory, lagiBuild);
     printf("\n");
 
-    STARTBUILD(&S,&lagiBuild, NoPesanan, NoPelanggan);
+    Qinfotype CurrentPesanan = InfoHead(Q);
+    STARTBUILD(&Rakitan,&lagiBuild,OrderNumber(CurrentPesanan),Pemesan(CurrentPesanan));
     printf("\n");
 
-    ADDCOMPONENT(&S, &inventory, lagiBuild);
-    PrintStack(S);
+    ADDCOMPONENT(&Rakitan, &inventory, lagiBuild);
+    PrintStack(Rakitan);
     printf("\n");
 
-    ADDCOMPONENT(&S, &inventory, lagiBuild);
-    PrintStack(S);
+    ADDCOMPONENT(&Rakitan, &inventory, lagiBuild);
+    PrintStack(Rakitan);
+    printf("\n");
+
+    ADDCOMPONENT(&Rakitan, &inventory, lagiBuild);
+    PrintStack(Rakitan);
     printf("\n");
 
 
-    REMOVECOMPONENT(&S, &inventory, lagiBuild);
-    PrintStack(S);
+    REMOVECOMPONENT(&Rakitan, &inventory, lagiBuild);
+    PrintStack(Rakitan);
     printf("\n");
-
-    FINISHBUILD(&inventory, Pesanan, S, &lagiBuild, NoPesanan, NoPelanggan);
+    
+    FINISHBUILD(&inventory, Komponen(CurrentPesanan), Rakitan, &lagiBuild,OrderNumber(CurrentPesanan),Pemesan(CurrentPesanan));
+    QDel(&Q, &CurrentPesanan);
 
 /*
     Stack Rakitan;
