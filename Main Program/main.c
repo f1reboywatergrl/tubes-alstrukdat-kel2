@@ -28,7 +28,7 @@ int main(){
     /* DATA DINAMIS YANG BERUBAH KETIKA SAVE/LOAD */
     int UangPemain; // -> Default uang pemain
     Stack Rakitan; // -> Nyimpen Rakitan yang lagi dibangun
-    Stack CurrentPesanan; // -> Nyimpen stack komponen2 pesanan sekarang
+    Qinfotype CurrentPesanan; // -> Nyimpen pesanan sekarang
     boolean lagiBuild; // -> Kalo udah startbuild-> true, klo ga false
     List InventoryPemain; // Nyimpen inventory pemain, set kosong di awal
     List ListDummy ; // Nyimpen semua data barang yang bisa dijual/diorder 
@@ -234,8 +234,8 @@ int main(){
         SetOrderNumber(&AntrianPesanan,OrderNumber);
         IncrementNumber(&OrderNumber);
         DelAtStatik(&DataDummyPesanan,RandomSeed);
-        //copy stack dari head q ke currentpesanan
-        CopyStack(Komponen(InfoHead(AntrianPesanan)),&CurrentPesanan);
+        //inisiasi pesanan sekarang
+        CurrentPesanan = InfoHead(AntrianPesanan);
         //Dua baris dibawah ini nanti bakal diganti:
         int CurrentDeliveryLoc = InfoHead(AntrianPesanan).pemesan;
         POINT PointDeliveryLoc = SearchMatrix(MapMatrix,CurrentDeliveryLoc);
@@ -321,9 +321,12 @@ int main(){
             /* COMMAND 4 : STARTBUILD */
             else if (strcmp(Kata,"STARTBUILD")==0){
                 if(CurrentPos(MapMatrix)==-1){
-                    //Ini gw ganti karena nama variable nya sama kek stack
-                    //Qinfotype CurrentPesanan = InfoHead(AntrianPesanan);
-                    STARTBUILD(&Rakitan,&lagiBuild,OrderNumber(InfoHead(AntrianPesanan)),Pemesan(InfoHead(AntrianPesanan)));
+                    if(IsQEmpty(AntrianPesanan)){
+                        printf("You do not have any order so start./n");
+                    }
+                    else{
+                        STARTBUILD(&Rakitan,&lagiBuild,OrderNumber(CurrentPesanan),Pemesan(CurrentPesanan));
+                    }
                 }
                 else{
                     printf("Return to your base to start building!\n");
@@ -333,11 +336,11 @@ int main(){
             /* COMMAND 5 : FINISHBUILD */
             else if (strcmp(Kata,"FINISHBUILD")==0){
                 if(CurrentPos(MapMatrix)==-1){
-                    //Ini juga
-                    //Qinfotype CurrentPesanan = InfoHead(AntrianPesanan);
                     Qinfotype HasilDequeue;
-                    FINISHBUILD(&InventoryPemain, Komponen(InfoHead(AntrianPesanan)), Rakitan, &lagiBuild,OrderNumber(InfoHead(AntrianPesanan)),Pemesan(InfoHead(AntrianPesanan)));
-                    QDel(&AntrianPesanan, &HasilDequeue);
+                    if(FINISHBUILD(&InventoryPemain, Komponen(CurrentPesanan), Rakitan, &lagiBuild,OrderNumber(CurrentPesanan),Pemesan(CurrentPesanan))){
+                        QDel(&AntrianPesanan, &HasilDequeue);
+                        CurrentPesanan = InfoHead(AntrianPesanan);
+                    }
                     // Ketika udah masuk order baru, overwrite CurrentPesanan
                     // CreateStackEmpty(&CurrentPesanan);
                     // CopyStack(Komponen(InfoHead(AntrianPesanan)),&CurrentPesanan);

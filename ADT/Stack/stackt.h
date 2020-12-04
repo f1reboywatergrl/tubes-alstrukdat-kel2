@@ -86,7 +86,7 @@ int PrintInventory(List T);
 void STARTBUILD(Stack *S, boolean *lagiBuild, int NoPesanan, int NoPelanggan);
 /* memulai build */
 
-void FINISHBUILD(List *inventory, Stack Pesanan, Stack Rakitan, boolean *lagiBuild, int NoPesanan, int NoPelanggan);
+boolean FINISHBUILD(List *inventory, Stack Pesanan, Stack Rakitan, boolean *lagiBuild, int NoPesanan, int NoPelanggan);
 /* mengecek kesesuaian rakitan dengan pesanan dan mengakhiri build */
 
 void ADDCOMPONENT(Stack *Rakitan, List *inventory, boolean lagiBuild);

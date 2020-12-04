@@ -124,15 +124,17 @@ boolean IsStackEqual(Stack S1, Stack S2){
 
 void PrintStack(Stack S)
 {
-    InverseStack(&S);
-    ElTypeList komponen;
-    int i;
-    int nomor=1;
-    for (i = Top(S); i >= 0; i--){
-        Pop(&S, &komponen);
-        printf("%d. %s ",nomor, Nama(komponen));
-        nomor++;
-        printf("\n");
+    if(!IsStackEmpty(S)){
+        InverseStack(&S);
+        ElTypeList komponen;
+        int i;
+        int nomor=1;
+        for (i = Top(S); i >= 0; i--){
+            Pop(&S, &komponen);
+            printf("%d. %s ",nomor, Nama(komponen));
+            nomor++;
+            printf("\n");
+        }
     }
 }
 
@@ -179,7 +181,7 @@ void STARTBUILD(Stack *S, boolean *lagiBuild, int NoPesanan, int NoPelanggan){
 
 /* COMMAND 5 : FINISHBUILD */
 
-void FINISHBUILD(List *inventory, Stack Pesanan, Stack Rakitan, boolean *lagiBuild, int NoPesanan, int NoPelanggan){
+boolean FINISHBUILD(List *inventory, Stack Pesanan, Stack Rakitan, boolean *lagiBuild, int NoPesanan, int NoPelanggan){
     if(*lagiBuild){    
         if (IsStackEqual(Pesanan, Rakitan)){ //Harus cari cara nyocokin + nentuin Invoice
             *lagiBuild = false;
@@ -190,13 +192,16 @@ void FINISHBUILD(List *inventory, Stack Pesanan, Stack Rakitan, boolean *lagiBui
             Harga(hasilBuild) = NoPelanggan*(-1);
             Jumlah(hasilBuild) = 1;
             InsertLLast(inventory,hasilBuild);
+            return true;
         }
         else{
-            printf("Komponen yang dipasangkan belum sesuai dengan pesanan, build belum dapat diselesaikan.\n");
+            printf("Can not finisih the build yet. Your build does not match the order.\n");
+            return false;
         }
     }
     else{
         printf("There is no build that has been started currently\n");
+        return false;
     }
 }
 /* lagiBuild adalah variabel yang menandakan apakah user sedang mengerjakan suatu pesanan (status) */
@@ -209,9 +214,13 @@ void ADDCOMPONENT(Stack *Rakitan, List *inventory, boolean lagiBuild){
             printf("Cannot add anymore components!\n");
         }
         else{
-            printf("Currently attached components:\n");
+            if(IsStackEmpty(*Rakitan)){
+                printf("You have not attached any components. Let's get started!\n");
+            }
+            else{
+                printf("Currently attached components:\n");
+            }
             PrintStack(*Rakitan);
-
             printf("Available components:\n");
             int amount = PrintInventory(*inventory); //jumlah komponen yang tersedia
             if(amount==0){
