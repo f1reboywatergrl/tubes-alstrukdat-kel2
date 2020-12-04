@@ -405,7 +405,8 @@ int main(){
     BacaInput(Kata);
     // Kata menyimpan hasil input
     while(strcmp(Kata,"EXIT")!=0){
-        
+        White;
+        clear();
         /* ---- DAFTAR COMMAND UTAMA PERMAINAN ---- */
         /* COMMAND 1: MOVE */
         if (strcmp(Kata,"MOVE")==0){           
