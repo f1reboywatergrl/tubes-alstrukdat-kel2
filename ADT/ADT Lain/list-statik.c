@@ -171,10 +171,10 @@ int GetRandomPemesan(int seed, int CustTotal)
 /* Menentukan pelanggan pemesan secara acak */
 {
     int seedRes;
-    if(CustTotal==6){
-        seedRes=(seed+5)%(7);
-    }
-    else{
+    switch(CustTotal){
+        case 6:
+        seedRes=(seed+5)%(7);break;
+        default:
         seedRes=(seed+7)%(CustTotal+1);
     }
     return seedRes;

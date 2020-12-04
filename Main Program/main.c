@@ -19,9 +19,13 @@ int main(){
     int length = strlen(Kata); //JANGAN DIAPUS NANTI ERROR
     // variabel Kata menyimpan hasil input
     /* INISIALISASI STRUKTUR DATA PENYIMPANAN DATA PENTING */
+
+    /* DATA STATIK YANG GA BAKAL BERUBAH */
     MATRIKS MapMatrix; // -> Nyimpen data Peta, letak pemain, letak Customer
     Graph G; // -> Nyimpen konektivitas titik2 pada peta
     MATRIKS GraphMatrix; // -> Nyimpen Adjacency Matriks untuk titik2 pada peta
+
+    /* DATA DINAMIS YANG BERUBAH KETIKA SAVE/LOAD */
     int UangPemain; // -> Default uang pemain
     Stack Rakitan; // -> Nyimpen Rakitan yang lagi dibangun
     Stack CurrentPesanan; // -> Nyimpen stack komponen2 pesanan sekarang
@@ -32,8 +36,9 @@ int main(){
     int diskon;  // Nyimpen jumlah diskon (bernilai 2 kalo secret shop dah kebuka)
     Queue AntrianPesanan; // Menyimpan antrian pesanan
     ListStatik DataDummyPesanan; // Meyimpan data dummy pesanan
-    int RandomSeed=1; // Untuk kebutuhan random
+    int RandomSeed=1; // Untuk kebutuhan random, Sebenernya bodo amat save/engga keknya hehe
     int OrderNumber; //Variable global order number
+
     if (strncmp(Kata,"START",5)==0){ // Hanya membandingkan 5 karakter pertama dari Kata
 
         /* Kosongkan semua yang bakal dinamis / set defaults for new game */
@@ -222,19 +227,22 @@ int main(){
         }
 
         White;
+        /* Generate kombinasi pesanan yang mungkin dalam List Statik */
         CreateDummiesPemesan(&DataDummyPesanan,TitikTotal-2,ListDummy);
+
         QAdd(&AntrianPesanan,ElmtStatik(DataDummyPesanan,RandomSeed));
         SetOrderNumber(&AntrianPesanan,OrderNumber);
-        //OrderNumber++;
+        IncrementNumber(&OrderNumber);
         DelAtStatik(&DataDummyPesanan,RandomSeed);
         //copy stack dari head q ke currentpesanan
-        CopyStack(InfoHead(AntrianPesanan).komponen,&CurrentPesanan);
+        CopyStack(Komponen(InfoHead(AntrianPesanan)),&CurrentPesanan);
+        //Dua baris dibawah ini nanti bakal diganti:
         int CurrentDeliveryLoc = InfoHead(AntrianPesanan).pemesan;
         POINT PointDeliveryLoc = SearchMatrix(MapMatrix,CurrentDeliveryLoc);
         
         /* ---- TAMPILAN MENU SETELAH IN-GAME ---- */
         clear();
-        printf("Welcome to Santo's World...\n");
+        printf("Welcome to Santo's World...\n"); //Ini nanti beda ketika load udah jadi
         ShowUI();
         Cyan; //set color Cyan
         // Reset isi Kata
@@ -253,16 +261,13 @@ int main(){
                 ShowValidTargets(G,CurrentPos(MapMatrix));
                 int InputTarget;
                 scanf("%d",&InputTarget);
-                addressGraph P1;
-                P1=FirstGraph(G);
-                while (InfoGraph(P1)!=CurrentPos(MapMatrix)){
-                    P1=NextGraph(P1);
-                }
+                addressGraph P1=SearchGraph(G,CurrentPos(MapMatrix));
                 address AdrTarget = First(Link(P1));                
                 if(InputTarget>NbElmt(Link(P1)) || InputTarget<1){
                     printf("That area is not accessible, please impute according to shown indices (1-%d).\n", NbElmt(Link(P1)));
                 }
                 else{
+                    //Maju sebanyak input number, buat cari target move
                     for (int i=1;i<InputTarget;i++){
                         AdrTarget=NextGraph(AdrTarget);
                     }
@@ -286,7 +291,7 @@ int main(){
             /* COMMAND 2 : STATUS */
             else if (strcmp(Kata,"STATUS")==0){  
                 printf("Uang tersisa: $%d\n",UangPemain);
-                printf("Build yang sedang dikerjakan: pesanan %d untuk Customer %d.\n", InfoHead(AntrianPesanan).orderNumber, InfoHead(AntrianPesanan).pemesan);
+                printf("Build yang sedang dikerjakan: pesanan %d untuk Customer %d.\n", OrderNumber(InfoHead(AntrianPesanan)), Pemesan(InfoHead(AntrianPesanan)));
                 printf("Lokasi: pemain sedang berada pada ");
                 switch(CurrentPos(MapMatrix)){
                     case -1:
@@ -306,19 +311,19 @@ int main(){
 
             /* COMMAND 3 : CHECKORDER */
             else if (strcmp(Kata,"CHECKORDER")==0){
-                printf("Order Number: %d\n",OrderNumber);
-                printf("Customer: Pelanggan %d\n",InfoHead(AntrianPesanan).pemesan);
-                printf("Invoice: %d\n",InfoHead(AntrianPesanan).invoice);
-                printf("Komponen: \n");
-                PrintStack(InfoHead(AntrianPesanan).komponen);
+                printf("Order Number: %d\n",OrderNumber(InfoHead(AntrianPesanan)));
+                printf("Customer: Pelanggan %d\n",Pemesan(InfoHead(AntrianPesanan)));
+                printf("Invoice: %d\n",Invoice(InfoHead(AntrianPesanan)));
+                printf("Required components: \n");
+                PrintStack(Komponen(InfoHead(AntrianPesanan)));
             }
 
             /* COMMAND 4 : STARTBUILD */
             else if (strcmp(Kata,"STARTBUILD")==0){
                 if(CurrentPos(MapMatrix)==-1){
-                    /* fputs("STARTBUILD ", fsave) */
-                    Qinfotype CurrentPesanan = InfoHead(AntrianPesanan);
-                    STARTBUILD(&Rakitan,&lagiBuild,OrderNumber(CurrentPesanan),Pemesan(CurrentPesanan));
+                    //Ini gw ganti karena nama variable nya sama kek stack
+                    //Qinfotype CurrentPesanan = InfoHead(AntrianPesanan);
+                    STARTBUILD(&Rakitan,&lagiBuild,OrderNumber(InfoHead(AntrianPesanan)),Pemesan(InfoHead(AntrianPesanan)));
                 }
                 else{
                     printf("Return to your base to start building!\n");
@@ -328,10 +333,14 @@ int main(){
             /* COMMAND 5 : FINISHBUILD */
             else if (strcmp(Kata,"FINISHBUILD")==0){
                 if(CurrentPos(MapMatrix)==-1){
-                    /* fputs("FINISHBUILD ",fsave); */
-                    Qinfotype CurrentPesanan = InfoHead(AntrianPesanan);
-                    FINISHBUILD(&InventoryPemain, Komponen(CurrentPesanan), Rakitan, &lagiBuild,OrderNumber(CurrentPesanan),Pemesan(CurrentPesanan));
-                    QDel(&AntrianPesanan, &CurrentPesanan);
+                    //Ini juga
+                    //Qinfotype CurrentPesanan = InfoHead(AntrianPesanan);
+                    Qinfotype HasilDequeue;
+                    FINISHBUILD(&InventoryPemain, Komponen(InfoHead(AntrianPesanan)), Rakitan, &lagiBuild,OrderNumber(InfoHead(AntrianPesanan)),Pemesan(InfoHead(AntrianPesanan)));
+                    QDel(&AntrianPesanan, &HasilDequeue);
+                    // Ketika udah masuk order baru, overwrite CurrentPesanan
+                    // CreateStackEmpty(&CurrentPesanan);
+                    // CopyStack(Komponen(InfoHead(AntrianPesanan)),&CurrentPesanan);
                 }
                 else{
                     printf("Return to your base to finish building!\n");
@@ -341,7 +350,6 @@ int main(){
             /* COMMAND 6 : ADDCOMPONENT */
             else if(strcmp(Kata,"ADDCOMPONENT")==0){
                 if(CurrentPos(MapMatrix)==-1 && lagiBuild){
-                    //fputs("ADDCOMPONENT ",fsave);
                     ADDCOMPONENT(&Rakitan, &InventoryPemain, lagiBuild);
                 }
                 else{
@@ -374,11 +382,11 @@ int main(){
             else if(strcmp(Kata,"SHOP")==0){
                 if(CurrentPos(MapMatrix)==0){
                     int NoKomponen, JumlahKomponen, HitungTotal;
-                    printf("Komponen yang tersedia:\n");
+                    printf("Available components:\n");
                     for (int i=0;i<LengthList(ListDummy);i++){
                         printf("%d. %s - $%d\n",i+1,Nama(ListElmt(ListDummy,i)),(Harga(ListElmt(ListDummy,i)))/diskon);
                     }
-                    printf("Komponen yang ingin dibeli: ");
+                    printf("Buy which component? : ");
                     scanf("%d",(&NoKomponen));
                     if (NoKomponen==-999){
                         if (!SecretShop){
@@ -405,16 +413,16 @@ int main(){
                         White;
                         
                     }
-                    else if (NoKomponen>0 && NoKomponen<=24){
-                        printf("Masukkan jumlah yang ingin dibeli: ");
+                    else if (NoKomponen>=0 && NoKomponen<=24){
+                        printf("Enter component amount: ");
                         scanf("%d",(&JumlahKomponen));
                         HitungTotal = ((Harga(ListElmt(ListDummy,NoKomponen-1))/diskon)*JumlahKomponen);
                         if (HitungTotal > UangPemain){
-                            printf("Uang tidak cukup!\n");
+                            printf("Not enough cash!\n");
                         }
                         else{
                             UangPemain = UangPemain-HitungTotal;
-                            printf("Komponen berhasil dibeli!\n");
+                            printf("Component bought successfully!\n");
                             ElTypeList elinventory;
                             boolean Found = false;
                             for (int i=0;i<(LengthList(InventoryPemain));i++){
@@ -442,9 +450,10 @@ int main(){
 
             /* COMMAND 9: DELIVER */
             else if (strcmp(Kata,"DELIVER")==0){
-                //Keknya mending delivery loc diambil dari anak queue
+                //TEMPORER, nanti CurrentPos dicocokin sama No Pelanggan di Inventory
                 if(CurrentAbsis(MapMatrix)==Absis(PointDeliveryLoc) && CurrentOrdinat(MapMatrix)==Ordinat(PointDeliveryLoc)){
                     printf("Item successfully delivered to Customer %d!\n",CurrentPos(MapMatrix));
+                    //Nanti ganti ke -> printf("Order #%d successfully delivered to Customer %d!\n", ... ,CurrentPos(MapMatrix));
                 }
                 else{
                     printf("This is not the right address for your delivery!\n");
@@ -452,20 +461,23 @@ int main(){
             }
             /* COMMAND 10: END_DAY */
             else if (strcmp(Kata,"END_DAY")==0){
-                Qinfotype X;
-                QDel(&AntrianPesanan,&X);
+                // Buat Kepentingan debug
+                // Qinfotype X;
+                // QDel(&AntrianPesanan,&X);
                 Yellow;
                 printf("Santo shuts his eyelids and started counting sheep... 1...2...\n\n");
                 printf("A new day has arrived, the sun has risen again.\n");
                 Green;
                 printf("Today is not just another day. It is a new opportunity, another chance, a new beginning.\n");
-                RandomSeed=AvoidCollision(DataDummyPesanan,RandomSeed,TitikTotal,ListDummy);
+
+                /* Ngambil dari List Statik secara random, jika hasil random adalah variasi yang udah pernah diambil, dia akan cari
+                sampe ketemu yang belom keambil. Kalo udah keambil semua, di reset
+                Kemudian akan di enqueue ke antrian pesanan. */
+                RandomSeed=AvoidCollision(DataDummyPesanan,RandomSeed,TitikTotal-2,ListDummy);
                 QAdd(&AntrianPesanan,ElmtStatik(DataDummyPesanan,RandomSeed));
                 SetOrderNumber(&AntrianPesanan,OrderNumber);
-                IncrementOrderNumber(&OrderNumber);
+                IncrementNumber(&OrderNumber);
                 DelAtStatik(&DataDummyPesanan,RandomSeed);
-                CreateStackEmpty(&CurrentPesanan);
-                CopyStack(InfoHead(AntrianPesanan).komponen,&CurrentPesanan);
                 
                 White;
             }
@@ -635,7 +647,7 @@ int main(){
             for (int x=0;x<100;x++){ // Reset semua nilai Kata supaya bisa input lagi
                 Kata[x] = '\0';
             }
-            RandomSeed++;
+            IncrementNumber(&RandomSeed);
             BacaInput(Kata);
             // Kata menyimpan hasil input             
         }

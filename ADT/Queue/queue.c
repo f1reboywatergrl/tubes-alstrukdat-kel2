@@ -128,8 +128,8 @@ void SetOrderNumber (Queue *Q, int OrderNumber)
     OrderNumber(InfoTail(*Q)) = OrderNumber;
 }
 
-void IncrementOrderNumber (int *OrderNumber)
+void IncrementNumber (int *Number)
 /* Increments order number */
 {
-    *OrderNumber = *OrderNumber +1;
+    *Number = *Number +1;
 }

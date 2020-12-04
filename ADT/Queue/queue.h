@@ -90,6 +90,6 @@ void PrintInfoHead(Queue Q);
 void PrintQueue (Queue Q);
 void SetOrderNumber (Queue *Q, int OrderNumber);
 /* Set order number dari TAIL(Q) (setelah Enqueue) */
-void IncrementOrderNumber (int *OrderNumber);
+void IncrementNumber (int *Number);
 /* Increments order number */
 #endif
