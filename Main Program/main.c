@@ -138,15 +138,15 @@ int main(){
     }
     White; //set color White
     clear();
+    InventoryPemain=MakeList();
+    CreateStackEmpty(&Rakitan);
+    QCreateEmpty(&AntrianPesanan, 20);
     if (strncmp(Kata,"START",5)==0){ // Hanya membandingkan 5 karakter pertama dari Kata
         /* Kosongkan semua yang bakal dinamis / set defaults for new game */
         UangPemain = 4000;
         lagiBuild=false;
         SecretShop=false;
-        InventoryPemain=MakeList();
-        CreateStackEmpty(&Rakitan);
         //PENGISIAN DATA DUMMY PEMESAN SETELAH AKUISISI JUMLAH CUSTOMER
-        QCreateEmpty(&AntrianPesanan, 20);
         diskon = 1; // Diskon awal
         OrderNumber=1; //Ordernumber Awal
         /* Ini ketika New game: */
@@ -168,15 +168,24 @@ int main(){
         }
         ADVKATA();
         // Current Position
-        char temp = CKata.TabKata[0]; // langsung 0 karena current pos tidak bisa lebih dari 1 digit
-        int convert = temp - '0'; // mengubah dari char ke int
+        char temp;
+        int convert;
+        if (CKata.TabKata[0] == '-'){ // di base
+            convert = -1;
+        }
+        else{ // selain base
+            temp = CKata.TabKata[0]; // langsung 0 karena current pos tidak bisa lebih dari 1 digit
+            printf("%c\n",temp);
+            int convert = temp - '0'; // mengubah dari char ke int
+        }
+        printf("%d\n",convert);
         POINT P = SearchMatrix(MapMatrix,convert); // dari posisi pelanggan/base/shop didapat koordinat
         CurrentAbsis(MapMatrix) = Absis(P);
         CurrentOrdinat(MapMatrix) = Ordinat(P);
 
         // LagiBuild
         ADVKATA();
-        if (strncmp(CKata.TabKata,"true",4)){ // true
+        if (strncmp(CKata.TabKata,"true",4)==0){ // true
             lagiBuild = true;
         }   
         else{ // false
@@ -186,10 +195,10 @@ int main(){
         // Secret Shop
         ADVKATA();
         if (strncmp(CKata.TabKata,"false",5)==0){
-            SecretShop = true;
+            SecretShop = false;
         }
         else{
-            SecretShop = false;
+            SecretShop = true;
         }
         ADVKATA();
         // Diskon
@@ -202,7 +211,6 @@ int main(){
         // RAKITAN
         IgnoreBlank();
         ElTypeList listtemp;
-        CreateStackEmpty(&Rakitan);
         while (CC != MARK){
             int i = 0;
             while (CC != ';') {
@@ -212,9 +220,10 @@ int main(){
                 i++;
             } 
             CKata.Length = i;
-            printf("%s\n",CKata.TabKata);
-            listtemp.nama = CKata.TabKata;
-            printf("%s\n",listtemp.nama);
+            char nama[100];
+            for (int x=0;x<100;x++){
+                nama[x] = CKata.TabKata[x];
+            } 
             ADV(); // Memajukkan CC sekali karena CC sekarang berada di ';'
             ADVKATA();
             int price = 0;
@@ -224,8 +233,6 @@ int main(){
                 int pangkat = Pangkat(10,CKata.Length-a-1);
                 price += pangkat*convert;
             }
-            listtemp.harga = price;
-            listtemp.jumlah = 1; // Jumlah komponen pada rakitan pasti 1
             ADVKATA();
             int category = 0;
             for (int a=0;a<CKata.Length;a++){
@@ -234,15 +241,15 @@ int main(){
                 int pangkat = Pangkat(10,CKata.Length-a-1);
                 category += pangkat*convert;
             }
-            listtemp.kategori = category;
+            CreateElmtLengkap(&listtemp,price,nama,category,1); // Jumlah komponen pada pesanan pasti 1
             Push(&Rakitan,listtemp);
+            PrintStack(Rakitan);
             IgnoreBlank();
         }
         ADV(); // Maju satu karakter dari rakitan ke queue antrianpesanan
         // Queue Pesanan
         // Ambil listtemp dari rakitan
         Qinfotype tempqinfo;
-        QCreateEmpty(&AntrianPesanan, 20);
         Stack komptemp; // Menyimpan komponen untuk pesanan yang sedang diakuisisi
         CreateStackEmpty(&komptemp);
         while (CC != MARK){
@@ -256,9 +263,13 @@ int main(){
                 } 
                 CKata.Length = i;
                 printf("%s\n",CKata.TabKata);
-                listtemp.nama = CKata.TabKata;
-                printf("%s\n",listtemp.nama);
+                char nama[100];
+                for (int x=0;x<CKata.Length;x++){
+                    nama[x] = CKata.TabKata[x];
+                } 
+                printf("%s\n",nama);
                 ADV(); // Memajukkan CC sekali karena CC sekarang berada di ';'
+                printf("%c\n",CC);
                 ADVKATA();
                 int price = 0;
                 for (int a=0;a<CKata.Length;a++){
@@ -267,8 +278,7 @@ int main(){
                     int pangkat = Pangkat(10,CKata.Length-a-1);
                     price += pangkat*convert;
                 }
-                listtemp.harga = price;
-                listtemp.jumlah = 1; // Jumlah komponen pada pesanan pasti 1
+                printf("%s\n",nama);
                 ADVKATA();
                 int category = 0;
                 for (int a=0;a<CKata.Length;a++){
@@ -277,11 +287,24 @@ int main(){
                     int pangkat = Pangkat(10,CKata.Length-a-1);
                     category += pangkat*convert;
                 }
-                listtemp.kategori = category;
-                Push(&komptemp,listtemp);
+                ElTypeList listtemp1;
+                printf("%s %d %d\n",nama,price,category);
+                CreateElmtLengkap(&listtemp1,price,nama,category,1); // Jumlah komponen pada pesanan pasti 1
+                Push(&komptemp,listtemp1);
                 IgnoreBlank(); // Hanya ignore blank saja, tapi tidak mengakusisi kata yang ditemukan
+                PrintStack(komptemp);
+                for (int x = 0;x<100;x++){
+                    nama[x] = '\0';
                 }
-            Komponen(tempqinfo) = komptemp; // Simpan stack komponen
+            }
+            Komponen(tempqinfo) = komptemp;
+            /*
+            for (int x=Top(komptemp);x>-1;x--){
+                Pop(&komptemp,&listtemp1);
+                printf("%s", listtemp1.nama);
+                Push(&(tempqinfo.komponen),listtemp1);
+            }
+            */
             ADV(); // Maju satu karakter karena CC sekarang ada di '/'
             // Sekarang ada di karakter pertama invoice
             ADVKATA();
@@ -316,15 +339,13 @@ int main(){
             OrderNumber(tempqinfo) = ordN;
             QAdd(&AntrianPesanan,tempqinfo); // pesanan yang sudah diakuisisi dimasukkan dalam queue
             IgnoreBlank(); // Hanya ignore blank saja, tapi tidak mengakusisi kata yang ditemukan
-            CreateStackEmpty(&komptemp); // Reset ulang isi stack supaya bisa dipakai lagi
+            MakeStackEmpty(&komptemp); // Reset ulang isi stack supaya bisa dipakai lagi
             OrderNumber = ordN + 1; // Saat keluar dari loop, OrderNumber untuk pesanan selanjutnya pada program adalah OrderNumber pesanan di akhir queue + 1
         }
         // Saat keluar, maka OrderNumber sudah berisi OrderNumber pesanan pada akhir queue + 1
         ADV(); // Supaya CC tidak di mark dan sekarang berada di inventory
         // Inventory
-        InventoryPemain=MakeList();
         ElTypeList listtemp2;
-        // Pakai listtemp lagi sebagai ElTypeList
         while (CC != MARK){
             int i = 0;
             while (CC != ';') {
@@ -334,9 +355,10 @@ int main(){
                 i++;
             } 
             CKata.Length = i;
-            printf("%s\n",CKata.TabKata);
-            listtemp2.nama = CKata.TabKata;
-            printf("%s\n",listtemp2.nama);
+            char nama[100];
+            for (int x=0;x<100;x++){
+                nama[x] = CKata.TabKata[x];
+            } 
             ADV(); // Memajukkan CC sekali karena CC sekarang berada di ';'
             ADVKATA();
             // akuisisi harga
@@ -347,7 +369,6 @@ int main(){
                 int pangkat = Pangkat(10,CKata.Length-a-1);
                 price += pangkat*convert;
             }
-            listtemp2.harga = price;
             ADVKATA();
             // akuisisi jumlah
             int amount = 0;
@@ -357,7 +378,6 @@ int main(){
                 int pangkat = Pangkat(10,CKata.Length-a-1);
                 amount += pangkat*convert;
             }
-            listtemp2.jumlah = amount; 
             ADVKATA();
             // akuisisi kategori
             int category = 0;
@@ -367,7 +387,7 @@ int main(){
                 int pangkat = Pangkat(10,CKata.Length-a-1);
                 category += pangkat*convert;
             }
-            listtemp2.kategori = category;
+            CreateElmtLengkap(&listtemp2,price,nama,category,amount);
             InsertLLast(&InventoryPemain,listtemp2);
             IgnoreBlank();
         }
