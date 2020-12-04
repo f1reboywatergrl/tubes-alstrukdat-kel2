@@ -71,7 +71,9 @@ Stack MergeStack (Stack S, Stack S1);
 
 boolean CekUrutan (Stack S, int urutan);
 /* saat user add component, kategori komponen direpresentasikan sebagai 
-angka urutan kategori komponen tersebut
+angka urutan kategori komponen tersebut */
+
+void MakeStackEmpty(Stack *S);
 
 boolean IsStackEqual(Stack S1, Stack S2);
 /* Mengirim true jika kedua stack yang full adalah sama
@@ -86,7 +88,7 @@ int PrintInventory(List T);
 void STARTBUILD(Stack *S, boolean *lagiBuild, int NoPesanan, int NoPelanggan);
 /* memulai build */
 
-boolean FINISHBUILD(List *inventory, Stack Pesanan, Stack Rakitan, boolean *lagiBuild, int NoPesanan, int NoPelanggan);
+boolean FINISHBUILD(List *inventory, Stack *Pesanan, Stack Rakitan, boolean *lagiBuild, int NoPesanan, int NoPelanggan, int invoice);
 /* mengecek kesesuaian rakitan dengan pesanan dan mengakhiri build */
 
 void ADDCOMPONENT(Stack *Rakitan, List *inventory, boolean lagiBuild);

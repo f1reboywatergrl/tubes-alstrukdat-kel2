@@ -4,14 +4,19 @@
 
 #define InitialSize 10
 //BUAT SHOP & INVENTORY PEMAIN
-    
+/*
+Yang harus disimpen:
+-Invoice
+-Nomor pelanggan
+-Order number
+*/
 typedef int IdxType;
 typedef struct 
 {
-    char *nama; // Bentuk String, menjelaskan nama
-    int harga; //Untuk menjelaskan harga 
-    int jumlah; //Untuk menjelaskan jumlah
-    int kategori; //Untuk menjelaskan kategori
+    char *nama; // Bentuk String, menjelaskan nama -> Ketika nyimpen Build yg udah jadi -> "Rakitan"
+    int harga; //Untuk menjelaskan harga -> Ketika nyimpen Build yg udah jadi -> Invoice
+    int jumlah; //Untuk menjelaskan jumlah -> Ketika nyimpen Build yg udah jadi -> Nomor pelanggan 
+    int kategori; //Untuk menjelaskan kategori -> Ketika nyimpen Build yg udah jadi -> Order Number
 }ElTypeList;
 
 typedef struct {

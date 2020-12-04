@@ -11,7 +11,9 @@
 #define White printf("\033[0;37m");
 #define Cyan printf("\033[0;36m\n");
 #define BCyan printf("\033[1;36m");
-void ShowUI (){
+void ShowUI ()
+/* Menampilkan command-command yang bisa dimasukkan pemain ketika in-game */
+{
     printf(".--------------.------------.------------------.\n");
     printf("|             What will Santo do?              |\n");
     printf(".--------------.------------.------------------.\n");
@@ -29,7 +31,9 @@ void ShowUI (){
     printf("'----------------------------------------------'\n");
 }
 
-void MainMenu(){
+void MainMenu()
+/* Menampilkan menu utama sebelum start/load */
+{
     BCyan;
     printf(R"EOF(
 
@@ -57,7 +61,9 @@ void MainMenu(){
     Green;
 }
 
-void SecretShopIntro(){
+void SecretShopIntro()
+/* Menampilkan narasi utama ketika pertama kali mengakses SecretShop */
+{
     Yellow;
     printf("Through the Shop's back door, Santo found his way inside a secret room.\n");
     Red;
@@ -70,11 +76,15 @@ void SecretShopIntro(){
     Red;printf("Choose Wisely: ");
 }
 
-void LockShop(boolean *SecretShop){
+void LockShop(boolean *SecretShop)
+/* Mengunci secret shop */
+{
     *SecretShop=!(*SecretShop);
 }
 
-void clear(){
+void clear()
+/* Membersihkan terminal */
+{
     #if defined(__linux__) || defined(__unix__) || defined(__APPLE__)
         system("clear");
     #endif
@@ -82,4 +92,14 @@ void clear(){
     #if defined(_WIN32) || defined(_WIN64)
         system("cls");
     #endif
+}
+
+void EndDayMessage()
+/* Menampilkan pesan ketika End day*/
+{
+    Yellow;
+    printf("Santo shuts his eyelids and started counting sheep... 1...2...\n\n");
+    printf("A new day has arrived, the sun has risen again.\n");
+    Green;
+    printf("Today is not just another day. It is a new opportunity, another chance, a new beginning.\n");
 }

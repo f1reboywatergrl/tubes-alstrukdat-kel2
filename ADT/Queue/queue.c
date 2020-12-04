@@ -96,31 +96,6 @@ void QDel (Queue * Q, Qinfotype * X)
     }
 }
 
-/* Fungsi lain */
-void PrintInfoHead(Queue Q){
-    if (!IsQEmpty(Q)){
-        printf("%d", InfoHead(Q));
-    }
-    else{
-        printf("Belum ada order");
-    }
-}
-
-void PrintQueue (Queue Q){
-    Qinfotype order;
-    int i;
-    if (!IsQEmpty(Q)){
-        PrintInfoHead(Q);
-        if (QNBElmt(Q)>1){
-            for (i = Head(Q)+1; i <= Tail(Q); i++){
-                printf("%d", Q.T[i]);
-                }
-        }
-    else{
-        printf("Order kosong");
-        }
-    }
-}
 
 void SetOrderNumber (Queue *Q, int OrderNumber)
 /* Set order number dari TAIL(Q) (setelah Enqueue) */

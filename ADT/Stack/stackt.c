@@ -97,6 +97,12 @@ boolean CekUrutan (Stack S, int urutan){
     }
 }
 
+void MakeStackEmpty(Stack *S){
+    ElTypeList X;
+    while(Top(*S)!=NilStack){
+        Pop(S,&X);
+    }
+}
 
 /* saat user add component, kategori komponen direpresentasikan 
 sebagai angka urutan kategori komponen tersebut*/
@@ -111,8 +117,8 @@ boolean IsStackEqual(Stack S1, Stack S2){
         int i = 0;
         boolean sama = true;
         while(i<8 && sama){
-            Push(&S1, X1);
-            Push(&S2,X2);
+            Pop(&S1, &X1);
+            Pop(&S2,&X2);
             if(strcmp(X1.nama, X2.nama)!=0){
                 sama = false;
             }
@@ -141,11 +147,9 @@ void PrintStack(Stack S)
 int PrintInventory(List T){
     if (!IsLEmpty(T)){
         int nomor = 0;
-        int i;
-        int panjang = LengthList(T);
-        for (i=0; i < panjang; i++){
-            if ((ListElmt(T,i).jumlah) > 0){
-                printf("%d. %s\n", nomor+1, ((ListElmt(T,i)).nama));
+        for(int i =0; i<LengthList(T); i++){
+            if ((ListElmt(T,i).jumlah) > 0 && strcmp(Nama(ListElmt(T,i)),"Rakitan")!=0){
+                printf("%d. %s\n", nomor+1, Nama(ListElmt(T,i)));
                 nomor++;
             }
         }
@@ -165,33 +169,28 @@ int PrintInventory(List T){
 
 void STARTBUILD(Stack *S, boolean *lagiBuild, int NoPesanan, int NoPelanggan){
     if(*lagiBuild){
-        printf("Cant start a new build while you haven't finished current build\n");
+        printf("Currently building another computer, unable to start a new build.\n");
     }
     else{
-        CreateStackEmpty(S);
-        if (*lagiBuild){
-            printf("Currently building another computer, unable to start a new build.\n");
-        }
-        else{
-            *lagiBuild = true;
-            printf("Started order %d for Customer %d.\n", NoPesanan, NoPelanggan);
-        }
+        *lagiBuild = true;
+        printf("Started order %d for Customer %d.\n", NoPesanan, NoPelanggan);
     }
 }
 
 /* COMMAND 5 : FINISHBUILD */
 
-boolean FINISHBUILD(List *inventory, Stack Pesanan, Stack Rakitan, boolean *lagiBuild, int NoPesanan, int NoPelanggan){
+boolean FINISHBUILD(List *inventory, Stack *Pesanan, Stack Rakitan, boolean *lagiBuild, int NoPesanan, int NoPelanggan, int invoice){
     if(*lagiBuild){    
-        if (IsStackEqual(Pesanan, Rakitan)){ //Harus cari cara nyocokin + nentuin Invoice
+        if (IsStackEqual(*Pesanan, Rakitan)){
             *lagiBuild = false;
-            printf("Order #%d is complete. Deliver it to Customer %d!\n", NoPesanan, NoPelanggan);
+            printf("Order %d is complete. Deliver it to Customer %d!\n", NoPesanan, NoPelanggan);
             ElTypeList hasilBuild;
-            sprintf(Nama(hasilBuild), "%d", NoPesanan);
-            Kategori(hasilBuild) = 9;
-            Harga(hasilBuild) = NoPelanggan*(-1);
-            Jumlah(hasilBuild) = 1;
+            Nama(hasilBuild) = "RAKITAN";
+            Kategori(hasilBuild) = NoPesanan;
+            Harga(hasilBuild) = invoice;
+            Jumlah(hasilBuild) = NoPelanggan;
             InsertLLast(inventory,hasilBuild);
+            MakeStackEmpty(Pesanan);
             return true;
         }
         else{
@@ -211,7 +210,9 @@ boolean FINISHBUILD(List *inventory, Stack Pesanan, Stack Rakitan, boolean *lagi
 void ADDCOMPONENT(Stack *Rakitan, List *inventory, boolean lagiBuild){
     if(lagiBuild){
         if(IsStackFull(*Rakitan)){
-            printf("Cannot add anymore components!\n");
+            printf("Cannot add components anymore !\n");
+            printf("Currently attached components:\n");
+            PrintStack(*Rakitan);
         }
         else{
             if(IsStackEmpty(*Rakitan)){
@@ -263,23 +264,30 @@ void ADDCOMPONENT(Stack *Rakitan, List *inventory, boolean lagiBuild){
 /* COMMAND 7 : REMOVECOMPONENT */
 
 void REMOVECOMPONENT(Stack *Rakitan, List *inventory, boolean lagiBuild){
-    if (lagiBuild){
-        if(IsStackEmpty(*Rakitan)){
-            printf("Your build is currently empty.\n");
-        }
-        else{
-            ElTypeList komponen;
-            Pop(Rakitan,&komponen);
-            int i = 0;
-            while(strcmp(Nama(ListElmt(*inventory,i)), Nama(komponen))!=0){
-                i++;
-            }
-            Jumlah(ListElmt(*inventory,i))++;
-            printf("%s has been sucessfully removed from the current build.\n",Nama(komponen));
-        }
+    if(IsStackEmpty(*Rakitan)){
+        printf("You do not have any components to remove\n");
+        printf("You do not have any component to remove\n");
+        printf("You do not have any component to remove\n");
     }
     else{
-        printf("Can't remove any component because there is no build that has started currently.\n");
+        if (lagiBuild){
+            if(IsStackEmpty(*Rakitan)){
+                printf("Your build is currently empty.\n");
+            }
+            else{
+                ElTypeList komponen;
+                Pop(Rakitan,&komponen);
+                int i = 0;
+                while(strcmp(Nama(ListElmt(*inventory,i)), Nama(komponen))!=0){
+                    i++;
+                }
+                Jumlah(ListElmt(*inventory,i))++;
+                printf("%s has been sucessfully removed from the current build.\n",Nama(komponen));
+            }
+        }
+        else{
+            printf("Can't remove any component because there is no build that has started currently.\n");
+        }
     }
 }
                         

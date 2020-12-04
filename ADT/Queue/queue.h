@@ -86,8 +86,7 @@ void QDel (Queue * Q, Qinfotype * X);
 /* I.S. Q tidak mungkin kosong */
 /* F.S. X = nilai elemen HEAD pd I.S., HEAD "maju" dengan mekanisme circular buffer; 
         Q mungkin kosong */
-void PrintInfoHead(Queue Q);
-void PrintQueue (Queue Q);
+
 void SetOrderNumber (Queue *Q, int OrderNumber);
 /* Set order number dari TAIL(Q) (setelah Enqueue) */
 void IncrementNumber (int *Number);

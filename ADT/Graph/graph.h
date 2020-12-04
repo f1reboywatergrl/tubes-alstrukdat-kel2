@@ -83,6 +83,13 @@ boolean IsLinked(Graph G, infotypeGraph n, infotypeGraph p);
 addressGraph SearchGraph(Graph G, infotypeGraph X);
 
 void Move (Graph G, int CurrentPos, int TargetPos,MATRIKS *M);
+/* Mengubah lokasi saat ini menjadi lokasi target */
 
 void ShowValidTargets (Graph G, int CurrentPos);
+/* Menampilkan tujuan yang dapat dicapai sebuah lokasi 
+Pada dasarnya print list linier yang terkandung dalam sebuah InfotypeGraph */
+
+void SaveLinks (MATRIKS GraphMatrix, Graph *G);
+/* Membaca Adjacency Matrix dan menambahkan link-linknya pada Graph */
+
 #endif

@@ -142,11 +142,12 @@ void TampilInventory(List T){
     int j = 1;
     for (int i=0;i<LengthList(T);i++){
         if (Jumlah(ListElmt(T,i))>0){
-            if(Kategori(ListElmt(T,i)) == 9)
+            if(strcmp(Nama(ListElmt(T,i)),"RAKITAN")==0 && (Jumlah(ListElmt(T,i)) != 0))
             {
-                printf("%d. Build for #%d Order (%d)\n",j,j /*Ini masih salah, nunggu finishbuild */,Jumlah(ListElmt(T,i)));
+                printf("%d. Build #%d for Customer %d (1)\n",j,Kategori(ListElmt(T,i)),Jumlah(ListElmt(T,i)));
             }
-            else{
+            else
+            {
                 printf("%d. %s - (%d)\n",j,Nama(ListElmt(T,i)),Jumlah(ListElmt(T,i)));
             }
             j++;

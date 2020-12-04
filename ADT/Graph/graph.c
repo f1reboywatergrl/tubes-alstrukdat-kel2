@@ -162,9 +162,10 @@ void ShowValidTargets (Graph G, int CurrentPos)
         printf("Shop\n");break;
 
         default:
-        printf("Pelanggan %d\n",CurrentPos);
+        printf("Customer %d\n",CurrentPos);
     }
     printf("\033[0;37m");
+    printf("0. Cancel\n");
     int C=1;
     address P;
     addressGraph PGraph;
@@ -184,9 +185,21 @@ void ShowValidTargets (Graph G, int CurrentPos)
             printf("Shop\n");break;
 
             default:
-            printf("Pelanggan %d\n",InfoLinier(P));
+            printf("Customer %d\n",InfoLinier(P));
         }
         P=NextGraph(P);
         C++;
+    }
+}
+
+void SaveLinks (MATRIKS GraphMatrix, Graph *G)
+/* Membaca Adjacency Matrix dan menambahkan link-linknya pada Graph */
+{
+    for (int i=BrsMin;i<NBrsEff(GraphMatrix);i++){
+        for (int j=KolMin;j<NKolEff(GraphMatrix);j++){
+            if (ElmtMatrix(GraphMatrix,i,j)==1){
+                AddLink(G,i-1,j-1);
+            }
+        }
     }
 }
