@@ -187,12 +187,12 @@ boolean FINISHBUILD(List *inventory, Stack *Pesanan, Stack Rakitan, boolean *lag
             return true;
         }
         else{
-            printf("Can not finisih the build yet. Your build does not match the order.\n");
+            printf("Cannot finish the build yet. Your build does not match the order.\n");
             return false;
         }
     }
     else{
-        printf("There is no build that has been started currently\n");
+        printf("There is no build that has been started currently.\n");
         return false;
     }
 }
@@ -203,7 +203,7 @@ boolean FINISHBUILD(List *inventory, Stack *Pesanan, Stack Rakitan, boolean *lag
 void ADDCOMPONENT(Stack *Rakitan, List *inventory, boolean lagiBuild){
     if(lagiBuild){
         if(IsStackFull(*Rakitan)){
-            printf("Cannot add components anymore !\n");
+            printf("Cannot add components anymore! \n");
             printf("Currently attached components:\n");
             PrintStack(*Rakitan);
         }
@@ -250,7 +250,7 @@ void ADDCOMPONENT(Stack *Rakitan, List *inventory, boolean lagiBuild){
         }
     }
     else{
-        printf("Can't add any component because there is no build that has started currently\n");
+        printf("Can't add any component because there is no build that has been started currently.\n");
     }
 }
 
