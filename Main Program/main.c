@@ -126,22 +126,22 @@ int main(){
     CreateDummies(&ListDummy);
     CreateDummiesPemesan(&DataDummyPesanan,TitikTotal-2,ListDummy);
     // Input
-    char Kata[100];
-    BacaInput(Kata); // Membaca input dari user
-    int length = strlen(Kata); //JANGAN DIAPUS NANTI ERROR
-    while ((strncmp(Kata,"START",5)!=0) && (strncmp(Kata,"LOAD",4)!=0)){
+    char InputKata[100];
+    BacaInput(InputKata); // Membaca input dari user
+    int length = strlen(InputKata); //JANGAN DIAPUS NANTI ERROR
+    while ((strncmp(InputKata,"START",5)!=0) && (strncmp(InputKata,"LOAD",4)!=0)){
         printf("Please enter a valid input!\n");
         for (int x=0;x<100;x++){ // reset nilai Kata
-            Kata[x] = '\0';
+            InputKata[x] = '\0';
         }
-        BacaInput(Kata);
+        BacaInput(InputKata);
     }
     White; //set color White
     clear();
     InventoryPemain=MakeList();
     CreateStackEmpty(&Rakitan);
-    QCreateEmpty(&AntrianPesanan, 20);
-    if (strncmp(Kata,"START",5)==0){ // Hanya membandingkan 5 karakter pertama dari Kata
+    QCreateEmpty(&AntrianPesanan, 10);
+    if (strncmp(InputKata,"START",5)==0){ // Hanya membandingkan 5 karakter pertama dari Kata
         /* Kosongkan semua yang bakal dinamis / set defaults for new game */
         UangPemain = 4000;
         lagiBuild=false;
@@ -152,11 +152,12 @@ int main(){
         /* Ini ketika New game: */
         QAdd(&AntrianPesanan,ElmtStatik(DataDummyPesanan,RandomSeed));
         SetOrderNumber(&AntrianPesanan,OrderNumber);
-        IncrementNumber(&OrderNumber);
+        OrderNumber ++;
         DelAtStatik(&DataDummyPesanan,RandomSeed);
+        RandomSeed++;
         printf("Welcome to Santo's World!\n");
     }
-    else if (strncmp(Kata,"LOAD",4)==0){
+    else if (strncmp(InputKata,"LOAD",4)==0){
         STARTKATA("save.txt");
         // Uang Pemain
         UangPemain = 0;
@@ -175,14 +176,11 @@ int main(){
         }
         else{ // selain base
             temp = CKata.TabKata[0]; // langsung 0 karena current pos tidak bisa lebih dari 1 digit
-            printf("%c\n",temp);
-            int convert = temp - '0'; // mengubah dari char ke int
+            convert = temp - '0'; // mengubah dari char ke int
         }
-        printf("%d\n",convert);
         POINT P = SearchMatrix(MapMatrix,convert); // dari posisi pelanggan/base/shop didapat koordinat
         CurrentAbsis(MapMatrix) = Absis(P);
         CurrentOrdinat(MapMatrix) = Ordinat(P);
-
         // LagiBuild
         ADVKATA();
         if (strncmp(CKata.TabKata,"true",4)==0){ // true
@@ -209,17 +207,26 @@ int main(){
             diskon = 2;
         }
         // RAKITAN
-        IgnoreBlank();
+        ADVKATA();
         ElTypeList listtemp;
         while (CC != MARK){
             int i = 0;
+            for (int a=0;a<CKata.Length;a++){
+                char temp = CKata.TabKata[a]; // berisi nilai akuisisi
+                int convert = temp - '0'; // mengubah dari char ke int
+                int pangkat = Pangkat(10,CKata.Length-a-1);
+                i += pangkat*convert;
+            }
+            /*
             while (CC != ';') {
                 CKata.TabKata[i] = CC;
                 CKata.TabKata[i+1] = '\0';
                 ADV();
                 i++;
             } 
-            CKata.Length = i;
+            */
+            Push(&Rakitan, ListElmt(ListDummy,i));
+            /*
             char nama[100];
             for (int x=0;x<100;x++){
                 nama[x] = CKata.TabKata[x];
@@ -241,19 +248,36 @@ int main(){
                 int pangkat = Pangkat(10,CKata.Length-a-1);
                 category += pangkat*convert;
             }
-            CreateElmtLengkap(&listtemp,price,nama,category,1); // Jumlah komponen pada pesanan pasti 1
-            Push(&Rakitan,listtemp);
-            PrintStack(Rakitan);
-            IgnoreBlank();
+            */
+            // CreateElmtLengkap(&listtemp,price,nama,category,1); // Jumlah komponen pada pesanan pasti 1
+            // Push(&Rakitan,listtemp);
+            ADVKATA();
         }
         ADV(); // Maju satu karakter dari rakitan ke queue antrianpesanan
         // Queue Pesanan
         // Ambil listtemp dari rakitan
+        ADVKATA();
         Qinfotype tempqinfo;
         Stack komptemp; // Menyimpan komponen untuk pesanan yang sedang diakuisisi
-        CreateStackEmpty(&komptemp);
+        ElTypeList listtemp1;
+        CreateStackEmpty(&komptemp);        
         while (CC != MARK){
-            while (CC != '/'){
+            while (CC != MARK){
+                int i = 0;
+                for (int a=0;a<CKata.Length;a++){
+                    char temp = CKata.TabKata[a]; // berisi nilai akuisisi
+                    int convert = temp - '0'; // mengubah dari char ke int
+                    int pangkat = Pangkat(10,CKata.Length-a-1);
+                    i += pangkat*convert;
+                }
+                Push(&komptemp,ListElmt(ListDummy,i));
+                /*Kata nama;
+                //char nama[100];
+                printf("Sebelom Push\n");
+                //printf("HARUSNYA KOSONG => %s\n",nama);
+                PrintStack(komptemp);
+                printf("\n\n");
+                //sampe sini masih bener            
                 int i = 0;
                 while (CC != ';') {
                     CKata.TabKata[i] = CC;
@@ -263,39 +287,60 @@ int main(){
                 } 
                 CKata.Length = i;
                 printf("%s\n",CKata.TabKata);
-                char nama[100];
-                for (int x=0;x<CKata.Length;x++){
-                    nama[x] = CKata.TabKata[x];
-                } 
-                printf("%s\n",nama);
-                ADV(); // Memajukkan CC sekali karena CC sekarang berada di ';'
-                printf("%c\n",CC);
-                ADVKATA();
-                int price = 0;
-                for (int a=0;a<CKata.Length;a++){
-                    char temp = CKata.TabKata[a]; // berisi nilai akuisisi
-                    int convert = temp - '0'; // mengubah dari char ke int
-                    int pangkat = Pangkat(10,CKata.Length-a-1);
-                    price += pangkat*convert;
-                }
-                printf("%s\n",nama);
-                ADVKATA();
-                int category = 0;
-                for (int a=0;a<CKata.Length;a++){
-                    char temp = CKata.TabKata[a]; // berisi nilai akuisisi
-                    int convert = temp - '0'; // mengubah dari char ke int
-                    int pangkat = Pangkat(10,CKata.Length-a-1);
-                    category += pangkat*convert;
-                }
-                ElTypeList listtemp1;
-                printf("%s %d %d\n",nama,price,category);
-                CreateElmtLengkap(&listtemp1,price,nama,category,1); // Jumlah komponen pada pesanan pasti 1
-                Push(&komptemp,listtemp1);
-                IgnoreBlank(); // Hanya ignore blank saja, tapi tidak mengakusisi kata yang ditemukan
-                PrintStack(komptemp);
+                //Stack masih bener
+
+
+                //Salahnya disini
+
                 for (int x = 0;x<100;x++){
                     nama[x] = '\0';
                 }
+                printf("Sebelom Push - Baris 278\n");
+                //Ketika kelar dari sini^, stacknya jadi blank semua
+                printf("%d\n", InfoTop(komptemp).harga);
+                PrintStack(komptemp);
+                printf("\n\n"); 
+                //printf("Nama Komponen Queue = %s\n",nama);                
+                for (int x=0;x<CKata.Length;x++){
+                    nama.TabKata[x] = CKata.TabKata[x];
+                }
+                // printf("%s\n",nama);
+                PrintStack(komptemp);
+                printf("\n\n"); 
+                // Ketika kelar dari sini^, stack yang lama ke-overwrite
+
+
+                ADV(); // Memajukkan CC sekali karena CC sekarang berada di ';'
+                printf("%c\n",CC);
+                nama.Length=0;
+                ADVKATA();
+                int price = 0;
+                for (int a=0;a<CKata.Length;a++){
+                    char tempQ = CKata.TabKata[a]; // berisi nilai akuisisi
+                    int convertQ = tempQ - '0'; // mengubah dari char ke int
+                    int pangkat = Pangkat(10,CKata.Length-a-1);
+                    price += pangkat*convertQ;
+                }
+                //printf("Nama Komponen Queue 2 = %s\n",nama);
+                nama.Length=0;
+                ADVKATA();
+                int category = 0;
+                for (int a=0;a<CKata.Length;a++){
+                    char tempQ = CKata.TabKata[a]; // berisi nilai akuisisi
+                    int convertQ = tempQ - '0'; // mengubah dari char ke int
+                    int pangkat = Pangkat(10,CKata.Length-a-1);
+                    category += pangkat*convertQ;
+                }
+                
+                CreateElmtLengkap(&listtemp1,price,nama.TabKata,category,0); // Jumlah komponen pada pesanan pasti 0
+                printf("Nama, Price, Category Komponen = %s, %d, %d\n",Nama(listtemp1),Harga(listtemp1),Kategori(listtemp1));
+                PrintStack(komptemp);
+                Push(&komptemp,listtemp1);
+                printf("%d\n", komptemp.T[Top(komptemp)-1].harga);
+                printf("\nSesudah Push\n\n");
+                PrintStack(komptemp);
+                printf("\n");*/
+                ADVKATA(); // Hanya ignore blank saja, tapi tidak mengakusisi kata yang ditemukan
             }
             Komponen(tempqinfo) = komptemp;
             /*
@@ -338,27 +383,50 @@ int main(){
             }
             OrderNumber(tempqinfo) = ordN;
             QAdd(&AntrianPesanan,tempqinfo); // pesanan yang sudah diakuisisi dimasukkan dalam queue
-            IgnoreBlank(); // Hanya ignore blank saja, tapi tidak mengakusisi kata yang ditemukan
+            ADVKATA(); // Hanya ignore blank saja, tapi tidak mengakusisi kata yang ditemukan
             MakeStackEmpty(&komptemp); // Reset ulang isi stack supaya bisa dipakai lagi
             OrderNumber = ordN + 1; // Saat keluar dari loop, OrderNumber untuk pesanan selanjutnya pada program adalah OrderNumber pesanan di akhir queue + 1
         }
         // Saat keluar, maka OrderNumber sudah berisi OrderNumber pesanan pada akhir queue + 1
         ADV(); // Supaya CC tidak di mark dan sekarang berada di inventory
+        ADVKATA();
         // Inventory
         ElTypeList listtemp2;
         while (CC != MARK){
+            /*
             int i = 0;
             while (CC != ';') {
                 CKata.TabKata[i] = CC;
                 CKata.TabKata[i+1] = '\0';
                 ADV();
                 i++;
-            } 
-            CKata.Length = i;
+            }
+            */
+           int i = 0;
+            for (int a=0;a<CKata.Length;a++){
+                char temp = CKata.TabKata[a]; // berisi nilai akuisisi
+                int convert = temp - '0'; // mengubah dari char ke int
+                int pangkat = Pangkat(10,CKata.Length-a-1);
+                i += pangkat*convert;
+            }
+            listtemp2 = ListElmt(ListDummy,i); //i -> akuisisi indeks
+            ADVKATA();
+            int j = 0;
+            for (int a=0;a<CKata.Length;a++){
+                char temp = CKata.TabKata[a]; // berisi nilai akuisisi
+                int convert = temp - '0'; // mengubah dari char ke int
+                int pangkat = Pangkat(10,CKata.Length-a-1);
+                j += pangkat*convert;
+            }
+
+            IsiJumlah(&listtemp2,j); //j -> akuisisi jumlah
+            // CKata.Length = i;
+            /*
             char nama[100];
             for (int x=0;x<100;x++){
                 nama[x] = CKata.TabKata[x];
             } 
+            int panjang = strlen(nama);
             ADV(); // Memajukkan CC sekali karena CC sekarang berada di ';'
             ADVKATA();
             // akuisisi harga
@@ -386,10 +454,10 @@ int main(){
                 int convert = temp - '0'; // mengubah dari char ke int
                 int pangkat = Pangkat(10,CKata.Length-a-1);
                 category += pangkat*convert;
-            }
-            CreateElmtLengkap(&listtemp2,price,nama,category,amount);
+            }*/
+            // CreateElmtLengkap(&listtemp2,price,nama,category,amount);
             InsertLLast(&InventoryPemain,listtemp2);
-            IgnoreBlank();
+            ADVKATA();
         }
         // Sudah selesai akuisisi inventory
         ADV(); // Supaya CC maju dari MARK, dan sekarang berada di index datadummy
@@ -420,16 +488,16 @@ int main(){
     Cyan; //set color Cyan
     // Reset isi Kata
     for (int x=0;x<100;x++){ // Reset nilai Kata supaya bisa input lag
-        Kata[x] = '\0';
+        InputKata[x] = '\0';
     }
-    BacaInput(Kata);
+    BacaInput(InputKata);
     // Kata menyimpan hasil input
-    while(strcmp(Kata,"EXIT")!=0){
+    while(strcmp(InputKata,"EXIT")!=0){
         White;
         clear();
         /* ---- DAFTAR COMMAND UTAMA PERMAINAN ---- */
         /* COMMAND 1: MOVE */
-        if (strcmp(Kata,"MOVE")==0){           
+        if (strcmp(InputKata,"MOVE")==0){           
             ShowValidTargets(G,CurrentPos(MapMatrix));
             int InputTarget;
             scanf("%d",&InputTarget);
@@ -461,25 +529,21 @@ int main(){
                     default:
                         printf("Customer\033[0;31m %d",CurrentPos(MapMatrix));
                 }
-                White;
-                printf(".\n");                   
+                printf(".\n"); 
+                White;            
             }
         }
 
         /* COMMAND 2 : STATUS */
-        else if (strcmp(Kata,"STATUS")==0){ 
+        else if (strcmp(InputKata,"STATUS")==0){ 
             Green; 
             printf("Money: $%d\n",UangPemain);
             Yellow;
-            if(!IsQEmpty(AntrianPesanan)){
-                printf("Current build: Order #%d for Customer %d.", OrderNumber(CurrentPesanan), Pemesan(CurrentPesanan));
-                if(!lagiBuild){
-                    printf(" (This build hasn't been started yet. Impute STARTBUILD at your base to start it!)");
-                }
-                printf("\n");
-                }
+            if(lagiBuild){
+                printf("Current build: Order #%d for Customer %d.\n", OrderNumber(CurrentPesanan), Pemesan(CurrentPesanan));
+            }
             else{
-                printf("No new orders available.\n");
+                printf("Not currently building any orders.\n");
             }
             printf("You are currently located at ");
             switch(CurrentPos(MapMatrix)){
@@ -500,21 +564,29 @@ int main(){
 
 
         /* COMMAND 3 : CHECKORDER */
-        else if (strcmp(Kata,"CHECKORDER")==0){
-            if(!IsQEmpty(AntrianPesanan)){
+        else if (strcmp(InputKata,"CHECKORDER")==0){
+            if(lagiBuild){
                 printf("Order Number: %d\n",OrderNumber(CurrentPesanan));
                 printf("Customer: Pelanggan %d\n",Pemesan(CurrentPesanan));
                 printf("Invoice: %d\n",Invoice(CurrentPesanan));
                 printf("Required components: \n");
-                PrintStack(Komponen(CurrentPesanan));                    
+                PrintStack(Komponen(CurrentPesanan));                                  
             }
             else{
-                printf("Currently not doing any builds. End the day to receive a new order!\n");
+                Yellow;
+                printf("Currently not doing any builds.");
+                if(IsQEmpty(AntrianPesanan)){
+                    printf(" End the day to receive a new order!\n");
+                }
+                else{
+                    printf(" Impute STARTBUILD at your base to start building!\n");
+                }
+                White;
             }
         }
 
         /* COMMAND 4 : STARTBUILD */
-        else if (strcmp(Kata,"STARTBUILD")==0){
+        else if (strcmp(InputKata,"STARTBUILD")==0){
             if(CurrentPos(MapMatrix)==-1){
                 if(IsQEmpty(AntrianPesanan)){
                     printf("You do not have any order to start. End the day to receive a new order!\n");
@@ -529,12 +601,16 @@ int main(){
         }
 
         /* COMMAND 5 : FINISHBUILD */
-        else if (strcmp(Kata,"FINISHBUILD")==0){
+        else if (strcmp(InputKata,"FINISHBUILD")==0){
             if(CurrentPos(MapMatrix)==-1){
                 Qinfotype HasilDequeue;
                 if(FINISHBUILD(&InventoryPemain, &Komponen(CurrentPesanan), Rakitan, &lagiBuild, OrderNumber(CurrentPesanan),Pemesan(CurrentPesanan), Invoice(CurrentPesanan))){
+                    MakeStackEmpty(&Rakitan);
                     QDel(&AntrianPesanan, &HasilDequeue);
-                    CurrentPesanan = InfoHead(AntrianPesanan);
+                    if(!IsQEmpty(AntrianPesanan)){
+                        CurrentPesanan = InfoHead(AntrianPesanan);
+                    }
+                    
                 }
             }
             else{
@@ -543,7 +619,7 @@ int main(){
         }
 
         /* COMMAND 6 : ADDCOMPONENT */
-        else if(strcmp(Kata,"ADDCOMPONENT")==0){
+        else if(strcmp(InputKata,"ADDCOMPONENT")==0){
             if(CurrentPos(MapMatrix)==-1 && lagiBuild){
                 ADDCOMPONENT(&Rakitan, &InventoryPemain, lagiBuild);
             }
@@ -557,7 +633,7 @@ int main(){
             }                
         }
         /* COMMAND 7 : REMOVECOMPONENT */
-        else if (strcmp(Kata,"REMOVECOMPONENT")==0){
+        else if (strcmp(InputKata,"REMOVECOMPONENT")==0){
             if(CurrentPos(MapMatrix)==-1 && lagiBuild){
                 REMOVECOMPONENT(&Rakitan,&InventoryPemain, lagiBuild);
             }
@@ -573,7 +649,7 @@ int main(){
         }
 
         /* COMMAND 8 : SHOP */
-        else if(strcmp(Kata,"SHOP")==0){
+        else if(strcmp(InputKata,"SHOP")==0){
             if(CurrentPos(MapMatrix)==0){
                 int NoKomponen, JumlahKomponen, HitungTotal;
                 printf("Available components:\n");
@@ -642,7 +718,7 @@ int main(){
         }
 
         /* COMMAND 9: DELIVER */
-        else if (strcmp(Kata,"DELIVER")==0){
+        else if (strcmp(InputKata,"DELIVER")==0){
             boolean found = false;
             int i = 0;
             while (found == false && i<LengthList(InventoryPemain))
@@ -658,7 +734,7 @@ int main(){
                 }
             }
             if (!found){
-                printf("Tidak ada");
+                printf("Wrong address for delivery! Re-check your inventory!\n");
             }
             else{
                 printf("Order #%d successfully delivered to Customer %d!\n", Kategori(ListElmt(InventoryPemain,i)) ,CurrentPos(MapMatrix));
@@ -666,7 +742,7 @@ int main(){
             }
         }
         /* COMMAND 10: END_DAY */
-        else if (strcmp(Kata,"END_DAY")==0){
+        else if (strcmp(InputKata,"END_DAY")==0){
             // Buat Kepentingan debug
             // Qinfotype X;
             // QDel(&AntrianPesanan,&X);
@@ -675,17 +751,27 @@ int main(){
             /* Ngambil dari List Statik secara random, jika hasil random adalah variasi yang udah pernah diambil, dia akan cari
             sampe ketemu yang belom keambil. Kalo udah keambil semua, di reset
             Kemudian akan di enqueue ke antrian pesanan. */
-            RandomSeed=AvoidCollision(DataDummyPesanan,RandomSeed,TitikTotal-2,ListDummy);
-            QAdd(&AntrianPesanan,ElmtStatik(DataDummyPesanan,RandomSeed));
-            SetOrderNumber(&AntrianPesanan,OrderNumber);
-            IncrementNumber(&OrderNumber);
-            DelAtStatik(&DataDummyPesanan,RandomSeed);
+            if(!IsQFull(AntrianPesanan)){
+                RandomSeed=AvoidCollision(DataDummyPesanan,RandomSeed,TitikTotal-2,ListDummy);
+                QAdd(&AntrianPesanan,ElmtStatik(DataDummyPesanan,RandomSeed));
+                SetOrderNumber(&AntrianPesanan,OrderNumber);
+                IncrementNumber(&OrderNumber);
+                DelAtStatik(&DataDummyPesanan,RandomSeed);
+                if(QNBElmt(AntrianPesanan)==1){
+                    CurrentPesanan = InfoHead(AntrianPesanan);
+                }
+                // PrintTail(AntrianPesanan);
+                //                 
+            }
+            else{
+                printf("However, your waiting list is full. Finish at least an order to receive new orders!\n");
+            }
             
             White;
         }
 
         /* COMMAND 11: SAVE */
-        else if (strncmp(Kata,"SAVE",4)==0){
+        else if (strncmp(InputKata,"SAVE",4)==0){
             static FILE * fsave;
             fsave = fopen("save.txt","w"); // isi save.txt teroverwrite dengan kondisi pemain terakhir
             /* Append UangPemain, Build, dan Order */
@@ -725,18 +811,22 @@ int main(){
             ElTypeList komponenrakit;
             int i;
             for (i = Top(copyrakit); i >= 0; i--){
-                Pop(&copyrakit, &komponenrakit);
-                const char* komp = Nama(komponenrakit);
+                Pop(&copyrakit, &komponenrakit); 
+                Harga(komponenrakit) = Harga(SearchElTypeList(ListDummy,Nama(komponenrakit),0));
+                /* const char* komp = Nama(komponenrakit);
                 fputs(komp,fsave);
                 fputs(";",fsave); // Kasih titik koma antar komponen
+                */
                 char hrg[100]; // simpan harga komponen
                 sprintf(hrg,"%d ",Harga(komponenrakit));
                 const char* converthrg = hrg;
                 fputs(converthrg,fsave);
+                /*
                 char ktg[100]; // simpan kategori komponen
                 sprintf(ktg,"%d ",Kategori(komponenrakit));
                 const char* convertktg = ktg;
                 fputs(convertktg,fsave);
+                */
             }
             fputs(".",fsave); // Tambahkan mark supaya tau akhir dari stack rakitan
             /* Append Queue pesanan */
@@ -751,19 +841,19 @@ int main(){
                 InverseStack(&copyqueue);
                 for (i = Top(copyqueue); i >= 0; i--){ // Simpan stack komponen untuk pesanan
                     Pop(&copyqueue, &komponenqueue);
-                    kompqueue = Nama(komponenqueue);
-                    fputs(kompqueue,fsave);
-                    fputs(";",fsave); // Kasih titik koma antar komponen
+                    Harga(komponenqueue) = Harga(SearchElTypeList(ListDummy,Nama(komponenqueue),0));
                     char hrg[100]; // simpan harga komponen
                     sprintf(hrg,"%d ",Harga(komponenqueue));
                     const char* converthrg = hrg;
                     fputs(converthrg,fsave);
+                    /*
                     char ktg[100]; // simpan kategori komponen
                     sprintf(ktg,"%d ",Kategori(komponenqueue));
                     const char* convertktg = ktg;
                     fputs(convertktg,fsave);
+                    */
                 }
-                fputs("/",fsave); // penanda sudah akhir dari stack
+                fputs(".",fsave); // penanda sudah akhir dari stack
                 char inv[100]; // simpan invoice
                 sprintf(inv,"%d ",(InfoHead(AntrianPesanan).invoice));
                 const char* konvertinv = inv;
@@ -788,19 +878,19 @@ int main(){
                         InverseStack(&((AntrianPesanan).T[i].komponen));
                         for (j = Top(((AntrianPesanan).T[i].komponen)); j >= 0; j--){ // Simpan stack komponen
                             Pop(&((AntrianPesanan).T[i].komponen), &komponenqueue);
-                            kompqueue = Nama(komponenqueue);
-                            fputs(kompqueue,fsave);
-                            fputs(";",fsave); // Kasih titik koma antar komponen
+                            Harga(komponenqueue) = Harga(SearchElTypeList(ListDummy,Nama(komponenqueue),0));
                             char hrg[100]; // simpan harga komponen
                             sprintf(hrg,"%d ",Harga(komponenqueue));
                             const char* converthrg = hrg;
                             fputs(converthrg,fsave);
+                            /*
                             char ktg[100]; // simpan kategori komponen
                             sprintf(ktg,"%d ",Kategori(komponenqueue));
                             const char* convertktg = ktg;
                             fputs(convertktg,fsave);
+                            */
                         }
-                        fputs("/",fsave); // penanda sudah akhir dari stack
+                        fputs(".",fsave); // penanda sudah akhir dari stack
                         // simpan invoice
                         sprintf(inv,"%d ",((AntrianPesanan).T[i].invoice));
                         const char* konvertinv = inv;
@@ -826,18 +916,23 @@ int main(){
             const char *appendjumlah;
             for (int i=0;i<LengthList(InventoryPemain);i++){
                 if (Jumlah(ListElmt(InventoryPemain,i))>0){
+                    /*
                     appendnama = Nama(ListElmt(InventoryPemain,i));
                     fputs(appendnama,fsave);
                     fputs(";",fsave); // Beri spasi antara nama barang dan jumlahnya
-                    sprintf(tempharga,"%d ",Harga(ListElmt(InventoryPemain,i)));
+                    */
+                    ElTypeList ItemInventory = SearchElTypeList(ListDummy,Nama(ListElmt(InventoryPemain,i)),Jumlah(ListElmt(InventoryPemain,i)));
+                    sprintf(tempharga,"%d ",Harga(ItemInventory));
                     const char* convertharga = tempharga;
                     fputs(convertharga,fsave);
-                    sprintf(tempjumlah, "%d ", Jumlah(ListElmt(InventoryPemain,i)));
+                    sprintf(tempjumlah, "%d ", Jumlah(ItemInventory));
                     appendjumlah = tempjumlah;
                     fputs(appendjumlah,fsave);
+                    /*
                     sprintf(tempkat,"%d ",Kategori(ListElmt(InventoryPemain,i)));
                     const char* convertkat = tempkat;
                     fputs(convertkat,fsave);
+                    */
                     for (int x=0;x<100;x++){ // Reset semua nilai temp supaya bisa diisi lagi
                         tempharga[x] = '\0';
                         tempjumlah[x] = '\0';
@@ -865,7 +960,7 @@ int main(){
             fclose(fsave);
         }
         /* COMMAND 12: MAP */
-        else if (strcmp(Kata,"MAP")==0){   
+        else if (strcmp(InputKata,"MAP")==0){   
             PrintMap(MapMatrix); 
         }
         /* WRONG INPUT */
@@ -875,10 +970,10 @@ int main(){
         ShowUI();
         Cyan;
         for (int x=0;x<100;x++){ // Reset semua nilai Kata supaya bisa input lagi
-            Kata[x] = '\0';
+            InputKata[x] = '\0';
         }
-        IncrementNumber(&RandomSeed);
-        BacaInput(Kata);
+        RandomSeed = (RandomSeed+1) %27;
+        BacaInput(InputKata);
         // Kata menyimpan hasil input             
     }
     White;

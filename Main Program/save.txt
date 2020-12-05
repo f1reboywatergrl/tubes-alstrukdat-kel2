@@ -1,1 +1,1 @@
-3850 -1 true true 2 Motherboard Mini ITX;150 1 .Motherboard Mini ITX;150 1 Processor Intel i3;2000 2 RAM 4GB;70 3 Heatsink;60 4 Plastic;120 5 NVDIA NV3;200 6 512GB;500 7 Power Supply AT;20 8 /4487 3 1 .Motherboard Mini ITX;150 1 1 .1 .
+5367 -1 false false 1 ...1 .

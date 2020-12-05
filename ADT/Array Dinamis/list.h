@@ -79,11 +79,15 @@ void CreateElmt (ElTypeList *el, int Harga, char *Nama, int Type );
 /* Membuat elemen dummy dengan properti el->harga = Harga, el->nama = *Nama, el->kategori = Type, 
 el->jumlah = 0*/
 
-void CreateElmtLengkap (ElTypeList *el, int Harga, char *Nama, int Type, int Jumlah);
+void CreateElmtLengkap (ElTypeList *el, int Harga, char Nama[], int Type, int Jumlah);
 /* Membuat elemen dummy dengan properti el->harga = Harga, el->nama = *Nama, el->kategori = Type, 
 el->jumlah = Jumlah*/
 
 void CreateDummies(List *Dummies);
 /* Membuat list dummy berisikan elemen dummy (hard-coded) */
 
+
+ElTypeList SearchElTypeList (List Dummies, char *Nama, int jumlah);
+
+void IsiJumlah (ElTypeList *item, int jumlah);
 #endif

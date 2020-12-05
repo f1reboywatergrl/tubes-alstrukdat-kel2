@@ -1,7 +1,7 @@
 #include "list.h"
 #include <stdlib.h>
 #include "stdio.h"
-
+#include "string.h"
 /**
  * Konstruktor
  * I.S. sembarang
@@ -165,7 +165,7 @@ el->jumlah = 0*/
     el->jumlah =0;
     el->kategori = Type;
 }
-void CreateElmtLengkap (ElTypeList *el, int Harga, char *Nama, int Type, int Jumlah){
+void CreateElmtLengkap (ElTypeList *el, int Harga, char Nama[], int Type, int Jumlah){
 
     el->harga = Harga;
     el->nama = Nama;
@@ -209,4 +209,26 @@ void CreateDummies(List *Dummies)
     CreateElmt(&el,20,"Power Supply AT",8);InsertLLast(Dummies,el);
     CreateElmt(&el,30,"Power Supply ATX",8);InsertLLast(Dummies,el);
     CreateElmt(&el,40,"Power Supply BTX",8);InsertLLast(Dummies,el);
+}
+
+ElTypeList SearchElTypeList (List Dummies, char *Nama, int jumlah)
+{
+    ElTypeList Barang;
+    int i = 0;
+    while(strcmp( Nama(ListElmt(Dummies,i)), Nama)!=0){
+        i++;
+    }
+    Harga(Barang)=i;
+    Jumlah(Barang)=jumlah;
+
+    /* Harga menyimpan index, Jumlah menyimpan jumlah */
+
+    Nama(Barang)='\0';
+    Kategori(Barang) = -1;
+    return Barang;
+}
+
+void IsiJumlah (ElTypeList *item, int jumlah)
+{
+    item->jumlah = jumlah;
 }

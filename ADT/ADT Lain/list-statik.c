@@ -190,6 +190,7 @@ void DelAtStatik(ListStatik *L, IdxTypeStatik I)
 int AvoidCollision (ListStatik LStatik, int seed, int custTotal, List L)
 /* Mengambil sebuah order secara acak */
 {
+    seed = seed%27;
     if(ElmtStatik(LStatik,seed).invoice==ValUndefStatik){
         int temp=seed;
         seed = (seed + 1) % 27;

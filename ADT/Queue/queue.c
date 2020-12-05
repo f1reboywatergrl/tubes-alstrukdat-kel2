@@ -28,7 +28,7 @@ int QNBElmt (Queue Q)
             return (Tail(Q)-Head(Q)+1);
         }
         else{
-            return (MaxElQueue(Q)-(Head(Q)-Tail(Q))+1);
+            return (MaxElQueue(Q)-(Head(Q)-Tail(Q)) +1);
         }
     }
 }
@@ -75,7 +75,7 @@ void QAdd (Queue * Q, Qinfotype X)
         InfoHead(*Q)=X;        
     }
     else{
-        Tail(*Q)=((Tail(*Q)%MaxElQueue(*Q) + 1));
+        Tail(*Q)=( (Tail(*Q)+1) % MaxElQueue(*Q) );
         InfoTail(*Q)=X;
     }
 }
@@ -92,7 +92,8 @@ void QDel (Queue * Q, Qinfotype * X)
     }
     else{
         *X=InfoHead(*Q);
-        Head(*Q)=((Head(*Q)%MaxElQueue(*Q))+1);        
+        Head(*Q)=( (Head(*Q)+1) % MaxElQueue(*Q));   
+        InfoHead(*Q)=(*Q).T[Head(*Q)];     
     }
 }
 
@@ -108,3 +109,12 @@ void IncrementNumber (int *Number)
 {
     *Number = *Number +1;
 }
+
+void PrintTail (Queue Q)
+{
+    printf("Invoice = %d\n",Invoice(InfoTail(Q)));
+    printf("Pemesan = %d\n",Pemesan(InfoTail(Q)));
+    printf("OrderNo = %d\n",OrderNumber(InfoTail(Q)));
+    printf("Nama Top = %s\n",InfoTop(Komponen(InfoTail(Q))).nama);
+}
+
