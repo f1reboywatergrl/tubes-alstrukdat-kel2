@@ -33,11 +33,14 @@ int main(){
     ListStatik DataDummyPesanan; // Meyimpan data dummy pesanan
     int RandomSeed=1; // Untuk kebutuhan random, Sebenernya bodo amat save/engga keknya hehe
     int OrderNumber; //Variable global order number
+    boolean SaveFileExists=true; // Jika savefile tidak ada, false
     /* Generate kombinasi pesanan yang mungkin dalam List Statik (di luar start/load) */
     
 
     /* PEMBACAAN FILE KONFIGURASI */
-
+    if(fopen("save.txt","r")==NULL){
+        SaveFileExists=false;
+    }
     STARTKATA("../ADT/Matriks/map.txt");
     //2 karena tambah ruang untuk border
     int BrsPita = 2;
@@ -130,10 +133,18 @@ int main(){
     BacaInput(InputKata); // Membaca input dari user
     int length = strlen(InputKata); //JANGAN DIAPUS NANTI ERROR
     while ((strncmp(InputKata,"START",5)!=0) && (strncmp(InputKata,"LOAD",4)!=0)){
+        White;
         printf("Please enter a valid input!\n");
         for (int x=0;x<100;x++){ // reset nilai Kata
             InputKata[x] = '\0';
         }
+        Green;
+        BacaInput(InputKata);
+    }
+    while ((strncmp(InputKata,"LOAD",4)==0) && SaveFileExists==false){
+        White;
+        printf("Save file unrecognized. Please start a new game.\n");
+        Green;
         BacaInput(InputKata);
     }
     White; //set color White
@@ -411,7 +422,7 @@ int main(){
                 i++;
             }
             */
-           int i = 0;
+        int i = 0;
             for (int a=0;a<CKata.Length;a++){
                 char temp = CKata.TabKata[a]; // berisi nilai akuisisi
                 int convert = temp - '0'; // mengubah dari char ke int
@@ -486,7 +497,9 @@ int main(){
         Green;
         printf("Game successfully loaded!\n");
         White;
-        printf("Welcome back to Santo's World!\n");
+        printf("Welcome back to Santo's World!\n");            
+        
+        
     }
     /* ---- END OF FUNGSI LOAD ---- */
     //inisiasi current pesanan
