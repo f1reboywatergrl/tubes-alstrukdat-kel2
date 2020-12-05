@@ -7,12 +7,14 @@
 #### *Tired of being a computer programmer, Santo, a fresh graduate, decides it would be more fun to build and deliver PCs.*  
 
 A Project by:  
-IF2111 Data Structures and Algorithms - Team 2    
-* Samuel Gondokusumo - 18219024  
-* Stella Ribli - 18219027  
-* Kevin Kencana - 18219050  
-* Azka Alya Ramadhan - 18219101
-* Ghifari Farras Azhar - 18219105
+IF2111 Data Structures and Algorithms - Team 2  
+Contributor | ID  
+------------ | -------------  
+Samuel Gondokusumo | 18219024  
+Stella Ribli | 18219027  
+Kevin Kencana | 18219050  
+Azka Alya Ramadhan | 18219101  
+Ghifari Farras Azhar | 18219105
 
 Installation instructions:  
 1. Clone this repository  
