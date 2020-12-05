@@ -206,6 +206,15 @@ int main(){
         else if (CKata.TabKata[0] == '2'){
             diskon = 2;
         }
+        // OrderNumber
+        ADVKATA();
+        OrderNumber = 0;
+            for (int a=0;a<CKata.Length;a++){
+                char temp = CKata.TabKata[a]; // berisi nilai akuisisi
+                int convert = temp - '0'; // mengubah dari char ke int
+                int pangkat = Pangkat(10,CKata.Length-a-1);
+                OrderNumber += pangkat*convert;
+            }
         // RAKITAN
         ADVKATA();
         ElTypeList listtemp;
@@ -803,6 +812,11 @@ int main(){
             sprintf(disc,"%d ",diskon);
             const char* convertdisc = disc;
             fputs(convertdisc,fsave);
+            /* Append OrderNumber*/
+            char ordNumber[100]; // simpan harga komponen
+            sprintf(ordNumber,"%d ",OrderNumber);
+            const char* convertordNumber = ordNumber;
+            fputs(convertordNumber,fsave);
             /* Append Rakitan */
             Stack copyrakit;
             CreateStackEmpty(&copyrakit);
