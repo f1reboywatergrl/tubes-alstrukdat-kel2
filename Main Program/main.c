@@ -394,7 +394,7 @@ int main(){
             QAdd(&AntrianPesanan,tempqinfo); // pesanan yang sudah diakuisisi dimasukkan dalam queue
             ADVKATA(); // Hanya ignore blank saja, tapi tidak mengakusisi kata yang ditemukan
             MakeStackEmpty(&komptemp); // Reset ulang isi stack supaya bisa dipakai lagi
-            OrderNumber = ordN + 1; // Saat keluar dari loop, OrderNumber untuk pesanan selanjutnya pada program adalah OrderNumber pesanan di akhir queue + 1
+            // OrderNumber = ordN + 1; // Saat keluar dari loop, OrderNumber untuk pesanan selanjutnya pada program adalah OrderNumber pesanan di akhir queue + 1
         }
         // Saat keluar, maka OrderNumber sudah berisi OrderNumber pesanan pada akhir queue + 1
         ADV(); // Supaya CC tidak di mark dan sekarang berada di inventory
