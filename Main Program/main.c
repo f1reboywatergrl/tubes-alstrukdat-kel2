@@ -132,20 +132,28 @@ int main(){
     char InputKata[100];
     BacaInput(InputKata); // Membaca input dari user
     int length = strlen(InputKata); //JANGAN DIAPUS NANTI ERROR
-    while ((strncmp(InputKata,"START",5)!=0) && (strncmp(InputKata,"LOAD",4)!=0)){
-        White;
-        printf("Please enter a valid input!\n");
-        for (int x=0;x<100;x++){ // reset nilai Kata
-            InputKata[x] = '\0';
+    boolean EntryAllowed=false;
+    while (!EntryAllowed){
+        Red;
+        //Case 1: No save file when Load
+        if ( (strncmp(InputKata,"LOAD",4)==0) && SaveFileExists==false ){
+            printf("Save file unrecognized. Please start a new game.\n");
+            Green;
+            BacaInput(InputKata);  
         }
-        Green;
-        BacaInput(InputKata);
-    }
-    while ((strncmp(InputKata,"LOAD",4)==0) && SaveFileExists==false){
-        White;
-        printf("Save file unrecognized. Please start a new game.\n");
-        Green;
-        BacaInput(InputKata);
+        //Case 2: Input is not LOAD or SAVE
+        else if ( (strncmp(InputKata,"START",5)!=0) && (strncmp(InputKata,"LOAD",4)!=0)){
+            printf("Please enter a valid input!\n");
+            White;
+            for (int x=0;x<100;x++){ // reset nilai Kata
+                InputKata[x] = '\0';
+            }
+            Green;
+            BacaInput(InputKata);            
+        }
+        else{
+            EntryAllowed=true;
+        }
     }
     White; //set color White
     clear();
