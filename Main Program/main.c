@@ -514,7 +514,7 @@ int main(){
             address AdrTarget = First(Link(P1));
             while(InputTarget>NbElmt(Link(P1)) || InputTarget<0){
                 clear();
-                printf("That area is not accessible, please impute according to shown indices (1-%d) or cancel by imputing 0.\n", NbElmt(Link(P1)));
+                printf("That area is not accessible, please input according to shown indices (1-%d) or cancel by inputting 0.\n", NbElmt(Link(P1)));
                 ShowValidTargets(G,CurrentPos(MapMatrix));
                 scanf("%d",&InputTarget);
             }                
@@ -588,7 +588,7 @@ int main(){
                     printf(" End the day to receive a new order!\n");
                 }
                 else{
-                    printf(" Impute STARTBUILD at your base to start building!\n");
+                    printf(" input STARTBUILD at your base to start building!\n");
                 }
                 White;
             }
@@ -979,7 +979,7 @@ int main(){
         }
         /* WRONG INPUT */
         else{
-            printf("Input Anda salah!\n");
+            printf("Wrong input! Refer to the table below for available commands.\n");
         }
         ShowUI();
         Cyan;
