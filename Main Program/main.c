@@ -393,7 +393,7 @@ int main(){
             OrderNumber(tempqinfo) = ordN;
             QAdd(&AntrianPesanan,tempqinfo); // pesanan yang sudah diakuisisi dimasukkan dalam queue
             ADVKATA(); // Hanya ignore blank saja, tapi tidak mengakusisi kata yang ditemukan
-            MakeStackEmpty(&komptemp); // Reset ulang isi stack supaya bisa dipakai lagi
+            CreateStackEmpty(&komptemp); // Reset ulang isi stack supaya bisa dipakai lagi
             // OrderNumber = ordN + 1; // Saat keluar dari loop, OrderNumber untuk pesanan selanjutnya pada program adalah OrderNumber pesanan di akhir queue + 1
         }
         // Saat keluar, maka OrderNumber sudah berisi OrderNumber pesanan pada akhir queue + 1
@@ -614,7 +614,6 @@ int main(){
             if(CurrentPos(MapMatrix)==-1){
                 Qinfotype HasilDequeue;
                 if(FINISHBUILD(&InventoryPemain, &Komponen(CurrentPesanan), Rakitan, &lagiBuild, OrderNumber(CurrentPesanan),Pemesan(CurrentPesanan), Invoice(CurrentPesanan))){
-                    MakeStackEmpty(&Rakitan);
                     QDel(&AntrianPesanan, &HasilDequeue);
                     if(!IsQEmpty(AntrianPesanan)){
                         CurrentPesanan = InfoHead(AntrianPesanan);

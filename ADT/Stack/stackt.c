@@ -30,7 +30,12 @@ void Push (Stack * S, ElTypeList X)
 /* I.S. S mungkin kosong, tabel penampung elemen stack TIDAK penuh */
 /* F.S. X menjadi TOP yang baru,TOP bertambah 1 */
 {
-    Top(*S) = Top(*S)+1;
+    if (IsStackEmpty(*S)){
+        Top(*S)=0;
+    }
+    else{
+        Top(*S)++;
+    }    
     InfoTop(*S)=X;
 }
 
@@ -66,7 +71,7 @@ void InverseStack(Stack *S){
     Stack S1;
     CreateStackEmpty(&S1);
     CopyStack((*S),&S1);
-    MakeStackEmpty(S);
+    CreateStackEmpty(S);
     ElTypeList X;
     while(Top(S1)!=NilStack){
         Pop(&S1,&X);
@@ -89,13 +94,6 @@ boolean CekUrutan (Stack S, int urutan){
     }
     else{
         return (urutan - InfoTop(S).kategori == 1);
-    }
-}
-
-void MakeStackEmpty(Stack *S){
-    ElTypeList X;
-    while(Top(*S)!=NilStack){
-        Pop(S,&X);
     }
 }
 
@@ -126,15 +124,12 @@ boolean IsStackEqual(Stack S1, Stack S2){
 void PrintStack(Stack S)
 {
     if(!IsStackEmpty(S)){
-        Stack S2;
-        CreateStackEmpty(&S2);
-        CopyStack(S,&S2);
-        InverseStack(&S2);
+        InverseStack(&S);
         ElTypeList komponen;
         int i;
         int nomor=1;
-        for (i = Top(S2); i >= 0; i--){
-            Pop(&S2, &komponen);
+        for (i = Top(S); i >= 0; i--){
+            Pop(&S, &komponen);
             printf("%d. %s ",nomor, Nama(komponen));
             nomor++;
             printf("\n");
@@ -188,6 +183,7 @@ boolean FINISHBUILD(List *inventory, Stack *Pesanan, Stack Rakitan, boolean *lag
             Harga(hasilBuild) = invoice;
             Jumlah(hasilBuild) = NoPelanggan;
             InsertLLast(inventory,hasilBuild);
+            CreateStackEmpty(&Rakitan);
             return true;
         }
         else{
@@ -262,7 +258,7 @@ void ADDCOMPONENT(Stack *Rakitan, List *inventory, boolean lagiBuild){
 
 void REMOVECOMPONENT(Stack *Rakitan, List *inventory, boolean lagiBuild){
     if(IsStackEmpty(*Rakitan)){
-        printf("You do not have any components to remove!\n");
+        printf("You do not have any component to remove\n");
     }
     else{
         if (lagiBuild){
@@ -272,12 +268,9 @@ void REMOVECOMPONENT(Stack *Rakitan, List *inventory, boolean lagiBuild){
             else{
                 ElTypeList komponen;
                 Pop(Rakitan,&komponen);
-                int i = 0; 
-                while( (i<inventory->Neff) && (strcmp(Nama(ListElmt(*inventory,i)), Nama(komponen))!=0)  ){
+                int i = 0;
+                while(strcmp(Nama(ListElmt(*inventory,i)), Nama(komponen))!=0){
                     i++;
-                }
-                if(i==inventory->Neff){
-                    InsertLLast(inventory, komponen);
                 }
                 Jumlah(ListElmt(*inventory,i))++;
                 printf("%s has been sucessfully removed from the current build.\n",Nama(komponen));

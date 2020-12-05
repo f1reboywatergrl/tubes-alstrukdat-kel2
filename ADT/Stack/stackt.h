@@ -73,8 +73,6 @@ boolean CekUrutan (Stack S, int urutan);
 /* saat user add component, kategori komponen direpresentasikan sebagai 
 angka urutan kategori komponen tersebut */
 
-void MakeStackEmpty(Stack *S);
-
 boolean IsStackEqual(Stack S1, Stack S2);
 /* Mengirim true jika kedua stack yang full adalah sama
    Mengirim false jika kedua stack berbeda atau stack tidak full */

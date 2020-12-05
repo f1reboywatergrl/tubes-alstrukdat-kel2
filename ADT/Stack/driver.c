@@ -123,15 +123,32 @@ int main(){
     PrintStack(Rakitan);
     printf("\n");
 
+    ADDCOMPONENT(&Rakitan, &inventory, lagiBuild);
+    PrintStack(Rakitan);
+    printf("\n");
 
+    ADDCOMPONENT(&Rakitan, &inventory, lagiBuild);
+    PrintStack(Rakitan);
+    printf("\n");
+
+    ADDCOMPONENT(&Rakitan, &inventory, lagiBuild);
+    PrintStack(Rakitan);
+    printf("\n");
+
+    ADDCOMPONENT(&Rakitan, &inventory, lagiBuild);
+    PrintStack(Rakitan);
+    printf("\n");
+
+    
     REMOVECOMPONENT(&Rakitan, &inventory, lagiBuild);
     PrintStack(Rakitan);
     printf("\n");
     
-    FINISHBUILD(&inventory, Komponen(CurrentPesanan), Rakitan, &lagiBuild,OrderNumber(CurrentPesanan),Pemesan(CurrentPesanan));
+    FINISHBUILD(&inventory, &Komponen(CurrentPesanan), Rakitan, &lagiBuild,OrderNumber(CurrentPesanan),Pemesan(CurrentPesanan),Invoice(CurrentPesanan));
     QDel(&Q, &CurrentPesanan);
-
-/*
+    PrintStack(Rakitan);
+    
+    /*
     Stack Rakitan;
     CreateStackEmpty(&Rakitan);
 
