@@ -4,6 +4,8 @@
 
 ![img](https://github.com/f1reboywatergrl/tubes-alstrukdat-kel2/blob/main/Dokumen/Dokumentasi/startmenu.PNG)
 
+#### *Tired of being a computer programmer, Santo, a fresh graduate, decides it would be more fun to build and deliver PCs.*  
+
 A Project by:  
 IF2111 Data Structures and Algorithms - Team 2    
 * Samuel Gondokusumo - 18219024  
